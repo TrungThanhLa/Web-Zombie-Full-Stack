@@ -1,0 +1,302 @@
+/*style3.css*/
+.container-fluid {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.row {
+    display: ;
+    display: none;
+    display: flex;;
+    flex-wrap: unset;
+    margin-right: 0px;
+    margin-left: 0px;
+    justify-content: center;
+}
+
+.ContainerHeader {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.Header {
+    padding-top: 20px;
+}
+
+.Logo {
+    width: 100%;
+}
+
+img.LogoImg {
+    width: 100px;
+    margin-left: 55%;
+}
+
+.IconAnchor {
+    align-self: center;
+    display: flex;
+}
+
+.iconawesome {
+    padding-left: 20px;
+    font-size: 22px;
+}
+
+.MenuHeader {
+    padding: 20px 0px;
+}
+
+ul.ulMenu {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+li.liMenu {
+    display: inline-block;
+    padding-right: 50px;
+}
+
+.bar {
+    background: #F5F5F5;
+    padding: 10px;
+}
+
+.BarBackground {
+    width: 80%;
+    margin: 0 auto;
+}
+
+span.BarItems {
+    font-weight: 200;
+    font-size: 15px;
+    color: darkgray;
+}
+
+a {
+    color: black;
+    position: relative;
+}
+
+a:hover {
+    color: #D40131;
+    text-decoration: unset;
+    transition: all 0.2s ease-in-out;
+}
+
+a.anchorList::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	background: gray;
+	left: -100%;
+	bottom: -100%;
+	opacity: 0;
+	visibility: hidden;
+}
+
+a.anchorList:hover::before {
+	left: 0px;
+	opacity: 1;
+	transition: all 0.5s;
+	visibility: unset;
+}
+
+h2.h2Products {
+    width: 80%;
+    margin: 0 auto;
+    padding: 50px 0px;
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.ContainerContent {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.ProductImage {
+    margin-right: 30px;
+    padding-bottom: 25px;
+}
+
+img.imgProduct {
+    width: 355px;
+    /* height: 480px; */
+    transition: all 0.3s ease-in-out;
+}
+
+img.imgProduct:hover {
+    transform: scale(1.1);
+}
+
+img.imgProductsmall {
+    width: 355px;
+    height: 400px;
+    transition: all 0.3s ease-in-out;
+}
+
+img.imgProductsmall:hover {
+    transform: scale(1.1);
+}
+
+p.TitleProduct {
+    padding-top: 20px;
+}
+
+p.Price {
+    color: red;
+    margin-top: -5px;
+}
+
+.pictureProduct {
+    height: 480px;
+}
+
+.SupportBackground {
+    background: #F3F3F3;
+}
+
+.Support {
+    width: 80%;
+    margin: 0 auto;
+    padding: 15px 0px;
+}
+
+.Signup {
+    width: 15%;
+    display: flex;
+    align-self: center;
+}
+
+i.fas.fa-envelope-open-text {
+    font-size: 18px;
+}
+
+span.SupportandBuy {
+    padding-left: 5px;
+}
+
+.emailInput {
+    width: 60%;
+}
+
+button, input {
+    overflow: visible;
+    padding: 10px 0px;
+    padding-left: 10px;
+    padding-right: 500px;
+    border: 1px solid whitesmoke;
+}
+
+a.BoxSignUp {
+    border: 1px solid #D0021B;
+    padding: 10px 20px;
+    margin-left: -5px;
+    background: #D0021B;
+    display: inline-block;
+    font-size: 16px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    top: 17px;
+}
+
+a.BoxSignUp::before {
+    content: "";
+    position: absolute;
+    background: white ;
+    width: 100%;
+    height: 100%;
+    right: 100%;
+    top: 0px;
+    transition: 0.3s ease-in-out;
+}
+
+a.BoxSignUp:hover::before {
+    right: 0px;
+    background: white;
+    z-index: 1;
+}
+
+span.spSignUp {
+    position: relative;
+    z-index: 10;
+}
+
+
+span.spSignUp:hover {
+    color: #D0021B;
+    transition: all 0.3s ease-in-out;
+    
+}
+
+.telephone {
+    width: 25%;
+    display: flex;
+    align-self: center;
+}
+
+i.fas.fa-phone-square-alt {
+    font-size: 18px;
+    padding-right: 5px;
+    padding-top: 3px;
+}
+
+.Footer {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 0px;
+}
+
+.AboutUs {
+    width: 35%;
+}
+
+h3.FooterInformation {
+    font-size: 22px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+p.Description {
+    font-size: 15px;
+    font-weight: 350;
+}
+
+img.gov {
+    width: 150px;
+}
+
+.Link {
+    width: 15%;
+    padding-left: 40px;
+}
+
+ul.ulFooter {
+    padding-left: 0px;
+}
+
+li.lilink {
+    display: flex;
+}
+
+.ShopInfo {
+    width: 20%;
+}
+
+span.ShopInfoLocation {
+    padding-left: 10px;
+}
+
+.ShopLocationInfo {
+    padding: 5px 0px;
+}
+
+.Fanpage {
+    width: 20%;
+}
