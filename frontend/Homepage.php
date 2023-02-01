@@ -35,13 +35,14 @@
             <div class="MenuHeader">
                 <ul class="ulMenu">
                     <li class="liMenu"><a href="Homepage.php" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="Products.php" class="anchorList">Sản phẩm</a>
+                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>
                         <ul class="subMenu">
-                            <li class="liSubMenu"><a href="Products.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
+                            <li class="liSubMenu"><a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
                             <li class="liSubMenu"><a href="" class="anchorSubMenu">Áo - Shirts</a></li>
                             <li class="liSubMenu"><a href="#" class="anchorSubMenu">Quần - Pants</a></li>
                         </ul>
                     </li>
+                    <li class="liMenu"><a href="News_Frontend.php" class="anchorList">Tin tức</a></li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -202,7 +203,7 @@
                             <i class="fas fa-envelope-open-text"></i>
                             <span class="SupportandBuy">Đăng kí nhận tin</span>
                         </div>
-                        <div class="emailInput">
+                        <div class="emailInput" style="display: flex;">
                             <input type="email" name="email" placeholder="Nhập email của bạn">
                             <a href="#" class="BoxSignUp">ĐĂNG KÍ</a>
                         </div>

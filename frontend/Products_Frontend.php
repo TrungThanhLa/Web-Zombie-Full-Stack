@@ -34,8 +34,8 @@
             </div>
             <div class="MenuHeader">
                 <ul class="ulMenu">
-                    <li class="liMenu"><a href="#" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="#" class="anchorList">Sản phẩm</a></li>
+                    <li class="liMenu"><a href="Homepage.php" class="anchorList">Trang Chủ</a></li>
+                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a></li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -48,7 +48,7 @@
     <div class="MainContent">
         <div class="bar">
             <div class="BarBackground">
-                <span class="BarItems"><a href="Homepage.php">Trang chủ</a> / <a href="#">Danh mục</a> / <a href="Products.php">Tất cả sản phẩm</a></span>
+                <span class="BarItems"><a href="Homepage.php">Trang chủ</a> / <a href="#">Danh mục</a> / <a href="Products_Frontend.php">Tất cả sản phẩm</a></span>
             </div>
         </div>
         <div class="AllProducts">
