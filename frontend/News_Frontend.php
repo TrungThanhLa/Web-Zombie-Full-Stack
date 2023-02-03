@@ -7,6 +7,13 @@ $news = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
 //echo '<pre>';
 //print_r($news);
 //echo '</pre>';
+$sql_select_one = "SELECT * FROM news ORDER BY created_at DESC ";
+$result_one = mysqli_query($connection, $sql_select_one);
+$new_one = mysqli_fetch_assoc($result_one);
+//echo '<pre>';
+//print_r($new_one);
+//echo '</pre>';
+
 ?>
 <!-- Homepage.php -->
 <!DOCTYPE html>
@@ -63,79 +70,29 @@ $news = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
         <div class="Content">
             <div class="Top_News">
                 <div class="img_top_news">
-                <a href="#"><img src="img/Product1.jpg" style="width: 835px;" height="437px" class="img_top"></a>
+                <a href="#"><img src="../backend/News/uploads/<?php echo $new_one['thumbnail']; ?>" style="width: 835px;" height="437px" class="img_top"></a>
                 </div>
                 <div class="desNews">
-                <a href="#"><h3 class="h3_top_news">Full Set Zombie Limited Edition cực chất năm 2023</h3></a>
-                <p class="p_top_news">Thứ 3 26/7/2022</p>
+                <a href="#"><h3 class="h3_top_news"><?php echo $new_one['title']; ?></h3></a>
+                <p class="p_top_news"><?php echo 'Ngày đăng:' . ' ' . date('d/m/Y H:i', strtotime($new_one['created_at'])); ?></p>
                 <a href="#" class="anchor_top_news">Xem ngay</a>
                 </div>
             </div>
             <hr style="color: #EEEEEE">
             <div class="News_List">
-                <div class="row">
+                <div class="r_news">
+                    <?php foreach ($news AS $key => $value): ?>
                     <div class="New_Post">
                         <div class="img_top_news">
-                            <a href="#"><img src="img/Product2.jpg" style="width: 360px;" height="188px" class="img_top"></a>
+                            <a href="#"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 360px;" height="188px" class="img_top"></a>
                         </div>
                         <div class="desNews">
-                            <a href="#"><h4 class="h4_news">Full Set Zombie Limited Edition cực chất năm 2023</h4></a>
-                            <p class="p_news">Thứ 3 26/7/2022</p>
+                            <a href="#"><h4 class="h4_news"><?php echo $value['title']; ?></h4></a>
+                            <p class="p_news"><?php echo 'Ngày đăng:' . ' ' . date('d/m/Y H:i', strtotime($value['created_at'])); ?></p>
                             <a href="#" class="anchor_top_news">Xem ngay</a>
                         </div>
                     </div>
-                    <div class="New_Post">
-                        <div class="img_top_news">
-                            <a href="#"><img src="img/Product2.jpg" style="width: 360px;" height="188px" class="img_top"></a>
-                        </div>
-                        <div class="desNews">
-                            <a href="#"><h4 class="h4_news">Full Set Zombie Limited Edition cực chất năm 2023</h4></a>
-                            <p class="p_news">Thứ 3 26/7/2022</p>
-                            <a href="#" class="anchor_top_news">Xem ngay</a>
-                        </div>
-                    </div>
-                    <div class="New_Post">
-                        <div class="img_top_news">
-                            <a href="#"><img src="img/Product2.jpg" style="width: 360px;" height="188px" class="img_top"></a>
-                        </div>
-                        <div class="desNews">
-                            <a href="#"><h4 class="h4_news">Full Set Zombie Limited Edition cực chất năm 2023</h4></a>
-                            <p class="p_news">Thứ 3 26/7/2022</p>
-                            <a href="#" class="anchor_top_news">Xem ngay</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="New_Post">
-                        <div class="img_top_news">
-                            <a href="#"><img src="img/Product2.jpg" style="width: 360px;" height="188px" class="img_top"></a>
-                        </div>
-                        <div class="desNews">
-                            <a href="#"><h4 class="h4_news">Full Set Zombie Limited Edition cực chất năm 2023</h4></a>
-                            <p class="p_news">Thứ 3 26/7/2022</p>
-                            <a href="#" class="anchor_top_news">Xem ngay</a>
-                        </div>
-                    </div>
-                    <div class="New_Post">
-                        <div class="img_top_news">
-                            <a href="#"><img src="img/Product2.jpg" style="width: 360px;" height="188px" class="img_top"></a>
-                        </div>
-                        <div class="desNews">
-                            <a href="#"><h4 class="h4_news">Full Set Zombie Limited Edition cực chất năm 2023</h4></a>
-                            <p class="p_news">Thứ 3 26/7/2022</p>
-                            <a href="#" class="anchor_top_news">Xem ngay</a>
-                        </div>
-                    </div>
-                    <div class="New_Post">
-                        <div class="img_top_news">
-                            <a href="#"><img src="img/Product2.jpg" style="width: 360px;" height="188px" class="img_top"></a>
-                        </div>
-                        <div class="desNews">
-                            <a href="#"><h4 class="h4_news">Full Set Zombie Limited Edition cực chất năm 2023</h4></a>
-                            <p class="p_news">Thứ 3 26/7/2022</p>
-                            <a href="#" class="anchor_top_news">Xem ngay</a>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

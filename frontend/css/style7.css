@@ -8,12 +8,17 @@
 }
 
 .row {
-    display: ;
-    display: none;
-    display: flex;;
+    /*display: ;*/
+    /*display: none;*/
+    display: flex;
     flex-wrap: unset;
     margin-right: 0px;
     margin-left: 0px;
+}
+
+.r_news {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .ContainerHeader {
@@ -32,6 +37,7 @@
 img.LogoImg {
     width: 100px;
     margin-left: 55%;
+    margin-bottom: 10px;
 }
 
 .IconAnchor {
@@ -121,7 +127,7 @@ a.anchorList:hover::before {
 
 h2 {
     text-align: center;
-    padding: 80px;
+    padding: 60px;
     font-size: 40px;
     font-weight: 400;
     line-height: 1.1;
