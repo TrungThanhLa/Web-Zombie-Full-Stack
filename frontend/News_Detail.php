@@ -2,21 +2,29 @@
 session_start();
 require_once '../backend/connection.php';
 
-$sql_select_all = "SELECT * FROM news ORDER BY created_at DESC";
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    $_SESSION['error'] = 'Bài viết không tồn tại';
+    header('Location: News_Frontend.php');
+    exit();
+}
+
+$id = $_GET['id'];
+
+$sql_select_all = "SELECT * FROM news";
 $result_all = mysqli_query($connection, $sql_select_all);
 $news = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
-//echo '<pre>';
-//print_r($news);
-//echo '</pre>';
-$sql_select_one = "SELECT * FROM news ORDER BY created_at DESC ";
+
+$sql_select_one = "SELECT * FROM news WHERE id = $id";
 $result_one = mysqli_query($connection, $sql_select_one);
 $new_one = mysqli_fetch_assoc($result_one);
-//echo '<pre>';
-//print_r($new_one);
-//echo '</pre>';
+
+if ($_GET['id'] != $new_one['id']) {
+    $_SESSION['error'] = 'Bài viết không tồn tại';
+    header('Location: News_Frontend.php');
+    exit();
+}
 
 ?>
-<!-- Homepage.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +36,7 @@ $new_one = mysqli_fetch_assoc($result_one);
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/style7.css">
+    <link rel="stylesheet" type="text/css" href="css/style8.css">
 </head>
 <body>
 <div class="container-fluid">
@@ -67,48 +75,34 @@ $new_one = mysqli_fetch_assoc($result_one);
 
     <!-- MAIN CONTENT -->
     <div class="MainContent">
-        <div class="New_Page">
-        <a href="News_Frontend.php" ><h2>TRANG TIN TỨC - ZCS OFFICIAL</h2></a>
-        </div>
-        <div class="Content">
-            <div class="Top_News">
-                <div class="Newest">
-                    <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>" class="Newest_Post">Bài viết mới nhất</a>
-                </div>
-                <div class="img_top_news">
-                <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>"><img src="../backend/News/uploads/<?php echo $new_one['thumbnail']; ?>" style="width: 835px;" height="437px" class="img_top"></a>
-                </div>
-                <div class="desNews">
-                <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>"><h3 class="h3_top_news"><?php echo $new_one['title']; ?></h3></a>
-                <p class="p_top_news"><?php echo 'Ngày đăng:' . ' ' . date('d/m/Y H:i', strtotime($new_one['created_at'])); ?></p>
-                <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>" class="anchor_top_news">Xem ngay</a>
-                </div>
-            </div>
-            <hr style="color: #EEEEEE">
-            <h3 style="color:red;"><?php
-                if (isset($_SESSION['error'])) {
-                    echo $_SESSION['error'];
-                    unset($_SESSION['error']);
-                }
-                ?>
-            </h3>
-            <div class="News_List">
-                <div class="r_news">
-                    <?php foreach ($news AS $key => $value): ?>
-                    <div class="New_Post">
-                        <div class="img_top_news">
-                            <a href="News_Detail.php?id=<?php echo $value['id'];?>"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 360px;" height="188px" class="img_top"></a>
-                        </div>
-                        <div class="desNews">
-                            <a href="News_Detail.php?id=<?php echo $value['id'];?>"><h4 class="h4_news"><?php echo $value['title']; ?></h4></a>
-                            <p class="p_news"><?php echo 'Ngày đăng:' . ' ' . date('d/m/Y H:i', strtotime($value['created_at'])); ?></p>
-                            <a href="News_Detail.php?id=<?php echo $value['id'];?>" class="anchor_top_news">Xem ngay</a>
-                        </div>
+        <div class="row">
+            <div class="Sidebar">
+                <h4 class="h4_Other">Tin tức liên quan</h4>
+                <hr style="color: #EEEEEE">
+                <?php foreach ($news AS $key => $value):?>
+                <div class="Other">
+                    <div class="img_other_news">
+                        <a href="#"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 268px; height: 138px"></a>
                     </div>
-                    <?php endforeach; ?>
+                    <div class="title_other_news">
+                        <a href="#" class="a_other_news"><?php echo $value['title']; ?></a>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="Content">
+                <div class="Title_Content">
+                <h2><?php echo $new_one['title']; ?></h2>
+                <p>Ngày đăng: <?php echo date('d/m/Y H:i', strtotime($new_one['created_at'])); ?></p>
+                <img src="../backend/News/uploads/<?php echo $new_one['thumbnail']; ?>" style="width: 835px; height: 438px" class="thumbnail_content">
+                <hr style="color: #EEEEEE">
+                </div>
+                <div class="Post_Content">
+                    <p class="Post"><?php echo $new_one['posts']?></p>
                 </div>
             </div>
         </div>
+
     </div>
     <!-- /MAIN CONTENT -->
 

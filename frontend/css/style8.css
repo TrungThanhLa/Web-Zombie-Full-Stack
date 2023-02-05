@@ -127,17 +127,18 @@ a.anchorList:hover::before {
     visibility: unset;
 }
 
-h2 {
-    text-align: center;
-    padding: 60px;
-    font-size: 40px;
-    font-weight: 400;
-    line-height: 1.1;
-}
+/*h2 {*/
+/*    text-align: center;*/
+/*    padding: 60px;*/
+/*    font-size: 40px;*/
+/*    font-weight: 400;*/
+/*    line-height: 1.1;*/
+/*}*/
 
 .MainContent {
     width: 70%;
     margin: 0 auto;
+    margin-top: 80px;
 }
 
 /*.Content {*/
@@ -145,32 +146,21 @@ h2 {
 /*    margin: 0 auto;*/
 /*}*/
 
-.Top_News {
+.Sidebar {
+    width: 25%;
     text-align: center;
 }
 
-.img_top_news {
-    margin-top: 30px;
-    display: inline-block;
+.img_other_news {
+    margin-top: 50px;
 }
 
-a.Newest_Post {
-    display: inline-block;
+.title_other_news {
+    margin: 15px;
 }
 
-.New_Post {
-    width: 33.3%;
-    text-align: center;
-}
-
-.desNews {
-    margin: 30px 0;
-}
-
-h4.h4_news {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+.Content {
+    width: 75%;
 }
 
 

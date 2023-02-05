@@ -240,7 +240,7 @@ if (isset($_POST['submit'])) {
             <br>
             <br>
             <p style="color: red"><?php echo $error; ?></p>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="" method="post" enctype="multipart/form-data" class="form-group">
             <h4>Tiêu đề :</h4>
             <input type="text" name="Title" style="width: 100%; height: 30px;">
             <hr>
