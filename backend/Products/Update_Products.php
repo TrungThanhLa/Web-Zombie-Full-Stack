@@ -16,7 +16,17 @@ $product = mysqli_fetch_assoc($result_one);
 $sql_select_img_product = "SELECT * FROM imgs_products WHERE id_products = $id";
 $result_img_product = mysqli_query($connection, $sql_select_img_product);
 $img_product = mysqli_fetch_all($result_img_product, MYSQLI_ASSOC);
-var_dump($img_product);
+
+$sql_select_all = "SELECT products.*, category.name AS 'name_cate' FROM products JOIN category ON products.id_cat = category.id_cat WHERE id = $id ";
+$result_all = mysqli_query($connection, $sql_select_all);
+$products = mysqli_fetch_assoc($result_all);
+
+$name_cate = $products['name_cate'];
+
+$sql_select_cate = "SELECT * FROM category WHERE status = 1";
+$result_cate = mysqli_query($connection, $sql_select_cate);
+$categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
+
 
 echo '<pre>';
 print_r($_POST);
@@ -32,6 +42,7 @@ if (isset($_POST['submit'])) {
     $product_des = $_POST['product_des'];
     $img = $_FILES['img'];
     $status = $_POST['status'];
+    $category = $_POST['category'];
 //    $img_product_1 = $_FILES['img_product_1'];
 //    $img_product_2 = $_FILES['img_product_2'];
 //    $img_product_3 = $_FILES['img_product_3'];
@@ -43,6 +54,9 @@ if (isset($_POST['submit'])) {
     }
     elseif ($sale_price >= $price) {
         $error = 'Giá sale phải nhỏ hơn giá cũ của sản phẩm';
+    }
+    elseif ($category == 0 ) {
+        $error = 'Phải chọn danh mục cho sản phẩm';
     }
 //    elseif ($img_product_1['error'] == 4 && $img_product_2['error'] == 4 && $img_product_3['error'] == 4)
 //        $error = 'Phải có ít nhất 1 ảnh mô tả sản phẩm';
@@ -100,7 +114,7 @@ if (isset($_POST['submit'])) {
             $file_name_img = $img['name'] . '-' . time() . '.' . $extensions;
             move_uploaded_file($img['tmp_name'], "$dir_upload/$file_name_img");
         }
-        $sql_update_img = "UPDATE products SET name = '$name', price = '$price', sale_price = '$sale_price'
+        $sql_update_img = "UPDATE products SET name = '$name', id_cat = '$category', price = '$price', sale_price = '$sale_price'
                             , description = '$product_des', img = '$file_name_img', status = '$status' WHERE id = $id";
         $is_update_img = mysqli_query($connection, $sql_update_img);
         var_dump($is_update_img);
@@ -323,6 +337,21 @@ if (isset($_POST['submit'])) {
             <p style="color: red"><?php echo $error; ?></p>
             <form action="" method="post" enctype="multipart/form-data">
                 <p>ID sản phẩm: <?php echo $id; ?></p>
+                <br>
+                <h4>Danh mục sản phẩm</h4>
+                <select name="category">
+                    <option value="<?php echo $products['id_cat']; ?>"><?php echo $products['name_cate']; ?></option>
+                    <?php
+                    foreach ($categories AS $key2 => $value2):
+                        if ($value2['id_cat'] == $products['id_cat']) {
+                            continue;
+                        }
+                    ?>
+                    <option value="<?php echo $value2['id_cat']; ?>"><?php echo $value2['name']; ?></option>
+                    <?php endforeach; ?>
+                    <option value="0">__Tên danh mục__</option>
+                </select>
+                <br>
                 <br>
                 <h4>Tên sản phẩm:</h4>
                 <input type="text" name="name" placeholder="Tên sản phẩm..." value="<?php echo $product['name'];?>">

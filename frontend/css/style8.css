@@ -73,11 +73,17 @@ ul.ulMenu {
 }
 
 a {
+    color: #CD0439;
+}
+
+
+
+a.anchor_text {
     display: block;
     color: #CD0439;
 }
 
-a:hover {
+a.anchor_text:hover {
     background: unset;
     transform: scale(1.1);
 }
@@ -108,6 +114,10 @@ a:hover {
     color: #D40131;
     text-decoration: unset;
     transition: all 0.2s ease-in-out;
+}
+
+a.anchorList {
+    display: block;
 }
 
 a.anchorList::before {
@@ -151,6 +161,10 @@ a.anchorList:hover::before {
     text-align: center;
 }
 
+.vertical_divide {
+    border-right: 0.5px solid #E5E5E5;
+}
+
 .img_other_news {
     margin-top: 50px;
 }
@@ -161,6 +175,16 @@ a.anchorList:hover::before {
 
 .Content {
     width: 75%;
+    margin-left: 25px;
+}
+
+img.thumbnail_content {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.Post_Content {
+    margin-bottom: 50px;
 }
 
 
@@ -177,7 +201,7 @@ a.anchorList:hover::before {
 .Signup {
     display: flex;
     align-self: center;
-    margin-right: 100px;
+    width: 15%;
 }
 
 i.fas.fa-envelope-open-text {
@@ -190,6 +214,7 @@ span.SupportandBuy {
 
 .emailInput {
     display: flex;
+    width: 60%;
 }
 
 button, input {
@@ -212,7 +237,8 @@ a.BoxSignUp {
 .telephone {
     display: flex;
     align-self: center;
-    margin-left: 100px;
+    width: 25%;
+    padding-left: 50px;
 }
 
 i.fas.fa-phone-square-alt {

@@ -2,7 +2,7 @@
 session_start();
 require_once '../connection.php';
 
-$sql_select_all = "SELECT products.*, category.name AS 'name_cate' FROM products JOIN category ON products.id_cat = category.id_cat";
+$sql_select_all = "SELECT products.*, category.name AS 'name_cate' FROM products JOIN category ON products.id_cat = category.id_cat ORDER BY created_at DESC ";
 $result_all = mysqli_query($connection, $sql_select_all);
 $products = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
 

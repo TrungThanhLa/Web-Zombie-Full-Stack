@@ -41,6 +41,9 @@ if (isset($_POST['submit'])) {
     elseif ($sale_price >= $price) {
         $error = 'Giá sale phải nhỏ hơn giá cũ của sản phẩm';
     }
+    elseif ($category == 0) {
+        $error = 'Phải chọn danh mục sản phẩm';
+    }
 //    elseif ($img_product_1['error'] == 4 && $img_product_2['error'] == 4 && $img_product_3['error'] == 4)
 //        $error = 'Phải có ít nhất 1 ảnh mô tả sản phẩm';
     foreach ($_FILES['img_product']['error'] AS $key1) {
@@ -296,7 +299,7 @@ if (isset($_POST['submit'])) {
             <form action="" method="post" enctype="multipart/form-data">
                 <h4>Danh mục sản phẩm</h4>
                 <select name="category">
-                    <option>__Tên danh mục__</option>
+                    <option value="0">__Tên danh mục__</option>
                     <?php foreach ($categories AS $cate=> $value): ?>
                     <option value="<?php echo $value['id_cat']; ?>"><?php echo $value['name']; ?></option>
                     <?php endforeach; ?>

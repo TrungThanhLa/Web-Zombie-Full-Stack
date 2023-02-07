@@ -1,5 +1,12 @@
 <?php
+require_once '../backend/connection.php';
 
+$sql_select_all = "SELECT * FROM category WHERE status = 1";
+$result_all = mysqli_query($connection, $sql_select_all);
+$category = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($category);
+echo '</pre>';
 ?>
 <!-- Homepage.php -->
 <!DOCTYPE html>
@@ -38,8 +45,9 @@
                     <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>
                         <ul class="subMenu">
                             <li class="liSubMenu"><a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
-                            <li class="liSubMenu"><a href="" class="anchorSubMenu">Áo - Shirts</a></li>
-                            <li class="liSubMenu"><a href="#" class="anchorSubMenu">Quần - Pants</a></li>
+                            <?php foreach ($category AS $key => $value):?>
+                            <li class="liSubMenu"><a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a></li>
+                            <?php endforeach; ?>
                         </ul>
                     </li>
                     <li class="liMenu"><a href="News_Frontend.php" class="anchorList">Tin tức</a></li>

@@ -13,6 +13,9 @@ $id = $_GET['id'];
 $sql_select_all = "SELECT * FROM news";
 $result_all = mysqli_query($connection, $sql_select_all);
 $news = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($news);
+//echo '</pre>';
 
 $sql_select_one = "SELECT * FROM news WHERE id = $id";
 $result_one = mysqli_query($connection, $sql_select_one);
@@ -52,7 +55,7 @@ if ($_GET['id'] != $new_one['id']) {
                     <i class="fab fa-instagram iconawesome"></i>
                     <i class="fas fa-search iconawesome"></i>
                     <i class="fas fa-user-circle iconawesome"></i>
-                    <a href="Cart.php"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <a href="Cart.php" class="anchor_text"><i class="fas fa-shopping-cart iconawesome"></i></a>
                 </div>
             </div>
             <div class="MenuHeader">
@@ -77,22 +80,29 @@ if ($_GET['id'] != $new_one['id']) {
     <div class="MainContent">
         <div class="row">
             <div class="Sidebar">
+                <div class="vertical_divide">
                 <h4 class="h4_Other">Tin tức liên quan</h4>
                 <hr style="color: #EEEEEE">
                 <?php foreach ($news AS $key => $value):?>
                 <div class="Other">
                     <div class="img_other_news">
-                        <a href="#"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 268px; height: 138px"></a>
+                        <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 268px; height: 138px"></a>
                     </div>
                     <div class="title_other_news">
-                        <a href="#" class="a_other_news"><?php echo $value['title']; ?></a>
+                        <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><?php echo $value['title']; ?></a>
                     </div>
                 </div>
-                <?php endforeach; ?>
+                <?php
+                if ($key == 5) {
+                    break;
+                }
+                endforeach; ?>
+                </div>
             </div>
             <div class="Content">
                 <div class="Title_Content">
                 <h2><?php echo $new_one['title']; ?></h2>
+                <br>
                 <p>Ngày đăng: <?php echo date('d/m/Y H:i', strtotime($new_one['created_at'])); ?></p>
                 <img src="../backend/News/uploads/<?php echo $new_one['thumbnail']; ?>" style="width: 835px; height: 438px" class="thumbnail_content">
                 <hr style="color: #EEEEEE">
@@ -102,7 +112,6 @@ if ($_GET['id'] != $new_one['id']) {
                 </div>
             </div>
         </div>
-
     </div>
     <!-- /MAIN CONTENT -->
 
@@ -135,11 +144,11 @@ if ($_GET['id'] != $new_one['id']) {
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
                 <ul class="ulFooter">
-                    <li class="lilink"><a href="#">FACEBOOK</a></li>
-                    <li class="lilink"><a href="#">INSTAGRAM</a></li>
-                    <li class="lilink"><a href="#">SHOPEE</a></li>
-                    <li class="lilink"><a href="#">LAZADA</a></li>
-                    <li class="lilink"><a href="#">TIKI</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">FACEBOOK</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">SHOPEE</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">LAZADA</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">TIKI</a></li>
                 </ul>
             </div>
             <div class="ShopInfo">
@@ -159,7 +168,7 @@ if ($_GET['id'] != $new_one['id']) {
             <div class="Fanpage">
                 <h3 class="FooterInformation">Fanpage</h3>
 
-                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
+                <a href="https://www.facebook.com/thanhs.lider.5/" class="anchor_text"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
             </div>
         </div>
     </div>
