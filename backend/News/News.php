@@ -98,7 +98,14 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">THANH QUẢN TRỊ</li>
-
+                <li>
+                    <a href="../Homepage/Home.php">
+                        <i class="fas fa-h-square"></i> <span>Quản lý trang chủ</span>
+                        <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">new</small>-->
+            </span>
+                    </a>
+                </li>
                 <li>
                     <a href="../News/News.php">
                         <i class="fa fa-th"></i> <span>Tin tức</span>

@@ -4,9 +4,20 @@ require_once '../backend/connection.php';
 $sql_select_all = "SELECT * FROM category WHERE status = 1";
 $result_all = mysqli_query($connection, $sql_select_all);
 $category = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($category);
+//echo '</pre>';
+
 echo '<pre>';
-print_r($category);
+print_r($_POST);
 echo '</pre>';
+
+$error = '';
+
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $sign_up = $_POST['submit'];
+}
 ?>
 <!-- Homepage.php -->
 <!DOCTYPE html>
@@ -212,8 +223,10 @@ echo '</pre>';
                             <span class="SupportandBuy">Đăng kí nhận tin</span>
                         </div>
                         <div class="emailInput" style="display: flex;">
+                            <form action="" method="post">
                             <input type="email" name="email" placeholder="Nhập email của bạn">
-                            <a href="#" class="BoxSignUp">ĐĂNG KÍ</a>
+                            <input type="submit" name="submit" class="Submit" value="ĐĂNG KÍ" style="background: #D0021B; padding: 10px; color: white; display: inline-block">
+                            </form>
                         </div>
                         <div class="telephone">
                             <i class="fas fa-phone-square-alt"></i>

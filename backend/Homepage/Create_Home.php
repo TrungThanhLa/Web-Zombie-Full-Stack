@@ -2,60 +2,126 @@
 session_start();
 require_once '../connection.php';
 
-$sql_select_all = "SELECT * FROM category ORDER BY created_at DESC";
-$result_select = mysqli_query($connection, $sql_select_all);
-$categories = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
-
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    $_SESSION['error'] = 'ID danh mục không hợp lệ';
-    header('Location: Create_Category.php');
-    exit();
-}
-
-$id = $_GET['id'];
-if (isset($id)) {
-    $sql_select = "SELECT * FROM category WHERE id_cat = $id";
-    $result = mysqli_query($connection, $sql_select);
-    $data = mysqli_fetch_assoc($result);
-    if ($id != $data['id_cat']) {
-        $_SESSION['error'] = 'Không tồn tại ID danh mục';
-        header('Location: Create_Category.php');
-        exit();
-    }
-}
-
 echo '<pre>';
 print_r($_POST);
+print_r($_FILES);
 echo '</pre>';
 
 $error = '';
 
 if (isset($_POST['submit'])) {
-    $category = $_POST['category'];
-    $status = $_POST['status'];
-
-    if (empty($category)) {
-        $error = 'Cần phải có tên danh mục';
-    }
-
-    if (empty($error)) {
-        $sql_update = "UPDATE category SET name = '$category', status = '$status' WHERE id_cat = $id";
-        $is_update = mysqli_query($connection, $sql_update);
-        var_dump($is_update);
-
-        if ($is_update) {
-            $_SESSION['success'] = 'Cập nhật danh mục sản phẩm thành công';
-            header('Location: Create_Category.php');
-            exit();
-        }
-        else {
-            $_SESSION['error'] = 'Cập nhật danh mục sản phẩm thất bại';
-        }
-    }
+    $img_main = $_FILES['img_main'];
+    $title = $_POST['title'];
 }
+    if ($img_main['error'] == 4) {
+        $error = 'Phải có ảnh đầu trang';
+    }
+    elseif (empty($title)) {
+        $error = 'Phải có tiêu đề sản phẩm mục cuối trang';
+    }
+    foreach ($_FILES['sale_img']['error'] AS $key => $value) {
+        if ($value == 4) {
+            $error = 'Phải có đủ 3 ảnh Sale đầu trang';
+        }
+    }
+    if ($value == 0) {
+        foreach ($_FILES['sale_img']['full_path'] AS $key1 => $value1) {
+            $extensions = pathinfo($value1, PATHINFO_EXTENSION);
+            $extensions = strtolower($extensions);
+            $allows = ['jpg' , 'jpeg', 'gif', 'png'];
+            if (!in_array($extensions, $allows)) {
+                $error = 'File tải lên 1 phải là ảnh';
+            }
+        }
+    }
+    foreach ($_FILES['sale_img']['size'] AS $key2 => $value2) {
+        $size_b = $value2;
+        $size_mb = $value2/1024/1024;
+        if ($size_mb > 2) {
+            $error = 'Ảnh tải lên không được lớn hơn 2MB';
+        }
+    }
 
+    foreach ($_FILES['sale_product']['error'] AS $key3 => $value3) {
+        if ($value3 == 4) {
+            $error = 'Phải có đủ 3 ảnh sale sản phẩm cuối trang';
+        }
+    }
+
+    if ($value3 == 0) {
+        foreach ($_FILES['sale_img']['full_path'] AS $key4 => $value4) {
+            $extensions = pathinfo($value4, PATHINFO_EXTENSION);
+            $extensions = strtolower($extensions);
+            $allows = ['jpg' , 'jpeg', 'gif', 'png'];
+            if (!in_array($extensions, $allows)) {
+                $error = 'File tải lên 2 phải là ảnh';
+            }
+        }
+    }
+    foreach ($_FILES['sale_img']['size'] AS $key5 => $value5) {
+        $size_b = $value5;
+        $size_mb = $value5/1024/1024;
+        if ($size_mb > 2) {
+            $error = 'Ảnh tải lên không được lớn hơn 2MB';
+        }
+    }
+
+    if ($img_main['error'] == 0) {
+        $extensions = pathinfo($img_main['full_path'], PATHINFO_EXTENSION);
+        $extensions = strtolower($extensions);
+        $allows = ['png', 'jpg', 'jpeg', 'png'];
+        if (!in_array($extensions, $allows)) {
+            $error = 'File tải lên 2 phải là ảnh';
+        }
+    }
+    $size_b = $img_main['size'];
+    $size_mb = $size_b/1024/1024;
+    if ($size_mb > 2) {
+        $error = 'Ảnh tải lên phải nhỏ hơn 2MB';
+    }
+    if (empty($error)) {
+        $file_name = '';
+        if ($img_main['error'] == 0) {
+            $dir_upload = 'main';
+            if (!file_exists($dir_upload)) {
+                mkdir($dir_upload);
+            }
+            $file_name = $img_main['name'] . '-' . time() . '.' . $extensions;
+            move_uploaded_file($img_main['tmp_name'], "$dir_upload/$file_name");
+        }
+        $sql_insert = "INSERT INTO homepage(main_img, title) VALUES ('$file_name', '$title')";
+        $is_insert = mysqli_query($connection, $sql_insert);
+        var_dump($is_insert);
+
+        $file_name_poster = '';
+        if ($value == 0) {
+            $dir_upload_1 = 'sale_poster';
+            if (!file_exists($dir_upload_1)) {
+                mkdir($dir_upload_1);
+            }
+            foreach ($_FILES['sale_img']['name'] AS $key6 => $value6 ) {
+                $file_name_poster = $value6 . '.' . time() . '.' . $extensions;
+                move_uploaded_file($_FILES['sale_img']['tmp_name'][$key6], "$dir_upload_1/$file_name_poster");
+                $sql_insert_poster = "INSERT INTO img_homepage(sale_poster) VALUES ('$file_name_poster')";
+                $is_insert_poster = mysqli_query($connection, $sql_insert_poster);
+                var_dump($is_insert_poster);
+            }
+        }
+        if ($value3 == 0) {
+            $dir_upload_2 = 'sale_products';
+            if (!file_exists($dir_upload_2)) {
+                mkdir($dir_upload_2);
+            }
+            foreach ($_FILES['sale_product']['name'] AS $key7 => $value7 ) {
+                $file_name_products = $value7 . '.' . time() . '.' . $extensions;
+                move_uploaded_file($_FILES['sale_product']['tmp_name'][$key7], "$dir_upload_2/$file_name_products");
+                $sql_insert_products = "INSERT INTO img_homepage(sale_products) VALUES ('$file_name_products')";
+                $is_insert_products = mysqli_query($connection, $sql_insert_products);
+                var_dump($is_insert_products);
+            }
+        }
+    }
 ?>
-<!-- Create_Product.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -222,78 +288,28 @@ if (isset($_POST['submit'])) {
             Nội dung hiển thị ở đây
             <br>
             <br>
-            <a href="../Products/Products.php"><i class="fas fa-tasks"></i> Quản lý sản phẩm</a>
+            <a href="Home.php"><i class="fas fa-tasks"></i> Quản lý trang chủ</a>
             <br>
             <br>
-            <a href="../Category/Create_Category.php"><i class="fas fa-plus-square"></i> Tạo danh mục sản phẩm</a>
             <p style="color: red"><?php echo $error; ?></p>
-            <div class="add_category">
-                <!--                <div class="row">-->
-                <div class="add">
-                    <form action="" method="post" enctype="multipart/form-data">
-                        <h3>Sửa danh mục sản phẩm</h3>
-                        <hr>
-                        <p style="font-weight: bold">Tên danh mục :</p>
-                        <input type="text" name="category" value="<?php echo $data['name'];?>">
-                        <br>
-                        <br>
-                        <p style="font-weight: bold">Trạng thái :</p>
-                        <input type="radio" name="status" value="1" <?php
-                        if ($data['status'] == 1) {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>
-                        > Hiện
-                        <input type="radio" name="status" value="0"<?php
-                        if ($data['status'] == 0) {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>
-                        > Ẩn
-                        <br>
-                        <br>
-                        <input type="submit" name="submit" value="Cập nhật">
-                </div>
-                <div class="show">
-                    <h3>Danh sách danh mục</h3>
-                    <br>
-                    <table border="1" cellpadding="8" cellspacing="0" style="width: 50%;">
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên danh mục</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                        <?php foreach ($categories AS $key => $value):?>
-                            <tr>
-                                <td><?php echo $key + 1;?></td>
-                                <td><?php echo $value['name'];?></td>
-                                <td><?php
-                                    if ($value['status'] == 1) {
-                                        echo 'Hiện';
-                                    }
-                                    else {
-                                        echo 'Ẩn';
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <a href="Update_Category.php?id=<?php echo $value['id_cat']; ?>"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="Delete_Category.php?id=<?php echo $value['id_cat']; ?>" onclick="return confirm('Xóa danh mục này ?')"><i class="fas fa-trash-alt" style="color: red"></i> Xóa</a>
-                                </td>
-                            </tr>
-                        <?php endforeach;?>
-                    </table>
-                </div>
-                <!--                </div>-->
+            <form action="" method="post" enctype="multipart/form-data">
+                <h4>Ảnh Chính :</h4>
+                <input type="file" name="img_main">
+                <br>
+                <h4>Ảnh Sale Đầu trang (3 ảnh) :</h4>
+                <input type="file" name="sale_img[]" multiple="multiple">
+                <br>
+                <h4>Tiêu đề mục sản phẩm cuối trang</h4>
+                <input type="text" name="title">
+                <br>
+                <br>
+                <h4>Ảnh Sale Sản phẩm cuối trang (3 ảnh) :</h4>
+                <input type="file" name="sale_product[]"multiple="multiple">
+                <br>
+                <br>
+                <input type="submit" name="submit" value="Đăng">
 
-                </form>
-            </div>
+            </form>
 
         </section>
         <!-- /.content -->
@@ -323,3 +339,4 @@ if (isset($_POST['submit'])) {
 <script src="../assets/js/adminlte.min.js"></script>
 </body>
 </html>
+

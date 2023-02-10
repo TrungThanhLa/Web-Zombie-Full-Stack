@@ -211,12 +211,18 @@ button, input {
     border: 1px solid whitesmoke;
 }
 
-a.BoxSignUp {
-    border: 1px solid #D0021B;
-    padding: 10px 20px;
-    margin-left: -5px;
+/*a.BoxSignUp {*/
+/*    border: 1px solid #D0021B;*/
+/*    padding: 10px 20px;*/
+/*    margin-left: -5px;*/
+/*    background: #D0021B;*/
+/*    font-size: 16px;*/
+/*    color: white;*/
+/*}*/
+
+input.Submit {
     background: #D0021B;
-    font-size: 16px;
+    padding: 10px;
     color: white;
 }
 

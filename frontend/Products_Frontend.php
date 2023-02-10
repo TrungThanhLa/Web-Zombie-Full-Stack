@@ -1,4 +1,34 @@
 <?php
+require_once '../backend/connection.php';
+
+//if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+//    $_SESSION['error'] = 'ID danh mục sản phẩm không hợp lệ';
+//    header('Location: Homepage.php');
+//    exit();
+//}
+//
+//$id = $_GET['id'];
+
+$sql_select_all = "SELECT * FROM products WHERE status = 1";
+$result_all = mysqli_query($connection, $sql_select_all);
+$products = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($products);
+//echo '</pre>';
+
+$sql_select_one = "SELECT * FROM category WHERE status = 1";
+$result_one = mysqli_query($connection, $sql_select_one);
+$category = mysqli_fetch_assoc($result_one);
+//echo '<pre>';
+//print_r($category);
+//echo '</pre>';
+
+$sql_select_cate = "SELECT * FROM category WHERE status = 1";
+$result_cate = mysqli_query($connection, $sql_select_cate);
+$categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($categories);
+//echo '</pre>';
 
 ?>
 <!-- Products.php -->
@@ -35,7 +65,15 @@
             <div class="MenuHeader">
                 <ul class="ulMenu">
                     <li class="liMenu"><a href="Homepage.php" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a></li>
+                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>
+                        <ul class="subMenu">
+                            <li class="liSubMenu"><a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
+                            <?php foreach ($categories AS $keys => $values):?>
+                                <li class="liSubMenu"><a href="Products_Category.php?id=<?php echo $values['id_cat']; ?>" class="anchorSubMenu"><?php echo $values['name']; ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                    <li class="liMenu"><a href="News_Frontend.php" class="anchorList">Tin tức</a></li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -53,204 +91,32 @@
         </div>
         <div class="AllProducts">
             <div class="AllProducts">
-                <h2 class="h2Products">Tất cả sản phẩm</h2>
+                <h2 class="h2Products">Tất cả sản phẩm - All Products</h2>
             </div>
             <div class="ContainerContent">
-                <div class="row">
-                    <div class="ProductClothing1 ProductImage">
-                        <a href="#" ><img src="img/Product1.jpg" class="imgProduct"></a>
-                        <a href="#" ><p class="TitleProduct">ZOMBIE Send Hoodie In Black</p></a>
-                        <a href="#" ><p class="Price">450,000đ</p></a>
-                    </div>
-                    <div class="ProductClothing2 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product2.jpg" class="imgProduct">
-                            <p class="TitleProduct">ZOMBIE Grey Printed Shirt</p>
-                            <p class="Price">380,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing3 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product3.jpg" class="imgProduct">
-                            <p class="TitleProduct">ZOMBIE Leather Pants</p>
-                            <p class="Price">450,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing4 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product4.jpg" class="imgProduct">
-                            <p class="TitleProduct">ZOMBIE Leather Jacket</p>
-                            <p class="Price">780,000đ</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ProductClothing5 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product5.jpg" class="imgProduct">
-                            <p class="TitleProduct">Set ZOMBIE Zip Hoodie - Brown</p>
-                            <p class="Price">650,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing6 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product6.jpg" class="imgProduct">
-                            <p class="TitleProduct">Set ZOMBIE Zip Hoodie - DarkGrey</p>
-                            <p class="Price">650,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing7 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product7.jpg" class="imgProduct">
-                            <p class="TitleProduct">Set ZOMBIE V Sweater - Brown</p>
-                            <p class="Price">650,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing8 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product8.jpg" class="imgProduct">
-                            <p class="TitleProduct">#1 ZOMBIE Denim Skinny Ripped LB</p>
-                            <p class="Price">420,000đ</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ProductClothing9 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 9.jpg" class="imgProduct">
+                <div class="r_products">
+                    <?php foreach ($products AS $key => $value):?>
+                        <div class="ProductClothing">
+                            <div class="ProductImage">
+                                <a href="#" ><img src="../backend/Products/uploads/<?php echo $value['img']; ?>" class="imgProduct"></a>
                             </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">#1 ZOMBIE Denim Skinny LB</p>
-                                <p class="Price">210,000đ</p>
+                            <div class="Product_Info">
+                                <a href="#" class="anchor_text"><p class="TitleProduct"><?php echo $value['name']; ?></p></a>
+                                <div class="Prices">
+                                <a href="#" class="Price"><?php
+                                    if ($value['sale_price'] == 0) {
+                                        echo number_format($value['price'], 0 , '.', ',') . 'đ';
+                                    }
+                                    else {
+                                        echo '<a href="#" class="Price" style="text-decoration: line-through">' . number_format($value['price'], 0 , '.', ',') . 'đ' . '</a>';
+                                        echo '<a href="#" class="Sale_Price">' . number_format($value['sale_price'], 0, '.', ',') . 'đ' . '</a>' ;
+                                    }
+                                    ?>
+                                    </a>
+                                </div>
                             </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing10 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 10.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Sweater In Beige</p>
-                                <p class="Price">380,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing11 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 11.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">#1 ZOMBIE Sweater In Black</p>
-                                <p class="Price">380,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing12 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 12.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Mesh Longsleeve - Brown</p>
-                                <p class="Price">190,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ProductClothing13 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 13.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Mesh Longsleeve - Begie</p>
-                                <p class="Price">190,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing14 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 14.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Leather Shorts - Black</p>
-                                <p class="Price">160,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing15 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 15.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Floral Shirt</p>
-                                <p class="Price">190,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing16 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 16.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Heart Tee in White</p>
-                                <p class="Price">150,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ProductClothing17 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 17.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Heart Tee in Black</p>
-                                <p class="Price">420,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing18 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 18.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Oversew Sweater - White</p>
-                                <p class="Price">420,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing19 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 19.jpg" class="imgProduct">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">ZOMBIE Heart Long Sleeve Tee in Black</p>
-                                <p class="Price">420,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="ProductClothing20 ProductImage">
-                        <a href="#" >
-                            <div class="pictureProduct">
-                                <img src="img/Products/Product 20.jpg" class="imgProductsmall">
-                            </div>
-                            <div class="TitleandPrice">
-                                <p class="TitleProduct">Set Floral Texture</p>
-                                <p class="Price">325,000đ</p>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -263,59 +129,60 @@
                     </div>
                     <div class="emailInput">
                         <input type="email" name="email" placeholder="Nhập email của bạn">
-                        <a href="#" class="BoxSignUp">
+                        <a href="#" class="BoxSignUp" class="anchor_text">
                             <span class="spSignUp">ĐĂNG KÍ</span>
                         </a>
                     </div>
                     <div class="telephone">
                         <i class="fas fa-phone-square-alt"></i>
-                        <span class="SupportandBuy"> Hỗ trợ/Mua hàng:<a href="#">           079 939 1168</a></span>
+                        <span class="SupportandBuy"> Hỗ trợ/Mua hàng:<a href="#" class="anchor_text">           079 939 1168</a></span>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /MAIN CONTENT -->
-
-        <!-- FOOTER -->
-        <div class="Footer">
-            <div class="row">
-                <div class="AboutUs">
-                    <h3 class="FooterInformation">Về chúng tôi</h3>
-                    <p class="Description">Thành lập tại Việt Nam, ZOMBIE® là một dự án ấp ủ đầy nhiệt huyết ra đời vào năm 2012. Những sản phẩm được truyền cảm hứng từ những bạn trẻ có sức ảnh hưởng lớn trong giới thời trang. ZOMBIE® đã và đang mang đến rất nhiều sản phẩm đẹp và giá cả phải chăng.</p>
-                    <img src="img/GOV.jpg" class="gov">
-                </div>
-                <div class="Link">
-                    <h3 class="FooterInformation">Liên kết</h3>
-                    <ul class="ulFooter">
-                        <li class="lilink"><a href="#">FACEBOOK</a></li>
-                        <li class="lilink"><a href="#">INSTAGRAM</a></li>
-                        <li class="lilink"><a href="#">SHOPEE</a></li>
-                        <li class="lilink"><a href="#">LAZADA</a></li>
-                        <li class="lilink"><a href="#">TIKI</a></li>
-                    </ul>
-                </div>
-                <div class="ShopInfo">
-                    <h3 class="FooterInformation">Thông tin cửa hàng</h3>
-                    <div class="ShopLocationInfo">
-                        <i class="fas fa-map-marker-alt"></i><span class="ShopInfoLocation">805 Hoàng Sa, P9, Q3, TP.HCM</span>
-                        <br>
-                    </div>
-                    <div class="ShopLocationInfo">
-                        <i class="fas fa-mobile-alt"></i><span class="ShopInfoLocation">079 939 1168</span>
-                        <br>
-                    </div>
-                    <div class="ShopLocationInfo">
-                        <i class="fas fa-envelope"></i><span class="ShopInfoLocation">zombiestudio6@gmail.com</span>
-                    </div>
-                </div>
-                <div class="Fanpage">
-                    <h3 class="FooterInformation">Fanpage</h3>
-
-                    <a href="https://www.facebook.com/thanhs.lider.5/"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
-                </div>
-            </div>
-        </div>
-        <!-- /FOOTER -->
     </div>
+    <!-- /MAIN CONTENT -->
+
+    <!-- FOOTER -->
+    <div class="Footer">
+        <div class="row">
+            <div class="AboutUs">
+                <h3 class="FooterInformation">Về chúng tôi</h3>
+                <p class="Description">Thành lập tại Việt Nam, ZOMBIE® là một dự án ấp ủ đầy nhiệt huyết ra đời vào năm 2012. Những sản phẩm được truyền cảm hứng từ những bạn trẻ có sức ảnh hưởng lớn trong giới thời trang. ZOMBIE® đã và đang mang đến rất nhiều sản phẩm đẹp và giá cả phải chăng.</p>
+                <img src="img/GOV.jpg" class="gov">
+            </div>
+            <div class="Link">
+                <h3 class="FooterInformation">Liên kết</h3>
+                <ul class="ulFooter">
+                    <li class="lilink"><a href="#" class="anchor_text">FACEBOOK</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">SHOPEE</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">LAZADA</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">TIKI</a></li>
+                </ul>
+            </div>
+            <div class="ShopInfo">
+                <h3 class="FooterInformation">Thông tin cửa hàng</h3>
+                <div class="ShopLocationInfo">
+                    <i class="fas fa-map-marker-alt"></i><span class="ShopInfoLocation">805 Hoàng Sa, P9, Q3, TP.HCM</span>
+                    <br>
+                </div>
+                <div class="ShopLocationInfo">
+                    <i class="fas fa-mobile-alt"></i><span class="ShopInfoLocation">079 939 1168</span>
+                    <br>
+                </div>
+                <div class="ShopLocationInfo">
+                    <i class="fas fa-envelope"></i><span class="ShopInfoLocation">zombiestudio6@gmail.com</span>
+                </div>
+            </div>
+            <div class="Fanpage">
+                <h3 class="FooterInformation">Fanpage</h3>
+
+                <a href="https://www.facebook.com/thanhs.lider.5/" class="anchor_text"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
+            </div>
+        </div>
+    </div>
+    <!-- /FOOTER -->
+</div>
 </body>
 </html>

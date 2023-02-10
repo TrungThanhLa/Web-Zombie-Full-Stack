@@ -1,61 +1,6 @@
 <?php
-session_start();
-require_once '../connection.php';
-
-$sql_select_all = "SELECT * FROM category ORDER BY created_at DESC";
-$result_select = mysqli_query($connection, $sql_select_all);
-$categories = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
-
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    $_SESSION['error'] = 'ID danh mục không hợp lệ';
-    header('Location: Create_Category.php');
-    exit();
-}
-
-$id = $_GET['id'];
-if (isset($id)) {
-    $sql_select = "SELECT * FROM category WHERE id_cat = $id";
-    $result = mysqli_query($connection, $sql_select);
-    $data = mysqli_fetch_assoc($result);
-    if ($id != $data['id_cat']) {
-        $_SESSION['error'] = 'Không tồn tại ID danh mục';
-        header('Location: Create_Category.php');
-        exit();
-    }
-}
-
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-
-$error = '';
-
-if (isset($_POST['submit'])) {
-    $category = $_POST['category'];
-    $status = $_POST['status'];
-
-    if (empty($category)) {
-        $error = 'Cần phải có tên danh mục';
-    }
-
-    if (empty($error)) {
-        $sql_update = "UPDATE category SET name = '$category', status = '$status' WHERE id_cat = $id";
-        $is_update = mysqli_query($connection, $sql_update);
-        var_dump($is_update);
-
-        if ($is_update) {
-            $_SESSION['success'] = 'Cập nhật danh mục sản phẩm thành công';
-            header('Location: Create_Category.php');
-            exit();
-        }
-        else {
-            $_SESSION['error'] = 'Cập nhật danh mục sản phẩm thất bại';
-        }
-    }
-}
 
 ?>
-<!-- Create_Product.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -222,78 +167,10 @@ if (isset($_POST['submit'])) {
             Nội dung hiển thị ở đây
             <br>
             <br>
-            <a href="../Products/Products.php"><i class="fas fa-tasks"></i> Quản lý sản phẩm</a>
+            <a href="Create_Home.php"><i class="fas fa-tasks"></i> Sửa ảnh trang chủ</a>
             <br>
             <br>
-            <a href="../Category/Create_Category.php"><i class="fas fa-plus-square"></i> Tạo danh mục sản phẩm</a>
-            <p style="color: red"><?php echo $error; ?></p>
-            <div class="add_category">
-                <!--                <div class="row">-->
-                <div class="add">
-                    <form action="" method="post" enctype="multipart/form-data">
-                        <h3>Sửa danh mục sản phẩm</h3>
-                        <hr>
-                        <p style="font-weight: bold">Tên danh mục :</p>
-                        <input type="text" name="category" value="<?php echo $data['name'];?>">
-                        <br>
-                        <br>
-                        <p style="font-weight: bold">Trạng thái :</p>
-                        <input type="radio" name="status" value="1" <?php
-                        if ($data['status'] == 1) {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>
-                        > Hiện
-                        <input type="radio" name="status" value="0"<?php
-                        if ($data['status'] == 0) {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>
-                        > Ẩn
-                        <br>
-                        <br>
-                        <input type="submit" name="submit" value="Cập nhật">
-                </div>
-                <div class="show">
-                    <h3>Danh sách danh mục</h3>
-                    <br>
-                    <table border="1" cellpadding="8" cellspacing="0" style="width: 50%;">
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên danh mục</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                        <?php foreach ($categories AS $key => $value):?>
-                            <tr>
-                                <td><?php echo $key + 1;?></td>
-                                <td><?php echo $value['name'];?></td>
-                                <td><?php
-                                    if ($value['status'] == 1) {
-                                        echo 'Hiện';
-                                    }
-                                    else {
-                                        echo 'Ẩn';
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <a href="Update_Category.php?id=<?php echo $value['id_cat']; ?>"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="Delete_Category.php?id=<?php echo $value['id_cat']; ?>" onclick="return confirm('Xóa danh mục này ?')"><i class="fas fa-trash-alt" style="color: red"></i> Xóa</a>
-                                </td>
-                            </tr>
-                        <?php endforeach;?>
-                    </table>
-                </div>
-                <!--                </div>-->
 
-                </form>
-            </div>
 
         </section>
         <!-- /.content -->

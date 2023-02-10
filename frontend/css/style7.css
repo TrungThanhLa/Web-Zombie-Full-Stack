@@ -16,10 +16,10 @@
     margin-left: 0px;
 }
 
-.r_news {
-    display: flex;
-    flex-wrap: wrap;
-}
+/*.r_news {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*}*/
 
 .ContainerHeader {
     width: 70%;
@@ -77,10 +77,9 @@ a {
     color: #CD0439;
 }
 
-a:hover {
-    background: unset;
-    transform: scale(1.1);
-}
+/*a:hover {*/
+/*    */
+/*}*/
 
 ul.subMenu {
     display: none;
@@ -95,7 +94,7 @@ a.anchorSubMenu {
 a.anchorSubMenu:hover {
     color: #CF0038;
     background: #F3F3F3;
-    display: block;
+    /*display: block;*/
 }
 
 li:hover ul.subMenu {
@@ -104,10 +103,20 @@ li:hover ul.subMenu {
     color: white;
 }
 
+li.liSubMenu {
+    display: block;
+}
+
+li.liSubMenu:hover {
+    transform: scale(1.0);
+}
+
 a:hover {
     color: #D40131;
     text-decoration: unset;
     transition: all 0.2s ease-in-out;
+    background: unset;
+    /*transform: scale(1.1);*/
 }
 
 a.anchorList::before {
@@ -135,6 +144,13 @@ h2 {
     line-height: 1.1;
 }
 
+a.h2News {
+    color: #CF0038;
+}
+a.h2News:hover {
+    transform: scale(1.1);
+}
+
 .MainContent {
     width: 70%;
     margin: 0 auto;
@@ -151,6 +167,7 @@ h2 {
 
 .img_top_news {
     margin-top: 30px;
+    margin-bottom: 30px;
     display: inline-block;
 }
 
@@ -158,19 +175,44 @@ a.Newest_Post {
     display: inline-block;
 }
 
+a.Newest_Post:hover {
+    transform: scale(1.1);
+}
+
+a.img_top {
+    display: inline-block;
+}
+a.img_top:hover {
+    transform: scale(1.1);
+}
+
 .New_Post {
-    width: 33.3%;
-    text-align: center;
+    display: inline-block;
 }
 
 .desNews {
-    margin: 30px 0;
+    margin-left: 30px;
+    align-self: center;
+}
+
+a.anchor_top_news {
+    display: inline-block;
+}
+
+a.anchor_top_news:hover {
+    transform: scale(1.1);
 }
 
 h4.h4_news {
-    width: 90%;
+    color: black;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+}
+
+h4.h4_news:hover {
+    color: #CF0038;
+    transition: ease-in-out 0.2s;
 }
 
 
@@ -292,6 +334,14 @@ img.FanpageShop {
 img {
     transition: all 0.2s ease-in-out;
     overflow: hidden;
+}
+
+a.Social {
+    display: inline-block;
+}
+
+a.Social:hover {
+    transform: scale(1.1);
 }
 
 img:hover {

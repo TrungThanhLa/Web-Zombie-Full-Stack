@@ -79,8 +79,6 @@ a {
     color: #CD0439;
 }
 
-
-
 a.anchor_text {
     display: block;
     color: #CD0439;
@@ -172,11 +170,11 @@ h2.h2Products {
 .ProductClothing {
     width: 25%;
     /*margin-right: 30px;*/
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 }
 
 .ProductImage {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     width: 380px;
     height: 480px;
 }
@@ -207,12 +205,21 @@ img.imgProductsmall:hover {
 }
 
 p.TitleProduct {
+    color: black;
     padding-top: 20px;
 }
 
-p.Price {
-    color: red;
-    margin-top: -5px;
+/*p.Price {*/
+/*    color: red;*/
+/*    margin-top: -5px;*/
+/*}*/
+
+a.Price {
+    color: black;
+}
+
+a.Sale_Price {
+    margin-left: 10px;
 }
 
 .pictureProduct {

@@ -100,9 +100,18 @@ $categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
                         </div>
                         <div class="Product_Info">
                         <a href="#" class="anchor_text"><p class="TitleProduct"><?php echo $value['name']; ?></p></a>
-                        <a href="#" ><p class="Price">
-                                <?php echo number_format($value['price'], 0 , '.', ',') . 'đ'; ?>
-                            </p></a>
+                            <div class="Prices">
+                                <a href="#" class="Price"><?php
+                                    if ($value['sale_price'] == 0) {
+                                        echo number_format($value['price'], 0 , '.', ',') . 'đ';
+                                    }
+                                    else {
+                                        echo '<a href="#" class="Price" style="text-decoration: line-through">' . number_format($value['price'], 0 , '.', ',') . 'đ' . '</a>';
+                                        echo '<a href="#" class="Sale_Price">' . number_format($value['sale_price'], 0, '.', ',') . 'đ' . '</a>' ;
+                                    }
+                                    ?>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <?php endforeach; ?>

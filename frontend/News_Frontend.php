@@ -68,7 +68,7 @@ $new_one = mysqli_fetch_assoc($result_one);
     <!-- MAIN CONTENT -->
     <div class="MainContent">
         <div class="New_Page">
-        <a href="News_Frontend.php" ><h2>TRANG TIN TỨC - ZCS OFFICIAL</h2></a>
+        <a href="News_Frontend.php" class="h2News"><h2>TRANG TIN TỨC - ZCS OFFICIAL</h2></a>
         </div>
         <div class="Content">
             <div class="Top_News">
@@ -76,12 +76,24 @@ $new_one = mysqli_fetch_assoc($result_one);
                     <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>" class="Newest_Post">Bài viết mới nhất</a>
                 </div>
                 <div class="img_top_news">
-                <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>"><img src="../backend/News/uploads/<?php echo $new_one['thumbnail']; ?>" style="width: 835px;" height="437px" class="img_top"></a>
+                <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>" class="img_top"><img src="../backend/News/uploads/<?php echo $new_one['thumbnail']; ?>" style="width: 835px;" height="437px" class="img_top"></a>
                 </div>
                 <div class="desNews">
                 <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>"><h3 class="h3_top_news"><?php echo $new_one['title']; ?></h3></a>
                 <p class="p_top_news"><?php echo 'Ngày đăng:' . ' ' . date('d/m/Y H:i', strtotime($new_one['created_at'])); ?></p>
-                <a href="News_Detail.php?id=<?php echo $new_one['id']; ?>" class="anchor_top_news">Xem ngay</a>
+                <p><?php
+                    $string = $new_one['description'];
+                    if (strlen($string) > 200) {
+                        $string_cut = substr($string, 0, 200);
+                        $end = strrpos($string_cut, '');
+                        $string = $end ? substr($string_cut, 0, $end) : substr($string_cut, 0);
+                        $string = $string . '...';
+                        echo $string;
+                    }
+                    else {
+                        echo $string . '...';
+                    }
+                    ?><a href="News_Detail.php?id=<?php echo $new_one['id']; ?>" class="anchor_top_news">Xem ngay</a></p>
                 </div>
             </div>
             <hr style="color: #EEEEEE">
@@ -93,20 +105,35 @@ $new_one = mysqli_fetch_assoc($result_one);
                 ?>
             </h3>
             <div class="News_List">
-                <div class="r_news">
                     <?php foreach ($news AS $key => $value): ?>
                     <div class="New_Post">
+                        <div class="row">
                         <div class="img_top_news">
-                            <a href="News_Detail.php?id=<?php echo $value['id'];?>"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 360px;" height="188px" class="img_top"></a>
+                            <a href="News_Detail.php?id=<?php echo $value['id'];?>" class="Newest_Post"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 360px;" height="188px" class="img_top"></a>
                         </div>
                         <div class="desNews">
-                            <a href="News_Detail.php?id=<?php echo $value['id'];?>"><h4 class="h4_news"><?php echo $value['title']; ?></h4></a>
+                            <a href="News_Detail.php?id=<?php echo $value['id'];?>" class="anchor"><h4 class="h4_news"><?php echo $value['title']; ?></h4></a>
                             <p class="p_news"><?php echo 'Ngày đăng:' . ' ' . date('d/m/Y H:i', strtotime($value['created_at'])); ?></p>
-                            <a href="News_Detail.php?id=<?php echo $value['id'];?>" class="anchor_top_news">Xem ngay</a>
+                            <p><?php
+                                $string = $value['description'];
+                                if (strlen($string) > 200) {
+                                    $string_cut = substr($string,0,200);
+                                    $end = strrpos($string_cut, '');
+                                    $string = $end?substr($string_cut,0,$end):substr($string_cut,0);
+                                    $string = $string . '...';
+                                    echo $string;
+                                }
+                                else {
+                                    echo $string . '...';
+                                }
+                                ?><a class="anchor_top_news" href="News_Detail.php?id=<?php echo $value['id'];?>">Xem ngay</a>
+                            </p>
+                        </div>
                         </div>
                     </div>
+                    <hr>
+
                     <?php endforeach; ?>
-                </div>
             </div>
         </div>
     </div>
@@ -141,11 +168,11 @@ $new_one = mysqli_fetch_assoc($result_one);
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
                 <ul class="ulFooter">
-                    <li class="lilink"><a href="#">FACEBOOK</a></li>
-                    <li class="lilink"><a href="#">INSTAGRAM</a></li>
-                    <li class="lilink"><a href="#">SHOPEE</a></li>
-                    <li class="lilink"><a href="#">LAZADA</a></li>
-                    <li class="lilink"><a href="#">TIKI</a></li>
+                    <li class="lilink"><a href="#" class="Social">FACEBOOK</a></li>
+                    <li class="lilink"><a href="#" class="Social">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="#" class="Social">SHOPEE</a></li>
+                    <li class="lilink"><a href="#" class="Social">LAZADA</a></li>
+                    <li class="lilink"><a href="#" class="Social">TIKI</a></li>
                 </ul>
             </div>
             <div class="ShopInfo">
