@@ -2,65 +2,92 @@
 session_start();
 require_once '../connection.php';
 
+if (!isset($_SESSION['username'])) {
+    $_SESSION['error'] = 'Hãy đăng nhập để truy cập';
+    header('Location: ../Log in & out/Log_in.php');
+    exit();
+}
+
+$sql_select_homepage = "SELECT * FROM homepage ORDER BY created_at DESC";
+$result_homepage = mysqli_query($connection, $sql_select_homepage);
+$homepage = mysqli_fetch_assoc($result_homepage);
 echo '<pre>';
-print_r($_POST);
-print_r($_FILES);
+print_r($homepage);
 echo '</pre>';
+
+$sql_select_sale_poster = "SELECT sale_poster FROM img_sale_poster ORDER BY created_at DESC LIMIT 3";
+$result_poster = mysqli_query($connection, $sql_select_sale_poster);
+$sale_poster = mysqli_fetch_all($result_poster, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($sale_poster);
+echo '</pre>';
+
+$sql_select_sale_products = "SELECT sale_products FROM img_sale_products ORDER BY created_at DESC LIMIT 3";
+$result_products = mysqli_query($connection, $sql_select_sale_products);
+$sale_products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($sale_products);
+echo '</pre>';
+
+//echo '<pre>';
+//print_r($_POST);
+//print_r($_FILES);
+//echo '</pre>';
 
 $error = '';
 
 if (isset($_POST['submit'])) {
+
     $img_main = $_FILES['img_main'];
     $title = $_POST['title'];
-}
+
     if ($img_main['error'] == 4) {
         $error = 'Phải có ảnh đầu trang';
-    }
-    elseif (empty($title)) {
+    } elseif (empty($title)) {
         $error = 'Phải có tiêu đề sản phẩm mục cuối trang';
     }
-    foreach ($_FILES['sale_img']['error'] AS $key => $value) {
+    foreach ($_FILES['sale_img']['error'] as $key => $value) {
         if ($value == 4) {
             $error = 'Phải có đủ 3 ảnh Sale đầu trang';
         }
     }
     if ($value == 0) {
-        foreach ($_FILES['sale_img']['full_path'] AS $key1 => $value1) {
+        foreach ($_FILES['sale_img']['full_path'] as $key1 => $value1) {
             $extensions = pathinfo($value1, PATHINFO_EXTENSION);
             $extensions = strtolower($extensions);
-            $allows = ['jpg' , 'jpeg', 'gif', 'png'];
+            $allows = ['jpg', 'jpeg', 'gif', 'png'];
             if (!in_array($extensions, $allows)) {
                 $error = 'File tải lên 1 phải là ảnh';
             }
         }
     }
-    foreach ($_FILES['sale_img']['size'] AS $key2 => $value2) {
+    foreach ($_FILES['sale_img']['size'] as $key2 => $value2) {
         $size_b = $value2;
-        $size_mb = $value2/1024/1024;
+        $size_mb = $value2 / 1024 / 1024;
         if ($size_mb > 2) {
             $error = 'Ảnh tải lên không được lớn hơn 2MB';
         }
     }
 
-    foreach ($_FILES['sale_product']['error'] AS $key3 => $value3) {
+    foreach ($_FILES['sale_product']['error'] as $key3 => $value3) {
         if ($value3 == 4) {
             $error = 'Phải có đủ 3 ảnh sale sản phẩm cuối trang';
         }
     }
 
     if ($value3 == 0) {
-        foreach ($_FILES['sale_img']['full_path'] AS $key4 => $value4) {
+        foreach ($_FILES['sale_img']['full_path'] as $key4 => $value4) {
             $extensions = pathinfo($value4, PATHINFO_EXTENSION);
             $extensions = strtolower($extensions);
-            $allows = ['jpg' , 'jpeg', 'gif', 'png'];
+            $allows = ['jpg', 'jpeg', 'gif', 'png'];
             if (!in_array($extensions, $allows)) {
                 $error = 'File tải lên 2 phải là ảnh';
             }
         }
     }
-    foreach ($_FILES['sale_img']['size'] AS $key5 => $value5) {
+    foreach ($_FILES['sale_img']['size'] as $key5 => $value5) {
         $size_b = $value5;
-        $size_mb = $value5/1024/1024;
+        $size_mb = $value5 / 1024 / 1024;
         if ($size_mb > 2) {
             $error = 'Ảnh tải lên không được lớn hơn 2MB';
         }
@@ -75,7 +102,7 @@ if (isset($_POST['submit'])) {
         }
     }
     $size_b = $img_main['size'];
-    $size_mb = $size_b/1024/1024;
+    $size_mb = $size_b / 1024 / 1024;
     if ($size_mb > 2) {
         $error = 'Ảnh tải lên phải nhỏ hơn 2MB';
     }
@@ -99,10 +126,10 @@ if (isset($_POST['submit'])) {
             if (!file_exists($dir_upload_1)) {
                 mkdir($dir_upload_1);
             }
-            foreach ($_FILES['sale_img']['name'] AS $key6 => $value6 ) {
+            foreach ($_FILES['sale_img']['name'] as $key6 => $value6) {
                 $file_name_poster = $value6 . '.' . time() . '.' . $extensions;
                 move_uploaded_file($_FILES['sale_img']['tmp_name'][$key6], "$dir_upload_1/$file_name_poster");
-                $sql_insert_poster = "INSERT INTO img_homepage(sale_poster) VALUES ('$file_name_poster')";
+                $sql_insert_poster = "INSERT INTO img_sale_poster(sale_poster) VALUES ('$file_name_poster')";
                 $is_insert_poster = mysqli_query($connection, $sql_insert_poster);
                 var_dump($is_insert_poster);
             }
@@ -112,15 +139,18 @@ if (isset($_POST['submit'])) {
             if (!file_exists($dir_upload_2)) {
                 mkdir($dir_upload_2);
             }
-            foreach ($_FILES['sale_product']['name'] AS $key7 => $value7 ) {
+            foreach ($_FILES['sale_product']['name'] as $key7 => $value7) {
                 $file_name_products = $value7 . '.' . time() . '.' . $extensions;
                 move_uploaded_file($_FILES['sale_product']['tmp_name'][$key7], "$dir_upload_2/$file_name_products");
-                $sql_insert_products = "INSERT INTO img_homepage(sale_products) VALUES ('$file_name_products')";
+                $sql_insert_products = "INSERT INTO img_sale_products(sale_products) VALUES ('$file_name_products')";
                 $is_insert_products = mysqli_query($connection, $sql_insert_products);
                 var_dump($is_insert_products);
             }
         }
+        header('Location: Home.php');
+        exit();
     }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -186,7 +216,7 @@ if (isset($_POST['submit'])) {
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="../Log in & out/Log_out.php" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -291,21 +321,53 @@ if (isset($_POST['submit'])) {
             <a href="Home.php"><i class="fas fa-tasks"></i> Quản lý trang chủ</a>
             <br>
             <br>
-            <p style="color: red"><?php echo $error; ?></p>
+            <p style="color: red"><?php
+                echo $error;
+                if (isset($_SESSION['error'])) {
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                }
+                ?>
+            </p>
             <form action="" method="post" enctype="multipart/form-data">
                 <h4>Ảnh Chính :</h4>
                 <input type="file" name="img_main">
                 <br>
+                <img src="main/<?php echo $homepage['main_img']; ?>" width="150px" height="150px">
+                <br>
+                <br>
                 <h4>Ảnh Sale Đầu trang (3 ảnh) :</h4>
                 <input type="file" name="sale_img[]" multiple="multiple">
                 <br>
+                <table border="2" cellpadding="8" cellspacing="0">
+                    <tr>
+                        <?php foreach ($sale_poster AS $key8 => $value8):?>
+                        <td><img src="sale_poster/<?php echo $value8['sale_poster']; ?>" width="150px" height="150px"></td>
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
+                <br>
                 <h4>Tiêu đề mục sản phẩm cuối trang</h4>
-                <input type="text" name="title">
+                <input type="text" name="title" value="<?php echo $homepage['title']; ?>">
                 <br>
                 <br>
                 <h4>Ảnh Sale Sản phẩm cuối trang (3 ảnh) :</h4>
                 <input type="file" name="sale_product[]"multiple="multiple">
                 <br>
+                <table border="2" cellpadding="8" cellspacing="0">
+                    <tr>
+                        <?php foreach ($sale_products AS $key9 => $value9):?>
+                            <td><img src="sale_products/<?php echo $value9['sale_products']; ?>" width="150px" height="150px"></td>
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
                 <br>
                 <input type="submit" name="submit" value="Đăng">
 

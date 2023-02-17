@@ -2,6 +2,12 @@
 session_start();
 require_once '../connection.php';
 
+if (!isset($_SESSION['username'])) {
+    $_SESSION['error'] = 'Hãy đăng nhập để truy cập';
+    header('Location: ../Log in & out/Log_in.php');
+    exit();
+}
+
 $select_cate = "SELECT * FROM category";
 $result_cate = mysqli_query($connection, $select_cate);
 $categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
@@ -197,7 +203,7 @@ if (isset($_POST['submit'])) {
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="../Log in & out/Log_out.php" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>

@@ -1,4 +1,35 @@
 <?php
+session_start();
+require_once '../connection.php';
+
+if (!isset($_SESSION['username'])) {
+    $_SESSION['error'] = 'Hãy đăng nhập để truy cập';
+    header('Location: ../Log in & out/Log_in.php');
+    exit();
+}
+
+$sql_select_homepage = "SELECT * FROM homepage ORDER BY created_at DESC";
+$result_homepage = mysqli_query($connection, $sql_select_homepage);
+$homepage = mysqli_fetch_assoc($result_homepage);
+echo '<pre>';
+print_r($homepage);
+echo '</pre>';
+
+$sql_select_sale_poster = "SELECT sale_poster FROM img_sale_poster ORDER BY created_at DESC LIMIT 3";
+$result_poster = mysqli_query($connection, $sql_select_sale_poster);
+$sale_poster = mysqli_fetch_all($result_poster, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($sale_poster);
+echo '</pre>';
+
+$sql_select_sale_products = "SELECT sale_products FROM img_sale_products ORDER BY created_at DESC LIMIT 3";
+$result_products = mysqli_query($connection, $sql_select_sale_products);
+$sale_products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($sale_products);
+echo '</pre>';
+
+
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +96,7 @@
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="../Log in & out/Log_out.php" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -166,10 +197,46 @@
         <section class="content">
             Nội dung hiển thị ở đây
             <br>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                }
+                ?>
+            </p>
             <br>
             <a href="Create_Home.php"><i class="fas fa-tasks"></i> Sửa ảnh trang chủ</a>
             <br>
             <br>
+            <table border="2" cellspacing="0" cellpadding="8" style="width: 100%;">
+                <tr>
+                    <th style="text-align: center;">Ảnh chính</th>
+                    <th style="text-align: center;">3 ảnh Poster</th>
+                    <th style="text-align: center;">Tiêu đề sale</th>
+                    <th style="text-align: center;">3 ảnh sale sản phẩm</th>
+                </tr>
+                <tr style="text-align: center;">
+                    <td style="padding: 10px"><img src="main/<?php echo $homepage['main_img']; ?>" width="150px" height="150px" style="padding: 5px;"></td>
+                    <td style="padding: 10px">
+                    <?php foreach ($sale_poster AS $key8 => $value8):?>
+                        <img src="sale_poster/<?php echo $value8['sale_poster']; ?>" width="150px" height="150px" style="padding: 5px;">
+                    <?php endforeach; ?>
+                    </td>
+                    <td style="padding: 10px"><?php echo $homepage['title']; ?></td>
+                    <td style="padding: 10px">
+                    <?php foreach ($sale_products AS $key9 => $value9):?>
+                        <img src="sale_products/<?php echo $value9['sale_products']; ?>" width="150px" height="150px" style="padding: 5px;">
+                    <?php endforeach; ?>
+                    </td>
+                </tr>
+            </table>
 
 
         </section>

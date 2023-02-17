@@ -1,5 +1,5 @@
-- Tạo 1 trang Tin tức trên Frontend
-- Echo Sản phẩm và tin tức ra Frontend
+√ Tạo 1 trang Tin tức trên Frontend
+√ Echo Sản phẩm và tin tức ra Frontend
 - Code phần gửi email của khách hàng trên frontend và nhận thông tin từ backend
 - Code phần ảnh ở đầu trang Homepage
 - Code tính năng giỏ hàng lên cả backend lẫn frontend

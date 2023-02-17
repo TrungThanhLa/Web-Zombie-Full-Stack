@@ -10,7 +10,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $id = $_GET['id'];
 
-$sql_select_all = "SELECT * FROM news";
+$sql_select_all = "SELECT * FROM news ORDER BY RAND() LIMIT 6";
 $result_all = mysqli_query($connection, $sql_select_all);
 $news = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
 //echo '<pre>';
@@ -92,10 +92,10 @@ if ($_GET['id'] != $new_one['id']) {
                         <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><?php echo $value['title']; ?></a>
                     </div>
                 </div>
-                <?php
-                if ($key == 5) {
-                    break;
-                }
+<!--                --><?php
+//                if ($key == 5) {
+//                    break;
+//                }
                 endforeach; ?>
                 </div>
             </div>

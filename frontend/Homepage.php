@@ -8,9 +8,30 @@ $category = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
 //print_r($category);
 //echo '</pre>';
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
+$sql_select_homepage = "SELECT * FROM homepage ORDER BY created_at DESC";
+$result_homepage = mysqli_query($connection, $sql_select_homepage);
+$homepage = mysqli_fetch_assoc($result_homepage);
+//echo '<pre>';
+//print_r($homepage);
+//echo '</pre>';
+
+$sql_select_sale_poster = "SELECT sale_poster FROM img_sale_poster ORDER BY created_at DESC LIMIT 3";
+$result_poster = mysqli_query($connection, $sql_select_sale_poster);
+$sale_poster = mysqli_fetch_all($result_poster, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($sale_poster);
+//echo '</pre>';
+
+$sql_select_sale_products = "SELECT sale_products FROM img_sale_products ORDER BY created_at DESC LIMIT 3";
+$result_products = mysqli_query($connection, $sql_select_sale_products);
+$sale_products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($sale_products);
+//echo '</pre>';
+
+//echo '<pre>';
+//print_r($_POST);
+//echo '</pre>';
 
 $error = '';
 
@@ -67,7 +88,7 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
         <div class="SaleHeader">
-            <img src="img/SaleHeader.webp" class="ImgSaleTop ImgSale">
+            <img src="../backend/Homepage/main/<?php echo $homepage['main_img']; ?>" class="ImgSaleTop ImgSale" style="width: 1448px; height: 2048px;">
         </div>
     </div>
     <!-- /HEADER -->
@@ -76,9 +97,11 @@ if (isset($_POST['submit'])) {
     <div class="MainContent">
         <div class="SaleRow">
             <div class="row">
-                <a href="#" ><img src="img/SaleRow1.jpg" class="salerowimg"></a>
-                <a href="#" ><img src="img/SaleRow2.jpg" class="salerowimg"></a>
-                <a href="#" ><img src="img/SaleRow3.jpg" class="salerowimg"></a>
+                <?php foreach ($sale_poster AS $key1 => $value1): ?>
+                <a href="#" >
+                    <img src="../backend/Homepage/sale_poster/<?php echo $value1['sale_poster']; ?>" class="salerowimg" width="630px" height="630px" ">
+                </a>
+                <?php endforeach; ?>
             </div>
         </div>
         <a href="#" ><h2>SẢN PHẨM MỚI - NEW PRODUCTS</h2></a>
@@ -145,13 +168,15 @@ if (isset($_POST['submit'])) {
             </div>
             <div class="HoodieRow">
                 <div class="row">
-                    <a href="#" ><img src="img/Hoodie1.jpg" class="HoodieProduct"></a>
-                    <a href="#" ><img src="img/Hoodie2.jpg" class="HoodieProduct"></a>
-                    <a href="#" ><img src="img/Hoodie3.jpg" class="HoodieProduct"></a>
+                    <?php foreach ($sale_products AS $key2 => $value2): ?>
+                        <a href="#" >
+                            <img src="../backend/Homepage/sale_products/<?php echo $value2['sale_products']; ?>" class="salerowimg" width="630px" height="630px" ">
+                        </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
-        <a href="#" ><h2>SWEATER SALE 2022</h2></a>
+        <a href="#" ><h2><?php echo $homepage['title']; ?></h2></a>
         <div class="ProductPR Bottom">
             <div class="ContainerContent">
                 <div class="row">
