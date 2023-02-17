@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 10, 2023 lúc 09:26 AM
+-- Thời gian đã tạo: Th2 17, 2023 lúc 02:36 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.1.12
 
@@ -53,9 +53,7 @@ INSERT INTO `category` (`id_cat`, `name`, `status`, `created_at`) VALUES
 CREATE TABLE `homepage` (
   `id` int(11) NOT NULL,
   `main_img` text NOT NULL,
-  `sale_poster` text NOT NULL,
   `title` varchar(100) NOT NULL,
-  `sale_product` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -63,8 +61,20 @@ CREATE TABLE `homepage` (
 -- Đang đổ dữ liệu cho bảng `homepage`
 --
 
-INSERT INTO `homepage` (`id`, `main_img`, `sale_poster`, `title`, `sale_product`, `created_at`) VALUES
-(19, 'Flexin Game Project 800x800.jpg-1676017499.jpg', '', 'ádasdasdsaasd', '', '2023-02-10 08:24:59');
+INSERT INTO `homepage` (`id`, `main_img`, `title`, `created_at`) VALUES
+(31, 'Badass Son 800x800.jpg-1676422528.jpg', 'HOT SWEATER CỰC CHẤT 2023', '2023-02-15 00:55:28'),
+(32, 'AVT 2TL.png-1676422604.png', 'HOT SWEATER 2023', '2023-02-15 00:56:44'),
+(33, 'DPG.png-1676422734.png', 'HOT SWEATER 2023', '2023-02-15 00:58:54'),
+(34, 'AVT 2TL.png-1676423890.png', 'SWEATER 2023', '2023-02-15 01:18:10'),
+(35, '', 'SWEATER 2023', '2023-02-15 01:23:42'),
+(36, '', 'SWEATER 2023', '2023-02-15 01:33:34'),
+(37, '', 'SWEATER 2023', '2023-02-15 01:37:51'),
+(38, 'AVT 2TL.png-1676425091.png', 'SWEATER 2023', '2023-02-15 01:38:11'),
+(39, 'AVT 2TL.png-1676425189.png', 'SWEATER 2023', '2023-02-15 01:39:49'),
+(40, 'AVT 2TL.png-1676425502.png', 'SWEATER 2023', '2023-02-15 01:45:02'),
+(41, 'Badass Son 800x800.jpg-1676425565.jpg', 'SWEATER 2023', '2023-02-15 01:46:05'),
+(42, 'AVT 2TL.png-1676425714.png', 'SWEATER 2023', '2023-02-15 01:48:34'),
+(43, 'Badass Son 800x800.jpg-1676425772.jpg', 'SWEATER 2023', '2023-02-15 01:49:32');
 
 -- --------------------------------------------------------
 
@@ -110,26 +120,47 @@ INSERT INTO `imgs_products` (`id`, `id_products`, `imgs_des`, `path`, `created_a
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `img_homepage`
+-- Cấu trúc bảng cho bảng `img_sale_poster`
 --
 
-CREATE TABLE `img_homepage` (
+CREATE TABLE `img_sale_poster` (
   `id` int(11) NOT NULL,
   `sale_poster` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `img_sale_poster`
+--
+
+INSERT INTO `img_sale_poster` (`id`, `sale_poster`, `created_at`) VALUES
+(121, 'AVT 2TL.png.1676425714.png', '2023-02-15 01:48:34'),
+(122, 'Badass Son 800x800.jpg.1676425714.png', '2023-02-15 01:48:34'),
+(123, 'DPG.png.1676425714.png', '2023-02-15 01:48:34'),
+(124, '2TL Text Glitch Light Leak 1.jpg.1676425772.jpg', '2023-02-15 01:49:32'),
+(125, '89961761_1104714736572165_5917085347442851840_o.jpg.1676425772.jpg', '2023-02-15 01:49:32'),
+(126, 'AVT 2TL.png.1676425772.jpg', '2023-02-15 01:49:32');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `img_sale_products`
+--
+
+CREATE TABLE `img_sale_products` (
+  `id` int(11) NOT NULL,
   `sale_products` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `img_homepage`
+-- Đang đổ dữ liệu cho bảng `img_sale_products`
 --
 
-INSERT INTO `img_homepage` (`id`, `sale_poster`, `sale_products`, `created_at`) VALUES
-(48, 'Badass Son 800x800.jpg.1676017499.jpg', '', '2023-02-10 08:24:59'),
-(49, 'DPG.png.1676017499.jpg', '', '2023-02-10 08:24:59'),
-(50, '', 'Luôn kề bên 800x800.jpg.1676017499.jpg', '2023-02-10 08:24:59'),
-(51, '', 'Màn Đêm Project 800x800.png.1676017499.jpg', '2023-02-10 08:24:59'),
-(52, '', 'Youg Logo.png.1676017499.jpg', '2023-02-10 08:24:59');
+INSERT INTO `img_sale_products` (`id`, `sale_products`, `created_at`) VALUES
+(27, 'Flexin Game Project 800x800.jpg.1676425772.jpg', '2023-02-15 01:49:32'),
+(28, 'Màn Đêm Project 800x800.png.1676425772.jpg', '2023-02-15 01:49:32'),
+(29, 'PTS Test 1 - Vegeta Hakaishin.png.1676425772.jpg', '2023-02-15 01:49:32');
 
 -- --------------------------------------------------------
 
@@ -201,6 +232,36 @@ INSERT INTO `products` (`id`, `name`, `id_cat`, `price`, `sale_price`, `descript
 (16, '	Áo phông Zombie họa tiết Youg Tee cực chất 3', 48, 1000000, 0, '<p>&nbsp;&nbsp; &nbsp;&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất 2</p>\r\n', 'PTS Test 1 - Vegeta Hakaishin.png-1675759633.png', 1, '2023-02-07 08:47:13'),
 (17, 'Áo phông Zombie họa tiết Youg Tee cực chất', 48, 100000, 10000, '<p>&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất</p>\r\n', 'AVT 2TL.png-1675783423.png', 1, '2023-02-07 15:23:43');
 
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `user_admin`
+--
+
+CREATE TABLE `user_admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user_admin`
+--
+
+INSERT INTO `user_admin` (`id`, `username`, `password`, `email`, `created_at`) VALUES
+(1, 'lathanh1110', '123', 'trungthanhla1110@gmail.com', '2023-02-17 00:18:05'),
+(2, 'lathanh', '123', 'trungthanhla1110@email.com', '2023-02-17 00:47:07'),
+(3, 'lathanh1', '$2y$10$uJXF8oforspuwVHxxnm3YOeIBL.udWEq1HlgXfNTxIpqYE8JY8rb2', 'trungthanhla111@gmail.com', '2023-02-17 00:47:43'),
+(4, 'lathanh', '$2y$10$4gAs9mE/gPiq6kLeGLNzyeK4bksz9K/TP2mT76cljoE5AKLEpmyPe', 'thoeme.kistler@bluewin.ch', '2023-02-17 00:49:04'),
+(5, 'lathanh', '$2y$10$McNGajLwOzrnqeor6LqRqeniIf33j1DuSQbqoqGR8ohZbrieow0vu', 'add@gmail.com', '2023-02-17 00:50:00'),
+(6, 'lathanh', '$2y$10$dhQw.pL47qelujhEzjM/sOBM.x/Fb1QpJz3edQKn9ZBgqQKUEIFNS', 'fvteam69@gmail.com', '2023-02-17 00:51:20'),
+(7, 'lathanh', '$2y$10$hVMceAUThs9h.f.MrIc.Bu0nDHL6xFBolQZU7luRAvKqjAP8Cf/jO', 'trung@gmail.com', '2023-02-17 00:52:23'),
+(8, 'lathanh', '$2y$10$rHpSZFANRQq64sCUrqg24evrVy0HtwBVn41ei1H2.Os2m4NnM6EkG', 'rjh@gmail.com', '2023-02-17 00:52:49'),
+(9, 'lathanh', '$2y$10$jCP8d5QMAqAvxhVY8b3dAOd1moqVV4QItLotgI6yr2mS/grRQvLPO', 'fvteam6969@gmail.com', '2023-02-17 01:00:09'),
+(10, 'lathanh', '$2y$10$H7AMjE3L5KpbxBM2.HLbguOJDTXjT/8n/7gMyBa7gpzaRIDx6xZ0G', 'gm@gmail.com', '2023-02-17 01:04:03');
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -224,9 +285,15 @@ ALTER TABLE `imgs_products`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `img_homepage`
+-- Chỉ mục cho bảng `img_sale_poster`
 --
-ALTER TABLE `img_homepage`
+ALTER TABLE `img_sale_poster`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `img_sale_products`
+--
+ALTER TABLE `img_sale_products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -243,6 +310,12 @@ ALTER TABLE `products`
   ADD KEY `fk_cate_product` (`id_cat`);
 
 --
+-- Chỉ mục cho bảng `user_admin`
+--
+ALTER TABLE `user_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
@@ -256,7 +329,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT cho bảng `homepage`
 --
 ALTER TABLE `homepage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT cho bảng `imgs_products`
@@ -265,10 +338,16 @@ ALTER TABLE `imgs_products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
--- AUTO_INCREMENT cho bảng `img_homepage`
+-- AUTO_INCREMENT cho bảng `img_sale_poster`
 --
-ALTER TABLE `img_homepage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+ALTER TABLE `img_sale_poster`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+
+--
+-- AUTO_INCREMENT cho bảng `img_sale_products`
+--
+ALTER TABLE `img_sale_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT cho bảng `news`
@@ -281,6 +360,12 @@ ALTER TABLE `news`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT cho bảng `user_admin`
+--
+ALTER TABLE `user_admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
