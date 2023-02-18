@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 17, 2023 lúc 02:36 AM
+-- Thời gian đã tạo: Th2 18, 2023 lúc 01:24 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.1.12
 
@@ -240,9 +240,13 @@ INSERT INTO `products` (`id`, `name`, `id_cat`, `price`, `sale_price`, `descript
 
 CREATE TABLE `user_admin` (
   `id` int(11) NOT NULL,
+  `name` varchar(60) NOT NULL,
+  `full_name` varchar(80) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
+  `avatar` text NOT NULL,
+  `gender` varchar(30) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -250,17 +254,9 @@ CREATE TABLE `user_admin` (
 -- Đang đổ dữ liệu cho bảng `user_admin`
 --
 
-INSERT INTO `user_admin` (`id`, `username`, `password`, `email`, `created_at`) VALUES
-(1, 'lathanh1110', '123', 'trungthanhla1110@gmail.com', '2023-02-17 00:18:05'),
-(2, 'lathanh', '123', 'trungthanhla1110@email.com', '2023-02-17 00:47:07'),
-(3, 'lathanh1', '$2y$10$uJXF8oforspuwVHxxnm3YOeIBL.udWEq1HlgXfNTxIpqYE8JY8rb2', 'trungthanhla111@gmail.com', '2023-02-17 00:47:43'),
-(4, 'lathanh', '$2y$10$4gAs9mE/gPiq6kLeGLNzyeK4bksz9K/TP2mT76cljoE5AKLEpmyPe', 'thoeme.kistler@bluewin.ch', '2023-02-17 00:49:04'),
-(5, 'lathanh', '$2y$10$McNGajLwOzrnqeor6LqRqeniIf33j1DuSQbqoqGR8ohZbrieow0vu', 'add@gmail.com', '2023-02-17 00:50:00'),
-(6, 'lathanh', '$2y$10$dhQw.pL47qelujhEzjM/sOBM.x/Fb1QpJz3edQKn9ZBgqQKUEIFNS', 'fvteam69@gmail.com', '2023-02-17 00:51:20'),
-(7, 'lathanh', '$2y$10$hVMceAUThs9h.f.MrIc.Bu0nDHL6xFBolQZU7luRAvKqjAP8Cf/jO', 'trung@gmail.com', '2023-02-17 00:52:23'),
-(8, 'lathanh', '$2y$10$rHpSZFANRQq64sCUrqg24evrVy0HtwBVn41ei1H2.Os2m4NnM6EkG', 'rjh@gmail.com', '2023-02-17 00:52:49'),
-(9, 'lathanh', '$2y$10$jCP8d5QMAqAvxhVY8b3dAOd1moqVV4QItLotgI6yr2mS/grRQvLPO', 'fvteam6969@gmail.com', '2023-02-17 01:00:09'),
-(10, 'lathanh', '$2y$10$H7AMjE3L5KpbxBM2.HLbguOJDTXjT/8n/7gMyBa7gpzaRIDx6xZ0G', 'gm@gmail.com', '2023-02-17 01:04:03');
+INSERT INTO `user_admin` (`id`, `name`, `full_name`, `username`, `password`, `email`, `avatar`, `gender`, `created_at`) VALUES
+(26, 'Trung Thành', 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$XWLaQYE/KBWSwaju4D3qLeWC1c52SDspBCGS4ahhdK6L3hj8/5FbO', 'trungthanhla1110@gmail.com', '', 'Male', '2023-02-18 00:03:14'),
+(27, 'Vân Anh', 'Lã Thị Vân Anh', 'lathanh11', '$2y$10$LIV.813tdcG8DSpKYAh6IOaWMm3ZGTsRXoAMN578pcuhn69Oyx.Km', 'fvteam69@gmail.com', '', 'Female', '2023-02-18 00:03:35');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -365,7 +361,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `user_admin`
 --
 ALTER TABLE `user_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

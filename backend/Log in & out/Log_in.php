@@ -18,9 +18,9 @@ if (isset($_SESSION['username'])) {
 $sql_select_all = "SELECT * FROM user_admin";
 $result_all = mysqli_query($connection, $sql_select_all);
 $users = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
-//echo '<pre>';
-//print_r($users);
-//echo '</pre>';
+echo '<pre>';
+print_r($users);
+echo '</pre>';
 foreach ($users AS $key => $value) {
 
 //$sql_select_one = "SELECT * FROM user_admin WHERE username = username";
@@ -34,7 +34,7 @@ foreach ($users AS $key => $value) {
 //print_r($_POST);
 //echo '</pre>';
 
-$error = '';
+    $error = '';
 
     if (isset($_POST['submit'])) {
         $username = $_POST['username'];
@@ -43,16 +43,21 @@ $error = '';
         if (empty($username) || empty($password)) {
             $error = 'Phải điền đầy đủ thông tin';
         }
+//        elseif ($password != $value['password']) {
+//            $error = 'Sai mật khẩu';
+//        }
 
         if (empty($error)) {
-            if ($password == $value['password']) {
+            $password_harsh = $value['password'];
+            $is_login = password_verify($password, $password_harsh);
+            if ($is_login == true && $username == $value['username']) {
                 if (isset($_POST['checkbox'])) {
                     setcookie('username', $username, time() + 72000);
                 }
 
                 $_SESSION['username'] = $username;
                 $_SESSION['success'] = 'Đăng nhập thành công';
-                header('Location: ../Homepage/Home.php');
+                header('Location: ../Homepage/Home.php?id=' . $value['id'] );
                 exit();
             } else {
                 $error = 'Sai tài khoản hoặc mật khẩu';
@@ -60,7 +65,6 @@ $error = '';
         }
     }
 }
-
 ?>
 
 <title>Đăng nhập trang quản trị</title>

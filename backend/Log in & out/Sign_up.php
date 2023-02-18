@@ -5,9 +5,9 @@ require_once '../connection.php';
 $sql_select_all = "SELECT * FROM user_admin";
 $result_all = mysqli_query($connection, $sql_select_all);
 $users = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
-echo '<pre>';
-print_r($users);
-echo '</pre>';
+//echo '<pre>';
+//print_r($users);
+//echo '</pre>';
 foreach ($users AS $key => $value) {}
 
 echo '<pre>';
@@ -21,11 +21,14 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
     $email = $_POST['email'];
     $confirm_password = $_POST['confirm_password'];
+    $name = $_POST['name'];
+    $gender = $_POST['gender'];
+    $full_name = $_POST['full_name'];
 
     if (empty($username) || empty($password) || empty($email)) {
         $error = 'Vui lòng điền đầy đủ thông tin';
     }
-    elseif ($user['username'] == $username) {
+    elseif ($value['username'] == $username) {
         $error = 'Username đã tồn tại';
     }
     elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -37,13 +40,25 @@ if (isset($_POST['submit'])) {
     elseif ($confirm_password != $password) {
         $error = 'Mật khẩu không trùng khớp';
     }
-    elseif ($user['username'] == $email) {
+    elseif ($value['username'] == $email) {
         $error = 'Email đã tồn tại';
+    }
+    elseif (is_numeric($name)) {
+        $error = 'Tên không được chứa số, vui lòng điền đầy đủ họ tên';
+    }
+    elseif (empty($full_name)) {
+        $error = 'Vui lòng nhập đầy đủ họ và tên';
     }
 
     if (empty($error)) {
         $password_harsh = password_hash($password, PASSWORD_BCRYPT);
-        $sql_insert = "INSERT INTO user_admin (username, password, email) VALUES ('$username', '$password_harsh', '$email')";
+        if ($gender == 0) {
+            $gender = 'Male';
+        }
+        else {
+            $gender = 'Female';
+        }
+        $sql_insert = "INSERT INTO user_admin (username, password, email, name, gender, full_name ) VALUES ('$username', '$password_harsh', '$email', '$name', '$gender', '$full_name')";
         $is_insert = mysqli_query($connection, $sql_insert);
         var_dump($is_insert);
         if ($is_insert) {
@@ -84,6 +99,14 @@ if (isset($_POST['submit'])) {
     </p>
     <form action="" method="post">
         <div class="form-group">
+            <label for="full_name">Tên đầy đủ</label>
+            <input type="text" name="full_name" id="full_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="username">Tên admin</label>
+            <input type="text" name="name" id="name" class="form-control">
+        </div>
+        <div class="form-group">
             <label for="username">Username</label>
             <input type="text" name="username" id="username" class="form-control">
         </div>
@@ -98,6 +121,11 @@ if (isset($_POST['submit'])) {
         <div class="form-group">
             <label for="confirm_password">Confirm Password</label>
             <input type="password" name="confirm_password" id="confirm_password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender </label>
+            <input type="radio" name="gender" id="gender" value="0" checked="checked"> Male
+            <input type="radio" name="gender" id="gender" value="1"> Female
         </div>
         <div class="form-group">
             <input type="submit" name="submit" value="Sign up" class="btn btn-success">
