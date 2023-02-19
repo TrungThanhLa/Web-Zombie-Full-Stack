@@ -95,11 +95,11 @@ foreach ($users AS $key => $value) {
 </p>
 <form action="" method="post">
     <div class="form-group">
-        <label for="username">Username</label>
+        <label for="username">Username<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
         <input type="text" name="username" id="username" class="form-control">
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Password<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
         <input type="password" name="password" id="password" class="form-control">
     </div>
     <div class="form-group">

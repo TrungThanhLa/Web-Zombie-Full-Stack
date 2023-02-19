@@ -57,13 +57,13 @@ echo '</pre>';
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../assets/images/Admin Avatar.png" class="user-image" alt="User Image" height="160px" width="160px">
-                            <span class="hidden-xs">Lã Nguyễn Trung Thành</span>
+                            <img src="admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                            <span class="hidden-xs"><?php echo $user['full_name']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <img src="admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
 
                                 <p>
                                     <?php echo $user['name'];?>
@@ -92,10 +92,10 @@ echo '</pre>';
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <img src="admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
                 </div>
                 <div class="pull-left info">
-                    <p>Lã Nguyễn Trung Thành</p>
+                    <p><?php echo $user['full_name']; ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -103,7 +103,7 @@ echo '</pre>';
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">THANH QUẢN TRỊ</li>
                 <li>
-                    <a href="../Homepage/Home.php">
+                    <a href="../Homepage/Home.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-h-square"></i> <span>Quản lý trang chủ</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -222,10 +222,14 @@ echo '</pre>';
                 </div>
                 <div class="form-group">
                     <label>Avatar</label>
-                    <br>
-<!--                    <input type="file" name="avatar" class="btn btn-success">-->
-                    <br>
-                    <img src="../assets/images/admin-user-icon-4.jpg" width="80px" height="80px">
+                    <?php
+                    if ($user['avatar'] == '') {
+                        echo '<img src="../assets/images/admin-user-icon-4.jpg" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">';
+                    }
+                    ?>
+                    <?php if ($user['avatar'] != '') {?>
+                    <img src="admin_avatar/<?php echo $user['avatar']; ?>" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">
+                    <?php } ?>
                 </div>
                 <br>
                 <div class="form-group" >

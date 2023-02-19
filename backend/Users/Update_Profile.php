@@ -11,6 +11,12 @@ echo '<pre>';
 print_r($user);
 echo '</pre>';
 
+$sql_select_all = "SELECT * FROM user_admin WHERE id != $id";
+$result_all = mysqli_query($connection, $sql_select_all);
+$users = mysqli_fetch_all($result_all);
+echo '<pre>';
+print_r($users);
+echo '</pre>';
 
 echo '<pre>';
 print_r($_POST);
@@ -18,6 +24,76 @@ print_r($_FILES);
 echo '</pre>';
 
 $error = '';
+
+foreach ($users AS $key => $value) {
+
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $full_name = $_POST['full_name'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $avatar = $_FILES['avatar'];
+
+    if (empty($username) || empty($email)) {
+        $error = 'Vui lòng điền đầy đủ thông tin';
+    }
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Vui lòng điền đúng định dạng email';
+    }
+    elseif (is_numeric($name)) {
+        $error = 'Tên không được chứa số, vui lòng điền đầy đủ họ tên';
+    }
+    elseif (empty($full_name)) {
+        $error = 'Vui lòng nhập đầy đủ họ và tên';
+    }
+    if ($email == $value[5]) {
+        $error = 'Email đã tồn tại';
+    }
+    if ($avatar['error'] == 0) {
+        $extensions = pathinfo($avatar['full_path'], PATHINFO_EXTENSION);
+        $extensions = strtolower($extensions);
+        $allows = ['jpg', 'jpeg', 'png'];
+        if (!in_array($extensions, $allows)) {
+            $error = 'File tải lên phải là ảnh';
+        }
+    }
+    $size_b = $avatar['size'];
+    $size_mb = $size_b/1024/1024;
+    if ($size_mb > 2) {
+        $error = 'Ảnh tải lên không được vượt 2MB';
+    }
+
+    if (empty($error)) {
+        if ($avatar['error'] == 0) {
+            $file_name = $user['avatar'];
+            $dir_uploads = 'admin_avatar';
+            if (!file_exists($dir_uploads)) {
+                mkdir($dir_uploads);
+            }
+            unlink("$dir_uploads/$file_name");
+            $file_name = $avatar['name'] . '-' . time() . '.' . $extensions;
+            move_uploaded_file($avatar['tmp_name'], "$dir_uploads/$file_name");
+            $sql_update_avatar = "UPDATE user_admin SET avatar = '$file_name' WHERE id = $id";
+            $is_update_avatar = mysqli_query($connection, $sql_update_avatar);
+        }
+        if ($email != $user['email']) {
+            $sql_update_email = "UPDATE user_admin SET email = '$email' WHERE id = $id";
+            $is_update_email = mysqli_query($connection, $sql_update_email);
+        }
+        $sql_update = "UPDATE user_admin SET name = '$name', full_name = '$full_name' WHERE id = $id";
+        $is_update = mysqli_query($connection, $sql_update);
+        var_dump($is_update);
+        if ($is_update) {
+            $_SESSION['success'] = 'Cập nhật thông tin thành công';
+            header('Location: Profile.php?id=' .  $user['id']) ;
+            exit();
+        }
+        else {
+            $error = 'Cập nhật thất bại';
+        }
+    }
+}
+}
 
 ?>
 <!DOCTYPE html>
@@ -65,13 +141,13 @@ $error = '';
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../assets/images/Admin Avatar.png" class="user-image" alt="User Image" height="160px" width="160px">
-                            <span class="hidden-xs">Lã Nguyễn Trung Thành</span>
+                            <img src="admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                            <span class="hidden-xs"><?php echo $user['full_name']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <img src="admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
 
                                 <p>
                                     <?php echo $user['name'];?>
@@ -100,10 +176,10 @@ $error = '';
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <img src="admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
                 </div>
                 <div class="pull-left info">
-                    <p>Lã Nguyễn Trung Thành</p>
+                    <p><?php echo $user['full_name']; ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -111,7 +187,7 @@ $error = '';
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">THANH QUẢN TRỊ</li>
                 <li>
-                    <a href="../Homepage/Home.php">
+                    <a href="../Homepage/Home.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-h-square"></i> <span>Quản lý trang chủ</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -187,7 +263,7 @@ $error = '';
             <br>
             <div class="form login" style="width: 30%;">
                 <h2 style="font-weight: 600">Sửa thông tin người dùng</h2>
-                <p style="color: red"><?php
+                <p style="color: red"><?php echo $error;
                     if (isset($_SESSION['error'])) {
                         echo $_SESSION['error'];
                         unset($_SESSION['error']);
@@ -216,7 +292,7 @@ $error = '';
                     </div>
                     <div class="form-group" >
                         <label for="username">Username</label>
-                        <input type="text" name="username" id="username" class="form-control" value="<?php echo $user['username']; ?>">
+                        <input type="text" name="username" id="username" class="form-control" value="<?php echo $user['username']; ?>" readonly>
                     </div>
                     <div class="form-group" >
                         <label for="email">E-mail</label>
@@ -224,6 +300,14 @@ $error = '';
                     </div>
                     <div class="form-group">
                         <label for="avatar">Avatar</label>
+                        <?php if ($user['avatar'] == '') {
+                            echo '<br>Chưa có Avatar';
+                        } ?>
+                        <?php if ($user['avatar'] != '') { ?>
+                        <img src="admin_avatar/<?php echo $user['avatar']; ?>" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">
+                        <?php } ?>
+                        <br>
+                        <br>
                         <input type="file" name="avatar" class="btn btn-success">
                     </div>
                     <br>

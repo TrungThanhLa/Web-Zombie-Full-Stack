@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
     elseif ($confirm_password != $password) {
         $error = 'Mật khẩu không trùng khớp';
     }
-    elseif ($value['username'] == $email) {
+    elseif ($value['email'] == $email) {
         $error = 'Email đã tồn tại';
     }
     elseif (is_numeric($name)) {
@@ -99,23 +99,23 @@ if (isset($_POST['submit'])) {
     </p>
     <form action="" method="post">
         <div class="form-group">
-            <label for="full_name">Tên đầy đủ</label>
+            <label for="full_name">Tên đầy đủ<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
             <input type="text" name="full_name" id="full_name" class="form-control">
         </div>
         <div class="form-group">
-            <label for="username">Tên admin</label>
+            <label for="username">Tên admin<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
             <input type="text" name="name" id="name" class="form-control">
         </div>
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Username<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
             <input type="text" name="username" id="username" class="form-control">
         </div>
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
             <input type="text" name="email" id="email" class="form-control">
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Password<span style="color: red" title="Thông tin bắt buộc"> *</span></label>
             <input type="password" name="password" id="password" class="form-control">
         </div>
         <div class="form-group">
