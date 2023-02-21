@@ -8,6 +8,15 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+$id = $_GET['id'];
+
+$sql_select_one= "SELECT * FROM user_admin WHERE id = $id";
+$result_one = mysqli_query($connection, $sql_select_one);
+$user = mysqli_fetch_assoc($result_one);
+echo '<pre>';
+print_r($user);
+echo '</pre>';
+
 $sql_select_all = "SELECT * FROM news ORDER BY created_at DESC ";
 $result_select = mysqli_query($connection, $sql_select_all);
 $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
@@ -59,23 +68,35 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../assets/images/Admin Avatar.png" class="user-image" alt="User Image" height="160px" width="160px">
-                            <span class="hidden-xs">Lã Nguyễn Trung Thành</span>
+                            <?php if ($user['avatar'] == '') {
+                                echo '<img src="../assets/images/admin-user-icon-4.jpg" class="user-image" alt="User Image" height="160px" width="160px">';
+                            }
+                            else {
+                                ?>
+                                <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                            <?php } ?>
+                            <span class="hidden-xs"><?php echo $user['full_name']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php if ($user['avatar'] == '') {
+                                    echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                                }
+                                else {
+                                    ?>
+                                    <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php } ?>
 
                                 <p>
-                                    Lã Thành - Web Developer
+                                    <?php echo $user['name'];?>
                                     <small>Quản trị viên</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="../Users/Profile.php?id=<?php echo $user['id']; ?>" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="../Log in & out/Log_out.php" class="btn btn-default btn-flat">Sign out</a>
@@ -94,10 +115,16 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php if ($user['avatar'] == '') {
+                        echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                    }
+                    else {
+                        ?>
+                        <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php } ?>
                 </div>
                 <div class="pull-left info">
-                    <p>Lã Nguyễn Trung Thành</p>
+                    <p><?php echo $user['full_name']; ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -105,7 +132,7 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">THANH QUẢN TRỊ</li>
                 <li>
-                    <a href="../Homepage/Home.php">
+                    <a href="../Homepage/Home.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-h-square"></i> <span>Quản lý trang chủ</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -113,7 +140,7 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
                     </a>
                 </li>
                 <li>
-                    <a href="../News/News.php">
+                    <a href="../News/News.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-th"></i> <span>Tin tức</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -121,7 +148,7 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
                     </a>
                 </li>
                 <li>
-                    <a href="../Products/Products.php">
+                    <a href="../Products/Products.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-boxes"></i> <span> Sản phẩm</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -129,7 +156,7 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
                     </a>
                 </li>
                 <li>
-                    <a href="../Order/Order.php">
+                    <a href="../Order/Order.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-dolly-flatbed"></i> <span>Đơn hàng</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -137,7 +164,7 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
                     </a>
                 </li>
                 <li>
-                    <a href="../Users/Users.php">
+                    <a href="../Users/Users.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-code"></i> <span>Quản lý user</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -181,7 +208,7 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
             <br>
             <br>
             <div class="ShowNews">
-                <a href="Create_News.php"><i class="far fa-edit"></i>Tạo bài viết mới</a>
+                <a href="Create_News.php?id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Tạo bài viết mới</a>
                 <br>
                 <br>
                 <h3 style="color: green"><?php
@@ -215,10 +242,10 @@ $news = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
                         <td><img src="uploads/<?php echo $new['thumbnail']; ?>" height="100px" width="100px"></td>
                         <td><?php echo $new['title']; ?></td>
                         <td>
-                            <a href="Update_News.php?id=<?php echo $new['id']; ?>"><i class="fas fa-pen"></i> Sửa bài viết</a>
+                            <a href="Update_News.php?id=<?php echo $new['id']; ?>&id_user=<?php echo $user['id']; ?>"><i class="fas fa-pen"></i> Sửa bài viết</a>
                             <br>
                             <br>
-                            <a href="Delete_News.php?id=<?php echo $new['id']; ?>" style="color: red" onclick="return confirm('Xóa tin tức ?')">
+                            <a href="Delete_News.php?id=<?php echo $new['id']; ?>&id_user=<?php echo $user['id']; ?>" style="color: red" onclick="return confirm('Xóa tin tức ?')">
                                 <i class="fas fa-trash-alt" style="color: red"></i> Xóa bài viết</a>
                         </td>
                         <td><?php echo date('d/m/Y H:i:s', strtotime($new['created_at'])); ?></td>

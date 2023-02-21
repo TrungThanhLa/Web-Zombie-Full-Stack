@@ -8,6 +8,15 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+$id = $_GET['id'];
+
+$sql_select_one= "SELECT * FROM user_admin WHERE id = $id";
+$result_one = mysqli_query($connection, $sql_select_one);
+$user = mysqli_fetch_assoc($result_one);
+echo '<pre>';
+print_r($user);
+echo '</pre>';
+
 //B1:
 //echo '<pre>';
 //print_r($_POST);
@@ -69,7 +78,7 @@ if (isset($_POST['submit'])) {
         var_dump($is_insert);
         if ($is_insert) {
             $_SESSION['success'] = 'Đăng bài viết thành công';
-            header('Location: News.php');
+            header('Location: News.php?id=' . $user['id']);
             exit();
         }
         else {
@@ -127,23 +136,35 @@ if (isset($_POST['submit'])) {
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../assets/images/Admin Avatar.png" class="user-image" alt="User Image" height="160px" width="160px">
-                            <span class="hidden-xs">Lã Nguyễn Trung Thành</span>
+                            <?php if ($user['avatar'] == '') {
+                                echo '<img src="../assets/images/admin-user-icon-4.jpg" class="user-image" alt="User Image" height="160px" width="160px">';
+                            }
+                            else {
+                                ?>
+                                <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                            <?php } ?>
+                            <span class="hidden-xs"><?php echo $user['full_name']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php if ($user['avatar'] == '') {
+                                    echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                                }
+                                else {
+                                    ?>
+                                    <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php } ?>
 
                                 <p>
-                                    Lã Thành - Web Developer
+                                    <?php echo $user['name'];?>
                                     <small>Quản trị viên</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="../Users/Profile.php?id=<?php echo $user['id']; ?>" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="../Log in & out/Log_out.php" class="btn btn-default btn-flat">Sign out</a>
@@ -162,10 +183,16 @@ if (isset($_POST['submit'])) {
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php if ($user['avatar'] == '') {
+                        echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                    }
+                    else {
+                        ?>
+                        <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php } ?>
                 </div>
                 <div class="pull-left info">
-                    <p>Lã Nguyễn Trung Thành</p>
+                    <p><?php echo $user['full_name']; ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -173,7 +200,7 @@ if (isset($_POST['submit'])) {
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">THANH QUẢN TRỊ</li>
                 <li>
-                    <a href="../Homepage/Home.php">
+                    <a href="../Homepage/Home.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-h-square"></i> <span>Quản lý trang chủ</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -181,7 +208,7 @@ if (isset($_POST['submit'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="../News/News.php">
+                    <a href="../News/News.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-th"></i> <span>Tin tức</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -189,7 +216,7 @@ if (isset($_POST['submit'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="../Products/Products.php">
+                    <a href="../Products/Products.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-boxes"></i> <span> Sản phẩm</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -197,7 +224,7 @@ if (isset($_POST['submit'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="../Order/Order.php">
+                    <a href="../Order/Order.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-dolly-flatbed"></i> <span>Đơn hàng</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -205,7 +232,7 @@ if (isset($_POST['submit'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="../Users/Users.php">
+                    <a href="../Users/Users.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-code"></i> <span>Quản lý user</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -249,7 +276,7 @@ if (isset($_POST['submit'])) {
             <br>
             <br>
             <div class="News">
-            <a href="News.php"><i class="fas fa-tasks"></i> Quản lý tin tức</a>
+            <a href="News.php?id=<?php echo $user['id']; ?>"><i class="fas fa-tasks"></i> Quản lý tin tức</a>
             <br>
             <br>
             <p style="color: red"><?php echo $error; ?></p>

@@ -11,6 +11,47 @@ echo '<pre>';
 print_r($user);
 echo '</pre>';
 
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
+
+$error = '';
+
+if (isset($_POST['submit'])) {
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    $new_password = $_POST['new_password'];
+
+    $password_harsh = $user['password'];
+    $is_login = password_verify($password, $password_harsh);
+    var_dump($is_login);
+    if ($password != $is_login) {
+        $error = 'Mật khẩu của bạn không đúng';
+    }
+    elseif ($new_password == $password) {
+        $error = 'Mật khẩu mới phải khác mật khẩu cũ';
+    }
+    elseif ($new_password != $confirm_password) {
+        $error = 'Hãy nhập đúng mật khẩu mới của bạn';
+    }
+
+    if (empty($error)) {
+        $new_password_harsh = password_hash($new_password, PASSWORD_BCRYPT);
+        $sql_update = "UPDATE user_admin SET password = '$new_password_harsh' WHERE id = $id";
+        $is_update = mysqli_query($connection, $sql_update);
+        var_dump($is_update);
+        if ($is_update) {
+            $_SESSION['success'] = 'Đổi mới mật khẩu thành công';
+            header('Location: Profile.php?id='. $user['id']) ;
+            exit();
+        }
+        else {
+            $error = 'Đổi mật khẩu không thành công';
+        }
+    }
+
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,13 +98,25 @@ echo '</pre>';
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../assets/images/Admin Avatar.png" class="user-image" alt="User Image" height="160px" width="160px">
+                            <?php if ($user['avatar'] == '') {
+                                echo '<img src="../assets/images/admin-user-icon-4.jpg" class="user-image" alt="User Image" height="160px" width="160px">';
+                            }
+                            else {
+                                ?>
+                                <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                            <?php } ?>
                             <span class="hidden-xs"><?php echo $user['full_name']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php if ($user['avatar'] == '') {
+                                    echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                                }
+                                else {
+                                    ?>
+                                    <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php } ?>
 
                                 <p>
                                     <?php echo $user['name'];?>
@@ -92,7 +145,13 @@ echo '</pre>';
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                    <?php if ($user['avatar'] == '') {
+                        echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                    }
+                    else {
+                        ?>
+                        <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php } ?>
                 </div>
                 <div class="pull-left info">
                     <p><?php echo $user['full_name']; ?></p>
@@ -111,7 +170,7 @@ echo '</pre>';
                     </a>
                 </li>
                 <li>
-                    <a href="../News/News.php">
+                    <a href="../News/News.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-th"></i> <span>Tin tức</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -119,7 +178,7 @@ echo '</pre>';
                     </a>
                 </li>
                 <li>
-                    <a href="../Products/Products.php">
+                    <a href="../Products/Products.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-boxes"></i> <span> Sản phẩm</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -127,7 +186,7 @@ echo '</pre>';
                     </a>
                 </li>
                 <li>
-                    <a href="../Order/Order.php">
+                    <a href="../Order/Order.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-dolly-flatbed"></i> <span>Đơn hàng</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -135,7 +194,7 @@ echo '</pre>';
                     </a>
                 </li>
                 <li>
-                    <a href="../Users/Users.php">
+                    <a href="../Users/Users.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-code"></i> <span>Quản lý user</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -179,7 +238,9 @@ echo '</pre>';
             <br>
             <div class="form login" style="width: 30%;">
                 <h2 style="font-weight: 600">Đổi mật khẩu</h2>
+                <br>
                 <p style="color: red"><?php
+                    echo $error;
                     if (isset($_SESSION['error'])) {
                         echo $_SESSION['error'];
                         unset($_SESSION['error']);
@@ -203,12 +264,12 @@ echo '</pre>';
                         <input type="password" name="password" id="password" class="form-control">
                     </div>
                     <div class="form-group" >
-                        <label for="password">New Password</label>
-                        <input type="password" name="password" id="password" class="form-control">
+                        <label for="new_password">New Password</label>
+                        <input type="password" name="new_password" id="new_password" class="form-control">
                     </div>
                     <div class="form-group" >
-                        <label for="password">Confirm Password</label>
-                        <input type="password" name="password" id="password" class="form-control">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control">
                     </div>
                     <br>
                     <div class="form-group">

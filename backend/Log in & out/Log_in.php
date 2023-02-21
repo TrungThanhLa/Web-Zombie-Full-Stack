@@ -35,7 +35,6 @@ foreach ($users AS $key => $value) {
 //echo '</pre>';
 
     $error = '';
-
     if (isset($_POST['submit'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -50,6 +49,7 @@ foreach ($users AS $key => $value) {
         if (empty($error)) {
             $password_harsh = $value['password'];
             $is_login = password_verify($password, $password_harsh);
+            echo $is_login;
             if ($is_login == true && $username == $value['username']) {
                 if (isset($_POST['checkbox'])) {
                     setcookie('username', $username, time() + 72000);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 18, 2023 lúc 01:24 AM
+-- Thời gian đã tạo: Th2 21, 2023 lúc 11:59 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.1.12
 
@@ -42,7 +42,7 @@ INSERT INTO `category` (`id_cat`, `name`, `status`, `created_at`) VALUES
 (47, 'Áo', 1, '2023-01-30 15:13:55'),
 (48, 'Quần', 1, '2023-01-30 15:27:27'),
 (50, 'Quần Âu', 0, '2023-01-30 15:31:16'),
-(51, 'Áo phông unisex', 0, '2023-01-30 16:35:16');
+(52, 'Quần Short', 1, '2023-02-21 10:09:07');
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,8 @@ INSERT INTO `homepage` (`id`, `main_img`, `title`, `created_at`) VALUES
 (40, 'AVT 2TL.png-1676425502.png', 'SWEATER 2023', '2023-02-15 01:45:02'),
 (41, 'Badass Son 800x800.jpg-1676425565.jpg', 'SWEATER 2023', '2023-02-15 01:46:05'),
 (42, 'AVT 2TL.png-1676425714.png', 'SWEATER 2023', '2023-02-15 01:48:34'),
-(43, 'Badass Son 800x800.jpg-1676425772.jpg', 'SWEATER 2023', '2023-02-15 01:49:32');
+(43, 'Badass Son 800x800.jpg-1676425772.jpg', 'SWEATER 2023', '2023-02-15 01:49:32'),
+(44, 'Flamer Poster.png-1676908173.png', 'SWEATER 2023', '2023-02-20 15:49:33');
 
 -- --------------------------------------------------------
 
@@ -101,9 +102,6 @@ INSERT INTO `imgs_products` (`id`, `id_products`, `imgs_des`, `path`, `created_a
 (11, 9, 'Badass Son 800x800.jpg-1675093547.jpg', '', '2023-01-30 15:45:47'),
 (12, 9, 'FC THKT.jpg-1675093547.jpg', '', '2023-01-30 15:45:47'),
 (13, 9, 'Flexin Game Project 800x800.jpg-1675093547.jpg', '', '2023-01-30 15:45:47'),
-(14, 10, 'AVT 2TL.png-1675094616.jpg', '', '2023-01-30 16:03:36'),
-(15, 10, 'DPG.png-1675094616.jpg', '', '2023-01-30 16:03:36'),
-(16, 10, 'FC THKT.jpg-1675094616.jpg', '', '2023-01-30 16:03:36'),
 (17, 11, 'AVT 2TL.png-1675095656.png', '', '2023-01-30 16:20:56'),
 (18, 11, 'DPG.png-1675095656.png', '', '2023-01-30 16:20:56'),
 (19, 12, 'FC THKT.jpg-1675096022.jpg', '', '2023-01-30 16:27:02'),
@@ -115,7 +113,12 @@ INSERT INTO `imgs_products` (`id`, `id_products`, `imgs_des`, `path`, `created_a
 (28, 17, 'AVT 2TL.png-1675783423.png', '', '2023-02-07 15:23:43'),
 (29, 17, 'Badass Son 800x800.jpg-1675783423.png', '', '2023-02-07 15:23:43'),
 (30, 17, 'DPG.png-1675783423.png', '', '2023-02-07 15:23:43'),
-(31, 16, 'DPG.png-1675846821.png', '', '2023-02-08 09:00:21');
+(32, 18, 'Flexin Game Project 800x800.jpg-1676975063.jpg', '', '2023-02-21 10:24:23'),
+(33, 18, 'Flexin Game Project Instagram Story.jpg-1676975063.jpg', '', '2023-02-21 10:24:23'),
+(34, 18, 'Glitch Avatar.jpg-1676975063.jpg', '', '2023-02-21 10:24:23'),
+(35, 19, 'Badass Son 800x800.jpg-1676975383.png', '', '2023-02-21 10:29:43'),
+(36, 19, 'Flexin Game Project 800x800.jpg-1676975383.png', '', '2023-02-21 10:29:43'),
+(37, 19, 'Màn Đêm Project 800x800.png-1676975383.png', '', '2023-02-21 10:29:43');
 
 -- --------------------------------------------------------
 
@@ -139,7 +142,10 @@ INSERT INTO `img_sale_poster` (`id`, `sale_poster`, `created_at`) VALUES
 (123, 'DPG.png.1676425714.png', '2023-02-15 01:48:34'),
 (124, '2TL Text Glitch Light Leak 1.jpg.1676425772.jpg', '2023-02-15 01:49:32'),
 (125, '89961761_1104714736572165_5917085347442851840_o.jpg.1676425772.jpg', '2023-02-15 01:49:32'),
-(126, 'AVT 2TL.png.1676425772.jpg', '2023-02-15 01:49:32');
+(126, 'AVT 2TL.png.1676425772.jpg', '2023-02-15 01:49:32'),
+(127, 'AVT 2TL.png.1676908173.png', '2023-02-20 15:49:33'),
+(128, 'Badass Son 800x800.jpg.1676908173.png', '2023-02-20 15:49:33'),
+(129, 'DPG.png.1676908173.png', '2023-02-20 15:49:33');
 
 -- --------------------------------------------------------
 
@@ -160,7 +166,10 @@ CREATE TABLE `img_sale_products` (
 INSERT INTO `img_sale_products` (`id`, `sale_products`, `created_at`) VALUES
 (27, 'Flexin Game Project 800x800.jpg.1676425772.jpg', '2023-02-15 01:49:32'),
 (28, 'Màn Đêm Project 800x800.png.1676425772.jpg', '2023-02-15 01:49:32'),
-(29, 'PTS Test 1 - Vegeta Hakaishin.png.1676425772.jpg', '2023-02-15 01:49:32');
+(29, 'PTS Test 1 - Vegeta Hakaishin.png.1676425772.jpg', '2023-02-15 01:49:32'),
+(30, 'FC THKT.jpg.1676908173.png', '2023-02-20 15:49:33'),
+(31, 'Flexin Game Project 800x800.jpg.1676908173.png', '2023-02-20 15:49:33'),
+(32, 'Màn Đêm Project 800x800.png.1676908173.png', '2023-02-20 15:49:33');
 
 -- --------------------------------------------------------
 
@@ -189,9 +198,7 @@ INSERT INTO `news` (`id`, `title`, `metatitle`, `description`, `metades`, `posts
 (5, 'Full Set Zombie Limited Edition cực chất năm 2023 1', 'Full Set Zombie Limited Edition cực chất năm 2023 1', 'Full Set Zombie Limited Edition cực chất năm 2023 1 ', 'Full Set Zombie Limited Edition cực chất năm 2023 2', '<pre>\r\nFull Set Zombie Limited Edition cực chất năm 2023 2</pre>\r\n', 'Badass Son 800x800.jpg1675252113.jpg', '2023-02-01 11:48:33'),
 (6, 'Full Set Zombie Limited Edition cực chất năm 2023 3', 'Full Set Zombie Limited Edition cực chất năm 2023 3', 'Full Set Zombie Limited Edition cực chất năm 2023 3', 'Full Set Zombie Limited Edition cực chất năm 2023 3', '<p>Full Set Zombie Limited Edition cực chất năm 2023 3</p>\r\n', 'FC THKT.jpg1675252126.jpg', '2023-02-01 11:48:46'),
 (7, 'Full Set Zombie Limited Edition cực chất năm 2023 4', 'Full Set Zombie Limited Edition cực chất năm 2023 4', 'Full Set Zombie Limited Edition cực chất năm 2023 4', 'Full Set Zombie Limited Edition cực chất năm 2023 4', '<p>Full Set Zombie Limited Edition cực chất năm 2023 4</p>\r\n', 'BXHQE1875.JPG1675252141.jpg', '2023-02-01 11:49:01'),
-(8, 'Full Set Zombie Limited Edition cực chất năm 2023 5', 'Full Set Zombie Limited Edition cực chất năm 2023 5', 'Full Set Zombie Limited Edition cực chất năm 2023 5', 'Full Set Zombie Limited Edition cực chất năm 2023 5', '<p>Full Set Zombie Limited Edition cực chất năm 2023 5</p>\r\n', 'Flexin Game Project 800x800.jpg1675252154.jpg', '2023-02-01 11:49:14'),
 (9, 'Full Set Zombie Limited Edition cực chất năm 2023 6', 'Full Set Zombie Limited Edition cực chất năm 2023 6', 'Full Set Zombie Limited Edition cực chất năm 2023 6', 'Full Set Zombie Limited Edition cực chất năm 2023 6', '<p>Full Set Zombie Limited Edition cực chất năm 2023 6</p>\r\n', 'Flamer Poster.png1675252169.png', '2023-02-01 11:49:29'),
-(10, 'Full Set Zombie Limited Edition cực chất năm 2023 7', 'Full Set Zombie Limited Edition cực chất năm 2023 7', 'Full Set Zombie Limited Edition cực chất năm 2023 7', 'Full Set Zombie Limited Edition cực chất năm 2023 7', '<p>Full Set Zombie Limited Edition cực chất năm 2023 7</p>\r\n', 'Glitch Avatar.jpg1675252193.jpg', '2023-02-01 11:49:53'),
 (11, 'Full Set Zombie Limited Edition cực chất năm 2023 8', 'Full Set Zombie Limited Edition cực chất năm 2023 8', 'Full Set Zombie Limited Edition cực chất năm 2023 8', 'Full Set Zombie Limited Edition cực chất năm 2023 8', '<p>Full Set Zombie Limited Edition cực chất năm 2023 8</p>\r\n', 'Màn Đêm Project 800x800.png1675252210.png', '2023-02-01 11:50:10'),
 (12, 'Full Set Zombie Limited Edition cực chất năm 2023 9', 'Full Set Zombie Limited Edition cực chất năm 2023 9', 'Full Set Zombie Limited Edition cực chất năm 2023 9', 'Full Set Zombie Limited Edition cực chất năm 2023 9', '<p>Full Set Zombie Limited Edition cực chất năm 2023 9</p>\r\n', 'Luôn kề bên 800x800.jpg1675252229.jpg', '2023-02-01 11:50:29'),
 (13, 'Full Set Zombie Limited Edition cực chất năm 2023 10', 'Full Set Zombie Limited Edition cực chất năm 2023 10', 'Full Set Zombie Limited Edition cực chất năm 2023 10', 'Full Set Zombie Limited Edition cực chất năm 2023 10', '<p>Full Set Zombie Limited Edition cực chất năm 2023 10</p>\r\n', 'Youg Logo.png1675252241.png', '2023-02-01 11:50:41'),
@@ -224,13 +231,13 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `name`, `id_cat`, `price`, `sale_price`, `description`, `img`, `status`, `created_at`) VALUES
 (8, 'Áo phông Zombie họa tiết Youg Tee cực chất', 48, 10000000, 0, '<p>&aacute;dasdasasdads</p>\r\n', 'AVT 2TL.png-1675092928.jpg', 1, '2023-01-30 15:35:28'),
 (9, 'Quần Âu ZOMBIE Limited Edition', 47, 100000, 0, '<p>Quần &Acirc;u ZOMBIE Limited Edition</p>\r\n', 'DPG.png-1675093547.jpg', 1, '2023-01-30 15:45:47'),
-(10, 'Quần Âu ZOMBIE Limited Edition 2023', 47, 100000, 0, '<p>Quần &Acirc;u ZOMBIE Limited Edition 2023</p>\r\n', 'DPG.png-1675094616.jpg', 1, '2023-01-30 16:03:36'),
 (11, 'Tank Top Nam cực chất 2023', 48, 100000000, 10000, '<p>Tank Top</p>\r\n', 'Flexin Game Project 800x800.jpg-1675095656.png', 1, '2023-01-30 16:20:56'),
 (12, 'Quần Jogger Pants', 48, 10000000, 0, '<p>Jogger</p>\r\n', 'Badass Son 800x800.jpg-1675096022.jpg', 1, '2023-01-30 16:27:02'),
 (14, '	Áo phông Zombie họa tiết Youg Tee cực chất 1', 48, 1000000, 0, '<p>&nbsp;&nbsp; &nbsp;&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất 1</p>\r\n', 'FC THKT.jpg-1675759491.png', 1, '2023-02-07 08:44:51'),
 (15, 'Áo phông Zombie họa tiết Youg Tee cực chất 2', 47, 1000000, 100000, '<p>&nbsp;&nbsp; &nbsp;&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất 2</p>\r\n', 'Luôn kề bên 800x800.jpg-1675759598.png', 1, '2023-02-07 08:46:38'),
-(16, '	Áo phông Zombie họa tiết Youg Tee cực chất 3', 48, 1000000, 0, '<p>&nbsp;&nbsp; &nbsp;&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất 2</p>\r\n', 'PTS Test 1 - Vegeta Hakaishin.png-1675759633.png', 1, '2023-02-07 08:47:13'),
-(17, 'Áo phông Zombie họa tiết Youg Tee cực chất', 48, 100000, 10000, '<p>&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất</p>\r\n', 'AVT 2TL.png-1675783423.png', 1, '2023-02-07 15:23:43');
+(17, 'Áo phông Zombie họa tiết Youg Tee cực chất', 48, 100000, 10000, '<p>&Aacute;o ph&ocirc;ng Zombie họa tiết Youg Tee cực chất</p>\r\n', 'AVT 2TL.png-1675783423.png', 1, '2023-02-07 15:23:43'),
+(18, 'Quần Short cực chất', 52, 1000000, 100000, '<p>Quần short cực chất Top 1 Trending 2023</p>\r\n', 'BXHQ1875.JPG-1676975063.jpg', 1, '2023-02-21 10:24:23'),
+(19, 'Quần Short 2', 52, 1000000, 100000, '<p>Quần Short số 2</p>\r\n', 'DPG.png-1676975383.png', 1, '2023-02-21 10:29:43');
 
 -- --------------------------------------------------------
 
@@ -255,8 +262,10 @@ CREATE TABLE `user_admin` (
 --
 
 INSERT INTO `user_admin` (`id`, `name`, `full_name`, `username`, `password`, `email`, `avatar`, `gender`, `created_at`) VALUES
-(26, 'Trung Thành', 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$XWLaQYE/KBWSwaju4D3qLeWC1c52SDspBCGS4ahhdK6L3hj8/5FbO', 'trungthanhla1110@gmail.com', '', 'Male', '2023-02-18 00:03:14'),
-(27, 'Vân Anh', 'Lã Thị Vân Anh', 'lathanh11', '$2y$10$LIV.813tdcG8DSpKYAh6IOaWMm3ZGTsRXoAMN578pcuhn69Oyx.Km', 'fvteam69@gmail.com', '', 'Female', '2023-02-18 00:03:35');
+(26, 'Trung Thành Lã', 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$Yo3oB.MfzmIQLDWgYWTOXeArW4q1CGjD5PSm4BHVB/4JVsCr4TMdu', 'trungthanh110@gmail.com', 'Badass Son 800x800.jpg-1676831906.jpg', 'Male', '2023-02-18 00:03:14'),
+(27, 'Trung Thành', 'Lã Nguyễn Trung Thành', 'lathanh11', '$2y$10$wibMA2.L4apinUMGJHAoUOqZl5s2tUcqXJRyaWJhzgzD.OjrK2dGW', 'trungthanh1@gmail.com', 'AVT 2TL.png-1676831472.png', 'Female', '2023-02-18 00:03:35'),
+(28, 'Lã Thành', 'Lã Nguyễn Trung Thành 3', 'lathanh1110', '$2y$10$b/NXQqcvkkFRBVWiRVo2Q.GaALNEz0L2cHlFQb/cM8xKmOc13tDGm', 'trungthanh10@gmail.com', 'DPG.png-1676830509.png', 'Male', '2023-02-19 17:31:29'),
+(29, 'Trung Thanh La', 'Trung Thanh La', 'lathanh69', '$2y$10$CMypqoV.ku3bMxq1QN9luu.k90plkJSVeThzf2nuN88YVeYaAzKmG', 'trungthanhla2003@gmail.com', 'Flexin Game Project 800x800.jpg-1676977132.jpg', 'Male', '2023-02-21 10:42:20');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -319,49 +328,49 @@ ALTER TABLE `user_admin`
 -- AUTO_INCREMENT cho bảng `category`
 --
 ALTER TABLE `category`
-  MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT cho bảng `homepage`
 --
 ALTER TABLE `homepage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT cho bảng `imgs_products`
 --
 ALTER TABLE `imgs_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT cho bảng `img_sale_poster`
 --
 ALTER TABLE `img_sale_poster`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT cho bảng `img_sale_products`
 --
 ALTER TABLE `img_sale_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT cho bảng `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `user_admin`
 --
 ALTER TABLE `user_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
