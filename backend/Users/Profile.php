@@ -2,6 +2,12 @@
 session_start();
 require_once '../connection.php';
 
+if (!isset($_SESSION['username'])) {
+    $_SESSION['error'] = 'Hãy đăng nhập để truy cập';
+    header('Location: ../Log in & out/Log_in.php');
+    exit();
+}
+
 $id = $_GET['id'];
 
 $sql_select_one= "SELECT * FROM user_admin WHERE id = $id";
