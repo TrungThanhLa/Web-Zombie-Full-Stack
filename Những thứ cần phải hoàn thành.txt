@@ -1,10 +1,10 @@
 √ Tạo 1 trang Tin tức trên Frontend
 √ Echo Sản phẩm và tin tức ra Frontend
 - Code phần gửi email của khách hàng trên frontend và nhận thông tin từ backend
-- Code phần ảnh ở đầu trang Homepage
+√ Code phần ảnh ở đầu trang Homepage
 - Code tính năng giỏ hàng lên cả backend lẫn frontend
-- Code tính năng đăng nhập đăng ký trong php
-- Code tính năng quản lý users trong backend
+√ Code tính năng đăng nhập đăng ký trong php
+√ Code tính năng quản lý users trong backend
 - Xem và sửa lại 1 số chỗ để code chạy được ổn định và mượt mà nhất
 - Code và sửa lại phần Frontend để code chạy mượt nhất
 - Hoàn thành sản phẩm
