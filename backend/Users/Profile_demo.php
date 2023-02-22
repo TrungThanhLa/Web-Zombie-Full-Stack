@@ -17,60 +17,16 @@ echo '<pre>';
 print_r($user);
 echo '</pre>';
 
-$sql_select_all = "SELECT * FROM category ORDER BY created_at DESC";
-$result_select = mysqli_query($connection, $sql_select_all);
-$categories = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
-
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    $_SESSION['error'] = 'ID danh mục không hợp lệ';
-    header('Location: Create_Category.php?id=' . $user['id']);
-    exit();
-}
-
 $id = $_GET['id'];
-if (isset($id)) {
-    $sql_select = "SELECT * FROM category WHERE id_cat = $id";
-    $result = mysqli_query($connection, $sql_select);
-    $data = mysqli_fetch_assoc($result);
-    if ($id != $data['id_cat']) {
-        $_SESSION['error'] = 'Không tồn tại ID danh mục';
-        header('Location: Create_Category.php?id=' . $user['id']);
-        exit();
-    }
-}
 
+$sql_select_user= "SELECT * FROM user_admin WHERE id = $id";
+$result_user = mysqli_query($connection, $sql_select_user);
+$user_profile = mysqli_fetch_assoc($result_user);
 echo '<pre>';
-print_r($_POST);
+print_r($user_profile);
 echo '</pre>';
 
-$error = '';
-
-if (isset($_POST['submit'])) {
-    $category = $_POST['category'];
-    $status = $_POST['status'];
-
-    if (empty($category)) {
-        $error = 'Cần phải có tên danh mục';
-    }
-
-    if (empty($error)) {
-        $sql_update = "UPDATE category SET name = '$category', status = '$status' WHERE id_cat = $id";
-        $is_update = mysqli_query($connection, $sql_update);
-        var_dump($is_update);
-
-        if ($is_update) {
-            $_SESSION['success'] = 'Cập nhật danh mục sản phẩm thành công';
-            header('Location: Create_Category.php?id=' . $user['id']);
-            exit();
-        }
-        else {
-            $_SESSION['error'] = 'Cập nhật danh mục sản phẩm thất bại';
-        }
-    }
-}
-
 ?>
-<!-- Create_Product.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -254,80 +210,94 @@ if (isset($_POST['submit'])) {
         <section class="content">
             Nội dung hiển thị ở đây
             <br>
-            <br>
-            <a href="../Products/Products.php?id=<?php echo $user['id']; ?>"><i class="fas fa-tasks"></i> Quản lý sản phẩm</a>
-            <br>
-            <br>
-            <a href="../Category/Create_Category.php?id=<?php echo $user['id']; ?>"><i class="fas fa-plus-square"></i> Tạo danh mục sản phẩm</a>
-            <p style="color: red"><?php echo $error; ?></p>
-            <div class="add_category">
-                <!--                <div class="row">-->
-                <div class="add">
-                    <form action="" method="post" enctype="multipart/form-data">
-                        <h3>Sửa danh mục sản phẩm</h3>
-                        <hr>
-                        <p style="font-weight: bold">Tên danh mục :</p>
-                        <input type="text" name="category" value="<?php echo $data['name'];?>">
-                        <br>
-                        <br>
-                        <p style="font-weight: bold">Trạng thái :</p>
-                        <input type="radio" name="status" value="1" <?php
-                        if ($data['status'] == 1) {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>
-                        > Hiện
-                        <input type="radio" name="status" value="0"<?php
-                        if ($data['status'] == 0) {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>
-                        > Ẩn
-                        <br>
-                        <br>
-                        <input type="submit" name="submit" value="Cập nhật">
+            <div class="form login" style="width: 30%;">
+                <h2 style="font-weight: 600">Thông tin người dùng</h2>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                }
+                ?>
+            </p>
+                <br>
+<!--                <a href="Update_Profile.php?id=--><?php //echo $user['id']; ?><!--"><i class="far fa-edit"></i>Sửa thông tin người dùng</a>-->
+<!--                <br>-->
+<!--                <br>-->
+<!--                <a href="Update_Password.php?id=--><?php //echo $user['id']; ?><!--"><i class="far fa-edit"></i>Đổi mật khẩu</a>-->
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="form-group" >
+                    <label for="name">Name: <?php echo $user_profile['name']; ?></label>
                 </div>
-                <div class="show">
-                    <h3>Danh sách danh mục</h3>
-                    <br>
-                    <table border="1" cellpadding="8" cellspacing="0" style="width: 50%;">
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên danh mục</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                        <?php foreach ($categories AS $key => $value):?>
-                            <tr>
-                                <td><?php echo $key + 1;?></td>
-                                <td><?php echo $value['name'];?></td>
-                                <td><?php
-                                    if ($value['status'] == 1) {
-                                        echo 'Hiện';
-                                    }
-                                    else {
-                                        echo 'Ẩn';
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <a href="Update_Category.php?id=<?php echo $value['id_cat']; ?>&id_user=<?php echo $user['id']; ?>"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="Delete_Category.php?id=<?php echo $value['id_cat']; ?>&id_user=<?php echo $user['id']; ?>" onclick="return confirm('Xóa danh mục này ?')"><i class="fas fa-trash-alt" style="color: red"></i> Xóa</a>
-                                </td>
-                            </tr>
-                        <?php endforeach;?>
-                    </table>
+                <div class="form-group">
+                    <label for="full_name">Full name</label>
+                    <input type="text" name="full_name" id="full_name" class="form-control" value="<?php echo $user_profile['full_name']; ?>" readonly>
                 </div>
-                <!--                </div>-->
+                <div class="form-group" >
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" value="<?php
+                    $username =  $user_profile['username'];
+                    if (strlen($username) > 3) {
+                        $stringcut = substr($username, 0, 3);
+                        $end = strrpos($stringcut, '');
+                        $username = $end ? substr($stringcut, 0, $end) : substr($stringcut, 0);
+                        $username = $username . '***';
+                        echo $username;
+                    }
 
-                </form>
+                    ?>" readonly>
+                </div>
+                <div class="form-group" >
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" value="123123123123123" readonly>
+                </div>
+                <div class="form-group" >
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email" class="form-control" value="<?php echo $user_profile['email']; ?>" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Avatar</label>
+                    <?php
+                    if ($user_profile['avatar'] == '') {
+                        echo '<img src="../assets/images/admin-user-icon-4.jpg" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">';
+                    }
+                    ?>
+                    <?php if ($user_profile['avatar'] != '') {?>
+                    <img src="admin_avatar/<?php echo $user_profile['avatar']; ?>" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">
+                    <?php } ?>
+                </div>
+                <br>
+                <div class="form-group" >
+                    <label for="gender">Gender</label>
+                    <input type="radio" name="gender" id="gender" value="0"
+                        <?php if ($user_profile['gender'] == 'Male') {
+                        echo 'checked';
+                        }
+                        else {
+                            echo '';
+                        }
+                    ?>> Male
+                    <input type="radio" name="gender" id="gender" value="1"
+                        <?php if ($user_profile['gender'] == 'Female') {
+                            echo 'checked';
+                        }
+                        else {
+                            echo '';
+                        }
+                        ?>> Female
+                </div>
+                <br>
+<!--                <div class="form-group">-->
+<!--                    <input type="submit" name="submit" value="Cập nhật" class="btn btn-success">-->
+<!--                </div>-->
+            </form>
             </div>
-
         </section>
         <!-- /.content -->
 

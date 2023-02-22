@@ -245,7 +245,7 @@ echo '</pre>';
                     <td><img src="admin_avatar/<?php echo $value['avatar']; ?>" width="100px" height="100px"></td>
                     <td><?php echo $value['gender']; ?></td>
                     <td><?php echo date('H:i d/m/Y', strtotime($value['created_at'])); ?></td>
-                    <td><a href="" title="Xem thông tin"><i class="fas fa-eye"></i> View Profile</a></td>
+                    <td><a href="Profile_demo.php?id=<?php echo $value['id']; ?>&id_user=<?php echo $user['id']; ?>" title="Xem thông tin"><i class="fas fa-eye"></i> View Profile</a></td>
                 </tr>
                 <?php endforeach; ?>
             </table>
