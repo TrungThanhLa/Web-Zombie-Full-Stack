@@ -4,7 +4,9 @@
 √ Code phần ảnh ở đầu trang Homepage
 - Code tính năng giỏ hàng lên cả backend lẫn frontend
 √ Code tính năng đăng nhập đăng ký trong php
-√ Code tính năng quản lý users trong backend
+√ Code tính năng quản lý admin trong backend
+- Lấy chi tiết sản phẩm
+- Code tính năng quản lý users của khách hàng
 - Xem và sửa lại 1 số chỗ để code chạy được ổn định và mượt mà nhất
 - Code và sửa lại phần Frontend để code chạy mượt nhất
 - Hoàn thành sản phẩm

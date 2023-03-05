@@ -8,7 +8,7 @@
 }
 
 .row {
-    display: ;
+    /*display: ;*/
     display: none;
     display: flex;;
     flex-wrap: unset;
@@ -32,6 +32,7 @@
 img.LogoImg {
     width: 100px;
     margin-left: 55%;
+    margin-bottom: 10px;
 }
 
 .IconAnchor {
@@ -45,39 +46,62 @@ img.LogoImg {
 }
 
 .MenuHeader {
-    padding: 20px 0px;
+    background: #F3F3F3;
 }
 
-ul.ulMenu {
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 li.liMenu {
-    display: inline-block;
-    padding-right: 50px;
+    display: inline-table;
+    width: 300px;
+    /*    height: 40px;*/
+    line-height: 40px;
+    position: relative;
 }
 
-.bar {
-    background: #F5F5F5;
-    padding: 10px;
-}
-
-.BarBackground {
-    width: 80%;
-    margin: 0 auto;
-}
-
-span.BarItems {
-    font-weight: 200;
-    font-size: 15px;
-    color: darkgray;
+ul.ulMenu {
+    text-align: center;
 }
 
 a {
-    color: black;
-    position: relative;
+    color: #CD0439;
+}
+
+a.anchor_text {
+    display: block;
+    color: #CD0439;
+}
+
+a.anchor_text:hover {
+    background: unset;
+    transform: scale(1.1);
+}
+
+ul.subMenu {
+    display: none;
+    position: absolute;
+    width: 100%;
+}
+
+a.anchorSubMenu {
+    color: white;
+    display: block;
+}
+
+a.anchorSubMenu:hover {
+    color: #CF0038;
+    background: #F3F3F3;
+    display: block;
+}
+
+li:hover ul.subMenu {
+    display: block;
+    background: #CF0038;
+    color: white;
 }
 
 a:hover {
@@ -86,23 +110,40 @@ a:hover {
     transition: all 0.2s ease-in-out;
 }
 
+a.anchorList {
+    display: block;
+}
+
 a.anchorList::before {
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 1px;
-	background: gray;
-	left: -100%;
-	bottom: -100%;
-	opacity: 0;
-	visibility: hidden;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: gray;
+    left: -100%;
+    bottom: 100%;
+    visibility: hidden;
 }
 
 a.anchorList:hover::before {
-	left: 0px;
-	opacity: 1;
-	transition: all 0.5s;
-	visibility: unset;
+    left: 0px;
+    transition: all 0.3s;
+    visibility: unset;
+}
+
+.bar {
+    background: #F3F3F3;
+    padding: 5px;
+    margin-top: 50px;
+}
+
+.BarBackground {
+    width: 80%;
+    margin: 0 auto;
+}
+
+span.BarItems {
+    font-size: 15px;
 }
 
 .YourCart {
@@ -133,7 +174,93 @@ table.tableCart {
 
 .CartContainer {
     padding-bottom: 50px;
+    width: 80%;
+    margin: 0 auto;
 }
+
+i.fas.fa-envelope-open-text {
+    font-size: 18px;
+}
+
+span.SupportandBuy {
+    padding-left: 5px;
+}
+
+.emailInput {
+    width: 60%;
+}
+
+button, input {
+    overflow: visible;
+    padding: 10px 0px;
+    padding-left: 10px;
+    padding-right: 500px;
+    border: 1px solid whitesmoke;
+}
+
+input.quantity {
+    color: black;
+    overflow: visible;
+    width: 100px;
+    padding: unset;
+    border: 1px solid black;
+    padding-left: 10px;
+    text-align: center;
+    border-radius: 3px;
+    background: white;
+    transition: ease-in-out 0.1s;
+}
+
+input.quantity:hover {
+    color: #D40038;
+    background: whitesmoke;
+    transition: ease-in-out 0.1s;
+}
+
+button.Update {
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: black;
+    border-radius: 3px;
+    background: white;
+    border: 0.5px solid;
+    transition: ease-in-out 0.1s;
+}
+
+button.Update:hover {
+    color: #D40038;
+    background: whitesmoke;
+    transition: ease-in-out 0.1s;
+}
+
+.Total {
+    position: absolute;
+    display: block;
+    margin-top: 40px;
+    margin-left: 15%;
+}
+
+.Payment {
+    margin-top: 35px;
+    margin-left: 65%;
+}
+
+a.Pay {
+    padding: 13px;
+    padding-right: 30px;
+    padding-left: 30px;
+    border-radius: 3px;
+    color: white;
+    background: #D40038;
+}
+
+a.Pay:hover {
+    color: white;
+    background: red;
+}
+
+
 
 .SupportBackground {
     background: #F3F3F3;
@@ -173,7 +300,6 @@ button, input {
 
 a.BoxSignUp {
     border: 1px solid #D0021B;
-    padding: 10px 20px;
     margin-left: -5px;
     background: #D0021B;
     display: inline-block;
@@ -204,13 +330,15 @@ a.BoxSignUp:hover::before {
 span.spSignUp {
     position: relative;
     z-index: 10;
+    display: block;
+    padding: 10px 20px;
 }
 
 
 span.spSignUp:hover {
     color: #D0021B;
     transition: all 0.3s ease-in-out;
-    
+
 }
 
 .telephone {

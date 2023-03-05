@@ -1,4 +1,4 @@
-/*style2.css*/
+/*style9.css*/
 .container-fluid {
     width: 100%;
     padding-right: 0px;
@@ -12,14 +12,6 @@
     display: none;
     display: flex;;
     flex-wrap: unset;
-    margin-right: 0px;
-    margin-left: 0px;
-}
-
-.r_products {
-    display: none;
-    display: flex;
-    flex-wrap: wrap;
     margin-right: 0px;
     margin-left: 0px;
 }
@@ -154,87 +146,154 @@ span.BarItems {
     font-size: 15px;
 }
 
-h2.h2Products {
-    width: 80%;
-    margin: 0 auto;
+.YourCart {
+    text-align: center;
     padding: 50px 0px;
-    font-size: 25px;
-    font-weight: 400;
 }
 
-.ContainerContent {
+h2 {
+    font-family: sans-serif;
+    font-weight: 300;
+}
+
+.crossbar {
+    background: black;
+    width: 150px;
+    height: 5px;
+    border-radius: 10px;
+    margin: 0px auto;
+    margin-top: 30px;
+}
+
+table.tableCart {
+    margin: 0 auto;
+    width: 70%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.CartContainer {
+    padding-bottom: 50px;
     width: 80%;
     margin: 0 auto;
 }
 
-.ProductClothing {
-    width: 25%;
-    /*margin-right: 30px;*/
-    margin-bottom: 50px;
+i.fas.fa-envelope-open-text {
+    font-size: 18px;
 }
 
-.ProductImage {
-    margin-bottom: 10px;
-    width: 380px;
-    height: 480px;
+span.SupportandBuy {
+    padding-left: 5px;
 }
 
-.Product_Info {
-
+.emailInput {
+    width: 60%;
 }
 
-img.imgProduct {
-    width: 355px;
-    height: 480px;
-    transition: all 0.3s ease-in-out;
+button, input {
+    overflow: visible;
+    padding: 10px 0px;
+    padding-left: 10px;
+    padding-right: 500px;
+    border: 1px solid whitesmoke;
 }
 
-img.imgProduct:hover {
-    transform: scale(1.1);
-}
-
-img.imgProductsmall {
-    width: 355px;
-    height: 400px;
-    transition: all 0.3s ease-in-out;
-}
-
-img.imgProductsmall:hover {
-    transform: scale(1.1);
-    transition: all 0.3s;
-}
-
-p.TitleProduct {
+input.quantity {
     color: black;
-    padding-top: 20px;
+    overflow: visible;
+    width: 100px;
+    padding: unset;
+    border: 1px solid black;
+    padding-left: 10px;
+    text-align: center;
+    border-radius: 3px;
+    background: white;
+    transition: ease-in-out 0.1s;
 }
 
-/*p.Price {*/
-/*    color: red;*/
-/*    margin-top: -5px;*/
-/*}*/
+input.quantity:hover {
+    color: #D40038;
+    background: whitesmoke;
+    transition: ease-in-out 0.1s;
+}
 
-a.Price {
+button.Update {
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
     color: black;
+    border-radius: 3px;
+    background: white;
+    border: 0.5px solid;
+    transition: ease-in-out 0.1s;
 }
 
-a.Sale_Price {
-    margin-left: 10px;
+button.Update:hover {
+    color: #D40038;
+    background: whitesmoke;
+    transition: ease-in-out 0.1s;
 }
 
-a.Order {
-    background: #CD0439;
+.Total {
+    position: absolute;
+    display: block;
+    margin-top: 40px;
+    margin-left: 55%;
+}
+
+.Method {
+    margin-top: 40px;
+    margin-left: 15%;
+}
+
+.Payment {
+    margin-top: 50px;
+    margin-left: 15%;
+}
+
+button.Pay {
+    padding: 13px;
+    padding-right: 30px;
+    padding-left: 30px;
+    border-radius: 5px;
     color: white;
-    padding: 10px 110px;
+    background: #D40038;
 }
 
-a.Order:hover {
+button.Pay:hover {
+    color: white;
     background: red;
 }
 
-.pictureProduct {
-    height: 480px;
+.Form_COD {
+    display: none;
 }
+input#input {
+    overflow: visible;
+    padding: 10px 0px;
+    padding-left: 10px;
+    padding-right: 300px;
+    border: 1px solid gray;
+    margin-right: 150px;
+}
+
+input[type="radio"]:checked~.Form_COD {
+    display: block;
+    margin-bottom: 50px;
+}
+
+table.table_COD {
+    width: 100%;
+    max-width: 70%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+
+
+
+
 
 .SupportBackground {
     background: #F3F3F3;
@@ -274,7 +333,6 @@ button, input {
 
 a.BoxSignUp {
     border: 1px solid #D0021B;
-    padding: 10px 20px;
     margin-left: -5px;
     background: #D0021B;
     display: inline-block;
@@ -305,13 +363,15 @@ a.BoxSignUp:hover::before {
 span.spSignUp {
     position: relative;
     z-index: 10;
+    display: block;
+    padding: 10px 20px;
 }
 
 
 span.spSignUp:hover {
     color: #D0021B;
     transition: all 0.3s ease-in-out;
-    
+
 }
 
 .telephone {
@@ -379,4 +439,3 @@ span.ShopInfoLocation {
 .Fanpage {
     width: 20%;
 }
-
