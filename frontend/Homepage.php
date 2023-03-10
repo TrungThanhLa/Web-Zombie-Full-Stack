@@ -1,5 +1,31 @@
 <?php
+session_start();
 require_once '../backend/connection.php';
+
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    $id = $_GET['user_id'];
+    $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
+    $result_user = mysqli_query($connection, $sql_select_user);
+    $user = mysqli_fetch_assoc($result_user);
+    echo '<pre>';
+    print_r($user);
+    echo '</pre>';
+}
+
+$sql_select_products = "SELECT * FROM products ORDER BY created_at DESC LIMIT 8";
+$result_all_products = mysqli_query($connection, $sql_select_products);
+$products = mysqli_fetch_all($result_all_products, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($products);
+//echo '</pre>';
+
+$sql_select_random = "SELECT * FROM products ORDER BY RAND() LIMIT 8";
+$result_random = mysqli_query($connection, $sql_select_random);
+$random_products = mysqli_fetch_all($result_random, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($random_products);
+//echo '</pre>';
+
 
 $sql_select_all = "SELECT * FROM category WHERE status = 1";
 $result_all = mysqli_query($connection, $sql_select_all);
@@ -61,28 +87,85 @@ if (isset($_POST['submit'])) {
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="img/Logo Zombie.jpg" class="LogoImg">
+                    <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
-                    <i class="fab fa-facebook-f iconawesome"></i>
-                    <i class="fab fa-instagram iconawesome"></i>
-                    <i class="fas fa-search iconawesome"></i>
-                    <i class="fas fa-user-circle iconawesome"></i>
-                    <a href="Cart.php"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                    }
+                    else {
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                    }
+                    ?>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                    <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php }
+                    else {
+                        echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
+                    }
+                    ?>
                 </div>
             </div>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<div class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
             <div class="MenuHeader">
                 <ul class="ulMenu">
-                    <li class="liMenu"><a href="Homepage.php" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Homepage.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Trang Chủ</a>
+                        <?php }
+                        else {
+                            echo '<a href="Homepage.php" class="anchorList">Trang Chủ</a>';
+                        }
+                        ?>
+                    </li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Sản phẩm</a>
+                        <?php }
+                        else {
+                            echo '<a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>';
+                        }
+                        ?>
                         <ul class="subMenu">
-                            <li class="liSubMenu"><a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>
+                                <?php }
+                                else {
+                                    echo '<a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>';
+                                }
+                                ?>
                             <?php foreach ($category AS $key => $value):?>
-                            <li class="liSubMenu"><a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a></li>
-                            <?php endforeach; ?>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>&&user_id=<?php echo $user['id']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                            <?php } endforeach; ?>
                         </ul>
                     </li>
-                    <li class="liMenu"><a href="News_Frontend.php" class="anchorList">Tin tức</a></li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Tin tức</a>
+                        <?php }
+                        else {
+                            echo '<a href="News_Frontend.php" class="anchorList">Tin tức</a>';
+                        }
+                        ?>
+                    </li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -107,63 +190,65 @@ if (isset($_POST['submit'])) {
         <a href="#" ><h2>SẢN PHẨM MỚI - NEW PRODUCTS</h2></a>
         <div class="ProductPR Top">
             <div class="ContainerContent">
-                <div class="row">
-                    <div class="ProductClothing1 ProductImage">
-                        <a href="#" ><img src="img/Product1.jpg" class="imgProduct"></a>
-                        <a href="#" ><p class="TitleProduct">ZOMBIE Send Hoodie In Black</p></a>
-                        <a href="#" ><p class="Price">450,000đ</p></a>
-                    </div>
-                    <div class="ProductClothing2 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product2.jpg" class="imgProduct">
-                            <p class="TitleProduct">ZOMBIE Grey Printed Shirt</p>
-                            <p class="Price">380,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing3 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product3.jpg" class="imgProduct">
-                            <p class="TitleProduct">ZOMBIE Leather Pants</p>
-                            <p class="Price">450,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing4 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product4.jpg" class="imgProduct">
-                            <p class="TitleProduct">ZOMBIE Leather Jacket</p>
-                            <p class="Price">780,000đ</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ProductClothing5 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product5.jpg" class="imgProduct">
-                            <p class="TitleProduct">Set ZOMBIE Zip Hoodie - Brown</p>
-                            <p class="Price">650,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing6 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product6.jpg" class="imgProduct">
-                            <p class="TitleProduct">Set ZOMBIE Zip Hoodie - DarkGrey</p>
-                            <p class="Price">650,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing7 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product7.jpg" class="imgProduct">
-                            <p class="TitleProduct">Set ZOMBIE V Sweater - Brown</p>
-                            <p class="Price">650,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductClothing8 ProductImage">
-                        <a href="#" >
-                            <img src="img/Product8.jpg" class="imgProduct">
-                            <p class="TitleProduct">#1 ZOMBIE Denim Skinny Ripped LB</p>
-                            <p class="Price">420,000đ</p>
-                        </a>
-                    </div>
+                <div class="r_products">
+                    <?php foreach ($products AS $key3 => $value3): ?>
+                        <div class="ProductClothing">
+                            <div class="ProductImage">
+                                <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Detail.php?id=<?php echo $value3['id']; ?>&user_id=<?php echo $user['id']; ?>" ><img src="../backend/Products/uploads/<?php echo $value3['img']; ?>" class="imgProduct"></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Detail.php?id=<?php echo $value3['id']; ?>" ><img src="../backend/Products/uploads/<?php echo $value3['img']; ?>" class="imgProduct"></a>
+                                <?php }?>
+
+                            </div>
+                            <div class="Product_Info">
+                                <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Detail.php?id=<?php echo $value3['id']; ?>&user_id=<?php echo $user['id']; ?>" class="anchor_text"><p class="TitleProduct"><?php echo $value3['name']; ?></p></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Detail.php?id=<?php echo $value3['id']; ?>" class="anchor_text"><p class="TitleProduct"><?php echo $value3['name']; ?></p></a>
+                                <?php }?>
+
+                                <div class="Prices">
+                                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                        <a href="Detail.php?id=<?php echo $value3['id']; ?>&user_id=<?php echo $user['id']; ?>" class="Price"><?php
+                                            if ($value3['sale_price'] == 0) {
+                                                echo number_format($value3['price'], 0 , '.', ',') . 'đ';
+                                            }
+                                            else {
+                                                echo '<a href="#" class="Price" style="text-decoration: line-through">' . number_format($value3['price'], 0 , '.', ',') . 'đ' . '</a>';
+                                                echo '<a href="#" class="Sale_Price">' . number_format($value3['sale_price'], 0, '.', ',') . 'đ' . '</a>' ;
+                                            }
+                                            ?>
+                                        </a>
+                                    <?php }
+                                    else { ?>
+                                        <a href="Detail.php?id=<?php echo $value3['id']; ?>" class="Price"><?php
+                                            if ($value3['sale_price'] == 0) {
+                                                echo number_format($value3['price'], 0 , '.', ',') . 'đ';
+                                            }
+                                            else {
+                                                echo '<a href="#" class="Price" style="text-decoration: line-through">' . number_format($value3['price'], 0 , '.', ',') . 'đ' . '</a>';
+                                                echo '<a href="#" class="Sale_Price" style="color: red">' . number_format($value3['sale_price'], 0, '.', ',') . 'đ' . '</a>' ;
+                                            }
+                                            ?>
+                                        </a>
+                                    <?php }?>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="Order_Product">
+                                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                        <a class="Order" href="Order.php?id=<?php echo $value3['id'];?>&user_id=<?php echo $user['id']; ?>">Thêm vào giỏ hàng</a>
+                                    <?php }
+                                    else { ?>
+                                        <a class="Order" href="Order.php?id=<?php echo $value3['id'];?>">Thêm vào giỏ hàng</a>
+                                    <?php }?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="HoodieRow">
@@ -179,65 +264,65 @@ if (isset($_POST['submit'])) {
         <a href="#" ><h2><?php echo $homepage['title']; ?></h2></a>
         <div class="ProductPR Bottom">
             <div class="ContainerContent">
-                <div class="row">
-                    <div class="ProductSweater1 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater1.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">#1 BLUE STRIPES SWEATER - WHITE</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductSweater2 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater2.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">BLUE STRIPES SWEATER - BLACK</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductSweater3 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater3.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">BLUE STRIPES SWEATER - WHITE</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductSweater4 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater4.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">OVERSIZE STRIPED SWEATER IN B/WHITE</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ProductSweater5 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater5.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">OVERSIZE STRIPED SWEATER IN B/BLUE</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductSweater6 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater6.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">PINK STRIPES SWEATER - BLACK</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductSweater7 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater7.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">PINK STRIPES SWEATER - WHITE</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
-                    <div class="ProductSweater8 ProductImage">
-                        <a href="#" >
-                            <img src="img/Sweater8.jpg" class="imgSweaterProduct">
-                            <p class="TitleProduct">STRIPES SWEATER IN W/B</p>
-                            <p class="Price">350,000đ</p>
-                        </a>
-                    </div>
+                <div class="r_products">
+                    <?php foreach ($random_products AS $key4 => $value4): ?>
+                        <div class="ProductClothing">
+                            <div class="ProductImage">
+                                <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Detail.php?id=<?php echo $value4['id']; ?>&user_id=<?php echo $user['id']; ?>" ><img src="../backend/Products/uploads/<?php echo $value4['img']; ?>" class="imgProduct"></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Detail.php?id=<?php echo $value4['id']; ?>" ><img src="../backend/Products/uploads/<?php echo $value4['img']; ?>" class="imgProduct"></a>
+                                <?php }?>
+
+                            </div>
+                            <div class="Product_Info">
+                                <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Detail.php?id=<?php echo $value4['id']; ?>&user_id=<?php echo $user['id']; ?>" class="anchor_text"><p class="TitleProduct"><?php echo $value4['name']; ?></p></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Detail.php?id=<?php echo $value4['id']; ?>" class="anchor_text"><p class="TitleProduct"><?php echo $value4['name']; ?></p></a>
+                                <?php }?>
+
+                                <div class="Prices">
+                                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                        <a href="Detail.php?id=<?php echo $value4['id']; ?>&user_id=<?php echo $user['id']; ?>" class="Price"><?php
+                                            if ($value4['sale_price'] == 0) {
+                                                echo number_format($value3['price'], 0 , '.', ',') . 'đ';
+                                            }
+                                            else {
+                                                echo '<a href="#" class="Price" style="text-decoration: line-through">' . number_format($value4['price'], 0 , '.', ',') . 'đ' . '</a>';
+                                                echo '<a href="#" class="Sale_Price">' . number_format($value4['sale_price'], 0, '.', ',') . 'đ' . '</a>' ;
+                                            }
+                                            ?>
+                                        </a>
+                                    <?php }
+                                    else { ?>
+                                        <a href="Detail.php?id=<?php echo $value4['id']; ?>" class="Price"><?php
+                                            if ($value4['sale_price'] == 0) {
+                                                echo number_format($value4['price'], 0 , '.', ',') . 'đ';
+                                            }
+                                            else {
+                                                echo '<a href="#" class="Price" style="text-decoration: line-through">' . number_format($value4['price'], 0 , '.', ',') . 'đ' . '</a>';
+                                                echo '<a href="#" class="Sale_Price" style="color: red">' . number_format($value4['sale_price'], 0, '.', ',') . 'đ' . '</a>' ;
+                                            }
+                                            ?>
+                                        </a>
+                                    <?php }?>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="Order_Product">
+                                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                        <a class="Order" href="Order.php?id=<?php echo $value4['id'];?>&user_id=<?php echo $user['id']; ?>">Thêm vào giỏ hàng</a>
+                                    <?php }
+                                    else { ?>
+                                        <a class="Order" href="Order.php?id=<?php echo $value4['id'];?>">Thêm vào giỏ hàng</a>
+                                    <?php }?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="SupportBackground">

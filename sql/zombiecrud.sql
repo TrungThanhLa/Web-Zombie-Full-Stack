@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 21, 2023 lúc 11:59 AM
+-- Thời gian đã tạo: Th3 10, 2023 lúc 08:55 PM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.1.12
 
@@ -209,6 +209,84 @@ INSERT INTO `news` (`id`, `title`, `metatitle`, `description`, `metades`, `posts
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `id_user` int(20) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `note` text NOT NULL,
+  `address` varchar(120) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `district` varchar(50) NOT NULL,
+  `ward` varchar(50) NOT NULL,
+  `phone` int(20) NOT NULL,
+  `pay_method` varchar(50) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id`, `id_user`, `name`, `email`, `note`, `address`, `city`, `district`, `ward`, `phone`, `pay_method`, `status`, `created_at`) VALUES
+(9, 5, 'Lã Thành', 'trungthanh@gmail.com', '1', 'lã', 'HN', 'HĐ', 'QT', 123123123, 'Ship COD', 'Đang khởi tạo', '2023-03-08 04:22:33'),
+(10, 2, 'Lã Thị Vân Anh', 'trungthanh110@gmail.com', '123', '123', 'HN', 'HĐ', 'QT', 2147483647, 'Ship COD', 'Đang giao hàng', '2023-03-08 04:27:03'),
+(11, 3, 'Lã Thị Vân Anh', 'trungthanh110@gmail.com', '', 'Bán Văn Đề, Quang Trung', 'HN', 'HĐ', 'QT', 2147483647, 'Ship COD', 'Đang xử lý', '2023-03-08 11:58:33'),
+(17, 2, 'Lã Nguyễn Trung Thành', 'thoeme.kistler@bluewin.ch', 'ko có gì cả', 'Bán Văn Đề, Quang Trung', 'HCM', 'Q1', 'PNL', 943920252, 'Ship COD', 'Giao hàng thành công', '2023-03-10 19:43:58'),
+(18, 2, 'Lã Nguyễn Trung Thành', 'thoeme.kistler@bluewin.ch', 'hahaha', 'Bán Văn Đề, Quang Trung', 'ĐN', 'CL', 'HP', 943920252, 'Ship COD', 'Đã giao cho bên vận chuyển', '2023-03-10 19:53:57');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order_detail`
+--
+
+CREATE TABLE `order_detail` (
+  `id_orders` int(11) NOT NULL,
+  `id_products` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(50) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_detail`
+--
+
+INSERT INTO `order_detail` (`id_orders`, `id_products`, `quantity`, `price`, `created_at`) VALUES
+(5, 11, 5, 10000, '2023-03-07 08:29:25'),
+(5, 9, 2, 100000, '2023-03-07 08:29:25'),
+(5, 8, 3, 10000000, '2023-03-07 08:29:25'),
+(6, 15, 1, 100000, '2023-03-07 08:30:25'),
+(7, 15, 1, 100000, '2023-03-07 08:33:11'),
+(8, 12, 5, 10000000, '2023-03-08 04:20:03'),
+(8, 14, 5, 1000000, '2023-03-08 04:20:03'),
+(9, 8, 5, 10000000, '2023-03-08 04:22:33'),
+(9, 9, 2, 100000, '2023-03-08 04:22:33'),
+(9, 11, 10, 10000, '2023-03-08 04:22:33'),
+(10, 8, 1, 10000000, '2023-03-08 04:27:03'),
+(10, 11, 1, 10000, '2023-03-08 04:27:03'),
+(11, 11, 10, 10000, '2023-03-08 11:58:33'),
+(11, 14, 5, 1000000, '2023-03-08 11:58:33'),
+(11, 12, 5, 10000000, '2023-03-08 11:58:33'),
+(16, 9, 5, 100000, '2023-03-10 19:42:02'),
+(16, 8, 4, 10000000, '2023-03-10 19:42:02'),
+(16, 17, 5, 10000, '2023-03-10 19:42:02'),
+(17, 8, 5, 10000000, '2023-03-10 19:43:58'),
+(17, 12, 3, 10000000, '2023-03-10 19:43:58'),
+(17, 17, 4, 10000, '2023-03-10 19:43:58'),
+(17, 19, 5, 100000, '2023-03-10 19:43:58'),
+(18, 9, 2, 100000, '2023-03-10 19:53:57'),
+(18, 18, 5, 100000, '2023-03-10 19:53:57'),
+(18, 19, 3, 100000, '2023-03-10 19:53:57');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `products`
 --
 
@@ -265,7 +343,34 @@ INSERT INTO `user_admin` (`id`, `name`, `full_name`, `username`, `password`, `em
 (26, 'Trung Thành Lã', 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$Yo3oB.MfzmIQLDWgYWTOXeArW4q1CGjD5PSm4BHVB/4JVsCr4TMdu', 'trungthanh110@gmail.com', 'Badass Son 800x800.jpg-1676831906.jpg', 'Male', '2023-02-18 00:03:14'),
 (27, 'Trung Thành', 'Lã Nguyễn Trung Thành', 'lathanh11', '$2y$10$wibMA2.L4apinUMGJHAoUOqZl5s2tUcqXJRyaWJhzgzD.OjrK2dGW', 'trungthanh1@gmail.com', 'AVT 2TL.png-1676831472.png', 'Female', '2023-02-18 00:03:35'),
 (28, 'Lã Thành', 'Lã Nguyễn Trung Thành 3', 'lathanh1110', '$2y$10$b/NXQqcvkkFRBVWiRVo2Q.GaALNEz0L2cHlFQb/cM8xKmOc13tDGm', 'trungthanh10@gmail.com', 'DPG.png-1676830509.png', 'Male', '2023-02-19 17:31:29'),
-(29, 'Trung Thanh La', 'Trung Thanh La', 'lathanh69', '$2y$10$CMypqoV.ku3bMxq1QN9luu.k90plkJSVeThzf2nuN88YVeYaAzKmG', 'trungthanhla2003@gmail.com', 'Flexin Game Project 800x800.jpg-1676977132.jpg', 'Male', '2023-02-21 10:42:20');
+(29, 'Trung Thanh La', 'Trung Thanh La', 'lathanh69', '$2y$10$CMypqoV.ku3bMxq1QN9luu.k90plkJSVeThzf2nuN88YVeYaAzKmG', 'trungthanhla2003@gmail.com', 'Flexin Game Project 800x800.jpg-1676977132.jpg', 'Male', '2023-02-21 10:42:20'),
+(30, 'Lã', 'Lã Thị Vân Ánh', 'lathanh123', '$2y$10$6ln/wM68ovEIZG.irwCWTO51kyQI3mhg3ykvEhTmRke4Vl/u2Gcg2', 'fvteam6996@gmail.com', '', 'Male', '2023-03-07 17:34:07');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `user_customer`
+--
+
+CREATE TABLE `user_customer` (
+  `id` int(11) NOT NULL,
+  `full_name` varchar(80) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` int(20) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user_customer`
+--
+
+INSERT INTO `user_customer` (`id`, `full_name`, `username`, `password`, `email`, `phone`, `gender`, `created_at`) VALUES
+(2, 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$fHRDX/m.MJXcH/ML59pb2.Ocfw5tZEbybkYyjAojf.G4olEIrqWhC', 'thoeme.kistler@bluewin.ch', 943920252, 'Male', '2023-03-07 17:49:59'),
+(3, 'Lã Thị Vân Anh', 'lathanh11', '$2y$10$s/ntAZW5ccdv9kqljMVEmuGsQN/YsMyID8gGhnMCU37TD8vkIhlN.', 'trungthanh110@gmail.com', 2147483647, 'Male', '2023-03-07 17:52:37'),
+(5, 'Lã Thành', 'lathanh69', '$2y$10$W.mn/hIYzlL9GbcQwABlWesQNsrQ1FP2tBmKNfm0ywzSeHSzEm19y', 'trungthanh@gmail.com', 123123123, 'Female', '2023-03-07 18:19:36');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -308,6 +413,19 @@ ALTER TABLE `news`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Chỉ mục cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_id_user` (`id_user`);
+
+--
+-- Chỉ mục cho bảng `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD KEY `fk_id_products` (`id_products`);
+
+--
 -- Chỉ mục cho bảng `products`
 --
 ALTER TABLE `products`
@@ -318,6 +436,12 @@ ALTER TABLE `products`
 -- Chỉ mục cho bảng `user_admin`
 --
 ALTER TABLE `user_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `user_customer`
+--
+ALTER TABLE `user_customer`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -361,6 +485,12 @@ ALTER TABLE `news`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
+-- AUTO_INCREMENT cho bảng `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
@@ -370,11 +500,29 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `user_admin`
 --
 ALTER TABLE `user_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT cho bảng `user_customer`
+--
+ALTER TABLE `user_customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `fk_id_user` FOREIGN KEY (`id_user`) REFERENCES `user_customer` (`id`);
+
+--
+-- Các ràng buộc cho bảng `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD CONSTRAINT `fk_id_products` FOREIGN KEY (`id_products`) REFERENCES `products` (`id`);
 
 --
 -- Các ràng buộc cho bảng `products`

@@ -8,10 +8,18 @@
 }
 
 .row {
-    display: ;
+    /*display: ;*/
     display: none;
     display: flex;;
     flex-wrap: unset;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.r_products {
+    display: none;
+    display: flex;
+    flex-wrap: wrap;
     margin-right: 0px;
     margin-left: 0px;
 }
@@ -32,6 +40,7 @@
 img.LogoImg {
     width: 100px;
     margin-left: 55%;
+    margin-bottom: 10px;
 }
 
 .IconAnchor {
@@ -57,7 +66,7 @@ img.LogoImg {
 li.liMenu {
     display: inline-table;
     width: 300px;
-/*    height: 40px;*/
+    /*    height: 40px;*/
     line-height: 40px;
     position: relative;
 }
@@ -67,12 +76,17 @@ ul.ulMenu {
 }
 
 a {
+    color: #CD0439;
+}
+
+a.anchor_text {
     display: block;
     color: #CD0439;
 }
 
-a:hover {
-    background: #F3F3F3;
+a.anchor_text:hover {
+    background: unset;
+    transform: scale(1.1);
 }
 
 ul.subMenu {
@@ -83,11 +97,13 @@ ul.subMenu {
 
 a.anchorSubMenu {
     color: white;
+    display: block;
 }
 
 a.anchorSubMenu:hover {
     color: #CF0038;
     background: #F3F3F3;
+    display: block;
 }
 
 li:hover ul.subMenu {
@@ -100,6 +116,10 @@ a:hover {
     color: #D40131;
     text-decoration: unset;
     transition: all 0.2s ease-in-out;
+}
+
+a.anchorList {
+    display: block;
 }
 
 a.anchorList::before {
@@ -147,9 +167,73 @@ h2 {
     margin: 0 auto;
 }
 
+.ProductClothing {
+    width: 25%;
+    /*margin-right: 30px;*/
+    margin-bottom: 50px;
+}
+
 .ProductImage {
-    padding-right: 30px;
-    padding-bottom: 40px;
+    margin-bottom: 10px;
+    width: 380px;
+    height: 480px;
+}
+
+img.imgProduct {
+    width: 355px;
+    height: 480px;
+    transition: all 0.3s ease-in-out;
+}
+
+img.imgProduct:hover {
+    transform: scale(1.1);
+}
+
+img.imgProductsmall {
+    width: 355px;
+    height: 400px;
+    transition: all 0.3s ease-in-out;
+}
+
+img.imgProductsmall:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
+}
+
+p.TitleProduct {
+    color: black;
+    padding-top: 20px;
+}
+
+/*p.Price {*/
+/*    color: red;*/
+/*    margin-top: -5px;*/
+/*}*/
+
+a.Price {
+    color: black;
+}
+
+a.Sale_Price {
+    margin-left: 10px;
+}
+
+a.Order {
+    background: #CD0439;
+    color: white;
+    padding: 10px 110px;
+}
+
+a.Order:hover {
+    background: red;
+}
+
+.pictureProduct {
+    height: 480px;
+}
+
+a.Price {
+    color: black;
 }
 
 img.imgProduct {
@@ -161,10 +245,6 @@ p.TitleProduct {
     padding-top: 20px;
 }
 
-p.Price {
-    color: red;
-    margin-top: -5px;
-}
 
 img.HoodieProduct {
     padding-left: 3px;

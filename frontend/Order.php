@@ -2,6 +2,16 @@
 session_start();
 require_once '../backend/connection.php';
 
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    $id = $_GET['user_id'];
+    $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
+    $result_user = mysqli_query($connection, $sql_select_user);
+    $user = mysqli_fetch_assoc($result_user);
+    echo '<pre>';
+    print_r($user);
+    echo '</pre>';
+}
+
 //session_destroy();
 //die();
 
@@ -27,6 +37,10 @@ if ($result_one) {
 $action = (isset($_GET['action'])) ? $_GET['action'] : 'add';
 
 $quantity = (isset($_GET['quantity'])) ? $_GET['quantity'] : 1;
+
+if ($quantity <= 0) {
+    $quantity = 1;
+}
 //var_dump($action);
 //echo '<pre>';
 //print_r($product);
@@ -64,7 +78,13 @@ if ($action == 'delete') {
     unset($_SESSION['cart'][$id]);
 }
 
-header('Location: Cart.php');
-exit();
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    header('Location: Cart.php?user_id=' . $user['id']);
+    exit();
+}
+else {
+    header('Location: Cart.php');
+    exit();
+}
 
 ?>

@@ -8,30 +8,68 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$id = $_GET['id'];
-
+$id = $_GET['user_id'];
 
 $sql_select_one= "SELECT * FROM user_admin WHERE id = $id";
 $result_one = mysqli_query($connection, $sql_select_one);
 $user = mysqli_fetch_assoc($result_one);
 
-$sql_select_orders = "SELECT orders.*, user_customer.full_name as 'name' FROM orders JOIN user_customer ON orders.id_user = user_customer.id";
+$id_orders = $_GET['id'];
+
+$sql_select_orders = "SELECT * FROM orders WHERE id = $id_orders";
 $result_orders = mysqli_query($connection, $sql_select_orders);
-$orders = mysqli_fetch_all($result_orders, MYSQLI_ASSOC);
+$customer = mysqli_fetch_assoc($result_orders);
 echo '<pre>';
-print_r($orders);
+print_r($customer);
 echo '</pre>';
 
-$sql_select_orders_detail = "SELECT * FROM order_detail ORDER BY created_at DESC ";
+$sql_select_orders_detail = "SELECT order_detail.*, products.name as 'product_name', products.img FROM order_detail JOIN products ON order_detail.id_products = products.id WHERE id_orders = $id_orders ";
 $result_orders_detail = mysqli_query($connection, $sql_select_orders_detail);
 $orders_detail = mysqli_fetch_all($result_orders_detail, MYSQLI_ASSOC);
-//echo '<pre>';
-//print_r($orders_detail);
-//echo '</pre>';
+echo '<pre>';
+print_r($orders_detail);
+echo '</pre>';
 
 echo '<pre>';
 print_r($user);
 echo '</pre>';
+
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
+
+$error = '';
+
+if (isset($_POST['submit'])) {
+    $submit = $_POST['submit'];
+    $status = $_POST['status'];
+    if ($status == 0) {
+        $status = 'Đang khởi tạo';
+    }
+    elseif ($status == 1) {
+        $status = 'Đang xử lý';
+    }
+    elseif ($status == 2) {
+        $status = 'Đã giao cho bên vận chuyển';
+    }
+    elseif ($status == 3) {
+        $status = 'Đang giao hàng';
+    }
+    elseif ($status == 4) {
+        $status = 'Giao hàng thành công';
+    }
+    $sql_update = "UPDATE orders SET status = '$status' WHERE id = $id_orders";
+    $is_update = mysqli_query($connection, $sql_update);
+    var_dump($is_update);
+    if ($is_update) {
+        $_SESSION['success'] = 'Cập nhật đơn hàng thành công';
+        header('Location: Order.php?id=' . $user['id']);
+        exit();
+    }
+    else {
+        $_SESSION['error'] = 'Cập nhật đơn hàng thất bại';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -232,45 +270,70 @@ echo '</pre>';
                 ?>
             </p>
             <br>
-            <table border="2" cellspacing="0" cellpadding="8" style="width: 100%;">
-                <tr>
-                    <th style="text-align: center;">ID</th>
-                    <th style="text-align: center;">Người mua</th>
-                    <th style="text-align: center;">Created_at</th>
-                    <th style="text-align: center;">Trạng thái</th>
-                    <th style="text-align: center;"></th>
-                </tr>
-                <?php $number = 1;
-                foreach ($orders AS $key => $value): ?>
-                <tr style="text-align: center;">
-                    <td style="padding: 10px"><?php echo $number++; ?></td>
-                    <td style="padding: 10px"><?php echo $value['name'];  ?></td>
-                    <td style="padding: 10px"><?php echo date('d/m/Y H:i:s', strtotime($value['created_at'])); ?></td>
-                    <td style="padding: 10px">
-                        <?php if ($value['status'] == 'Đang khởi tạo') { ?>
-                            <span style="color: white; background: red; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
-                        <?php }
-                        elseif($value['status'] == 'Đang xử lý') {?>
-                            <span style="color: white; background: orange; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
-                        <?php }
-                        elseif ($value['status'] == 'Đã giao cho bên vận chuyển') {?>
-                            <span style="color: white; background: lightseagreen; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
-                        <?php }
-                        elseif ($value['status'] == 'Đang giao hàng') {?>
-                            <span style="color: white; background: mediumseagreen; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
-                        <?php }
-                        elseif ($value['status'] == 'Giao hàng thành công') {?>
-                            <span style="color: white; background: green; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
-                        <?php } ?>
-                    </td>
-                    <td style="padding: 10px">
-                        <a href="Order_detail.php?id=<?php echo $value['id'] ?>&user_id=<?php echo $user['id']; ?>"><i class="fas fa-eye" title="Xem chi tiết" style="margin-right: 10px;"></i></a>
-                        <a href="Delete_Order.php?id=<?php echo $value['id'] ?>&user_id=<?php echo $user['id']; ?>" onclick="return confirm('Xóa đơn hàng ?')" ><i class="fas fa-trash-alt" title="delete" style="color: red"></i></a>
-
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
+            <h3 style="margin: 30px 0px; font-weight: 600">Thông tin khách hàng</h3>
+            <a href="Order.php?id=<?php echo $user['id']; ?>"><i class="fas fa-shopping-cart" style="margin-right: 5px;"></i>Trang đơn hàng</a>
+            <form action="" method="post" style="margin-top: 30px">
+                <div class="form-group">
+                    <label for="name" style="font-size: 16px">Tên người đặt: <span style="font-weight: 600"><?php echo $customer['name']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label for="email" style="font-size: 16px">E-mail: <span style="font-weight: 500"><?php echo $customer['email']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label for="phone" style="font-size: 16px">Số điện thoại: <span style="font-weight: 500"><?php echo $customer['phone']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label for="phone" style="font-size: 16px">Địa chỉ: <span style="font-weight: 500"><?php echo $customer['address']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label for="phone" style="font-size: 16px">Tỉnh/Thành: <span style="font-weight: 500"><?php echo $customer['city']; ?></span>,</label>
+                    <label for="phone" style="font-size: 16px">Quận/Huyện: <span style="font-weight: 500"><?php echo $customer['district']; ?></span>,</label>
+                    <label for="phone" style="font-size: 16px">Phường/Xã: <span style="font-weight: 500"><?php echo $customer['ward']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label for="phone" style="font-size: 16px">Ghi chú: <span style="font-weight: 500"><?php echo $customer['note']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label for="phone" style="font-size: 16px">Phương thức thanh toán: <span style="font-weight: 500"><?php echo $customer['pay_method']; ?></span></label>
+                </div>
+                <div class="form-group">
+                    <label style="font-size: 16px">Ngày tạo đơn: <span style="font-weight: 500"><?php echo date('d/m/Y H:i:s', strtotime($customer['created_at'])); ?></span></label>
+                </div>
+                <br>
+                <table border="1" cellspacing="0" cellpadding="8">
+                    <tr>
+                        <th style="text-align: center; padding: 30px">STT</th>
+                        <th style="text-align: center; padding: 30px">Tên sản phẩm</th>
+                        <th style="text-align: center; padding: 30px">Số lượng</th>
+                        <th style="text-align: center; padding: 30px">Giá</th>
+                        <th style="text-align: center; padding: 30px">Ảnh sản phẩm</th>
+                    </tr>
+                    <?php $number = 1;
+                    foreach ($orders_detail AS $key => $value):
+                    ?>
+                    <tr>
+                        <td style="padding: 30px; text-align: center;"><?php echo $number++; ?></td>
+                        <td style="padding: 30px; text-align: center;"><?php echo $value['product_name']; ?></td>
+                        <td style="padding: 30px; text-align: center;"><?php echo $value['quantity']; ?></td>
+                        <td style="padding: 30px; text-align: center;"><?php echo number_format($value['price']) . 'đ'; ?></td>
+                        <td style="padding: 30px; text-align: center;"><img src="../Products/uploads/<?php echo $value['img']; ?>" style="width: 100px; height: 100px;"></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
+                <br>
+                <div class="form-group"><label for="name" style="font-size: 16px">Trạng thái đơn hàng</label>
+                    <br>
+                    <br>
+                    <input type="radio" name="status" <?php if ($customer['status'] == 'Đang khởi tạo') { echo 'checked= "checked" '; } else { echo ''; } ?> value="0"> <span style="margin-right: 10px;">Đang khởi tạo</span>
+                    <input type="radio" name="status" <?php if ($customer['status'] == 'Đang xử lý') { echo 'checked= "checked" '; } else { echo ''; } ?> value="1"> <span style="margin-right: 10px;">Đang xử lý</span>
+                    <input type="radio" name="status" <?php if ($customer['status'] == 'Đã giao cho bên vận chuyển') { echo 'checked= "checked" '; } else { echo ''; } ?> value="2"> <span style="margin-right: 10px;">Đã giao cho bên vận chuyển</span>
+                    <input type="radio" name="status" <?php if ($customer['status'] == 'Đang giao hàng') { echo 'checked= "checked" '; } else { echo ''; } ?> value="3"> <span style="margin-right: 10px;">Đang giao hàng</span>
+                    <input type="radio" name="status" <?php if ($customer['status'] == 'Giao hàng thành công') { echo 'checked= "checked" '; } else { echo ''; } ?> value="4"> <span style="margin-right: 10px;">Giao hàng thành công</span>
+                </div>
+                <br>
+<!--                <input type="hidden" id="id" name="id" value="--><?php //echo $user['id'];?><!--">-->
+                <input type="submit" name="submit" value="Lưu">
+            </form>
 
 
         </section>

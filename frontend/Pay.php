@@ -2,6 +2,16 @@
 session_start();
 require_once '../backend/connection.php';
 
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    $id = $_GET['user_id'];
+    $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
+    $result_user = mysqli_query($connection, $sql_select_user);
+    $user = mysqli_fetch_assoc($result_user);
+    echo '<pre>';
+    print_r($user);
+    echo '</pre>';
+}
+
 $sql_select_cate = "SELECT * FROM category WHERE status = 1";
 $result_cate = mysqli_query($connection, $sql_select_cate);
 $categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
@@ -16,6 +26,65 @@ elseif (empty($_SESSION['cart'])) {
 echo '<pre>';
 print_r($cart);
 echo '</pre>';
+
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
+
+$error = '';
+
+if (isset($_POST['submit']) && $_POST['pay_method'] == 0) {
+    $pay_method = $_POST['pay_method'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $note = $_POST['note'];
+
+    if (empty($name) || empty($email) || empty($phone) || empty($address)) {
+        $error = 'Hãy nhập đầy đủ thông tin';
+    }
+    elseif ($_POST['city'] == 'null') {
+        $error = 'Vui lòng chọn tỉnh/thành';
+    }
+    elseif ($_POST['district'] == 'null') {
+        $error = 'Vui lòng chọn quận/huyện';
+    }
+    elseif ($_POST['ward'] == 'null') {
+        $error = 'Vui lòng chọn phường/xã';
+    }
+
+    if (empty($error)) {
+        if ($pay_method == 0) {
+            $pay_method = 'Ship COD';
+        }
+        $sql_insert = "INSERT INTO orders (id_user, name, email, note, address, city, district, ward, phone, pay_method, status)
+        VALUES('$user[id]', '$name', '$email', '$note', '$address', '$_POST[city]', '$_POST[district]', '$_POST[ward]' , '$phone', '$pay_method', 'Đang khởi tạo') ";
+        $is_insert = mysqli_query($connection, $sql_insert);
+        if ($is_insert) {
+            // Lấy id của bảng orders và gán vào biến id_order của bảng order_detail
+            $id_order = mysqli_insert_id($connection);
+            var_dump($id_order);
+            //Foreach cart ra để dùng biến value lấy thông tin của sản phẩm
+            foreach ($cart AS $key1 => $value1) {
+                if ($value1['sale_price'] != 0) {
+                    $sql_insert_detail = "INSERT INTO order_detail(id_orders, id_products, quantity, price)
+                VALUES ('$id_order', '$value1[id]', '$value1[quantity]', '$value1[sale_price]')";
+                }
+                if ($value1['sale_price'] == 0) {
+                    $sql_insert_detail = "INSERT INTO order_detail(id_orders, id_products, quantity, price)
+                VALUES ('$id_order', '$value1[id]', '$value1[quantity]', '$value1[price]')";
+                }
+                $is_insert_detail = mysqli_query($connection, $sql_insert_detail);
+                var_dump($is_insert_detail);
+            }
+            unset($_SESSION['cart']);
+            unset($_SESSION['new_number_in_cart']);
+            header('Location: Homepage.php?user_id=' . $user['id']);
+        }
+    }
+}
+
 
 
 ?>
@@ -38,31 +107,89 @@ echo '</pre>';
 <div class="container-fluid">
     <!-- HEADER -->
     <div class="ContainerHeader">
+        <!-- HEADER -->
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="img/Logo Zombie.jpg" class="LogoImg">
+                    <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
-                    <i class="fab fa-facebook-f iconawesome"></i>
-                    <i class="fab fa-instagram iconawesome"></i>
-                    <i class="fas fa-search iconawesome"></i>
-                    <i class="fas fa-user-circle iconawesome"></i>
-                    <a href="Cart.php"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                    }
+                    else {
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                    }
+                    ?>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php }
+                    else {
+                        echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
+                    }
+                    ?>
                 </div>
             </div>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<div class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
             <div class="MenuHeader">
                 <ul class="ulMenu">
-                    <li class="liMenu"><a href="Homepage.php" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Homepage.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Trang Chủ</a>
+                        <?php }
+                        else {
+                            echo '<a href="Homepage.php" class="anchorList">Trang Chủ</a>';
+                        }
+                        ?>
+                    </li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Sản phẩm</a>
+                        <?php }
+                        else {
+                            echo '<a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>';
+                        }
+                        ?>
                         <ul class="subMenu">
-                            <li class="liSubMenu"><a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
-                            <?php foreach ($categories AS $keys => $values):?>
-                                <li class="liSubMenu"><a href="Products_Category.php?id=<?php echo $values['id_cat']; ?>" class="anchorSubMenu"><?php echo $values['name']; ?></a></li>
-                            <?php endforeach; ?>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>
+                                <?php }
+                                else {
+                                    echo '<a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>';
+                                }
+                                ?>
+                                <?php foreach ($categories AS $key => $value):?>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>&&user_id=<?php echo $user['id']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php } endforeach; ?>
                         </ul>
                     </li>
-                    <li class="liMenu"><a href="News_Frontend.php" class="anchorList">Tin tức</a></li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Tin tức</a>
+                        <?php }
+                        else {
+                            echo '<a href="News_Frontend.php" class="anchorList">Tin tức</a>';
+                        }
+                        ?>
+                    </li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -100,7 +227,16 @@ echo '</pre>';
                 </tr>
                 <?php
                 $number = 1;
+                $total_price = 0;
                 foreach ($cart AS $key => $value):
+                    $price_number = 0;
+                    if ($value['sale_price'] != 0) {
+                        $price_number = $price_number + ($value['sale_price'] * $value['quantity']);
+                    }
+                    else {
+                        $price_number = $price_number + ($value['price'] * $value['quantity']);
+                    }
+                    $total_price = $total_price + $price_number;
                     ?>
                     <tr>
                         <td><?php
@@ -126,7 +262,7 @@ echo '</pre>';
                 <?php endforeach; ?>
             </table>
             <div class="Total">
-                <h5>Tổng số tiền: <span style="color: red"><?php echo 1000 . 'đ'; ?></span> </h5>
+                <h5>Tổng số tiền: <span style="color: red"><?php echo number_format($total_price) . 'đ'; ?></span> </h5>
             </div>
             <form action="" method="post">
             <div class="Method">
@@ -134,26 +270,32 @@ echo '</pre>';
             <input type="radio" name="pay_method" value="0" checked="checked"> Thanh toán COD
             <br>
             <br>
+                <p class="error_alert" style="color: red"><?php echo $error; ?></p>
                 <div class="Form_COD">
                     <table border="0px" cellpadding="8" cellspacing="0" class="table_COD">
                         <tr>
                             <td style="padding: 20px 0px;"><label for="input">Họ và tên:</label></td>
-                            <td><input type="text" name="name" id="input" placeholder="Họ và tên"></td>
+                            <td><input type="text" name="name" id="input" placeholder="Họ và tên" value="<?php echo $user['full_name']; ?>"></td>
                         </tr>
                         <tr>
                             <td style="padding: 20px 0px;"><label for="input">E-mail:</label></td>
-                            <td><input type="email" name="email" id="input" placeholder="E-mail"></td>
+                            <td><input type="email" name="email" id="input" placeholder="E-mail" value="<?php echo $user['email']; ?>"></td>
                         </tr>
                         <tr>
                             <td style="padding: 20px 0px;"><label for="input">Số điện thoại:</label></td>
-                            <td><input type="text" name="phone" id="input" placeholder="Số điện thoại"></td>
+                            <td><input type="text" name="phone" id="input" placeholder="Số điện thoại" value="<?php echo $user['phone']; ?>"></td>
                         </tr>
                         <tr>
                             <td style="padding: 20px 0px;"><label for="input">Địa chỉ:</label></td>
                             <td><input type="text" name="address" id="input" placeholder="Địa chỉ"></td>
                         </tr>
+                        <tr>
+                            <td style="padding: 20px 0px;"><label for="input">Ghi chú:</label></td>
+                            <td><textarea name="note" id="input" placeholder="Ghi chú..."></textarea></td>
+                        </tr>
                     </table>
                 <br>
+                    <div class="select_location">
                 <select name="city">
                     <option value="null">Chọn tỉnh/thành</option>
                     <option value="HN">Hà Nội</option>
@@ -162,21 +304,24 @@ echo '</pre>';
                 </select>
                 <select name="district" style="margin: 0px 10px;">
                     <option value="null">Chọn quận/huyện</option>
-                    <option value="HN">Quận Hà Đông</option>
-                    <option value="HCM">Quận 1</option>
-                    <option value="ĐN">Quận Cẩm Lệ</option>
+                    <option value="HĐ">Quận Hà Đông</option>
+                    <option value="Q1">Quận 1</option>
+                    <option value="CL">Quận Cẩm Lệ</option>
                 </select>
                 <select name="ward">
                     <option value="null">Chọn phường/xã</option>
-                    <option value="HN">Hà Nội</option>
-                    <option value="HCM">Hồ Chí Minh</option>
-                    <option value="ĐN">Đà Nẵng</option>
+                    <option value="QT">Phường Quang Trung</option>
+                    <option value="PNL">Phường Phạm Ngũ Lão</option>
+                    <option value="HP">Phường Hòa Phát</option>
                 </select>
+                    </div>
                 </div>
-            <input type="radio" name="pay_method" value="1"> Thanh toán Online
             </div>
+                <div class="Online_Payment">
+                <input type="radio" name="pay_method" value="1"> Thanh toán Online
+                </div>
             <div class="Payment">
-                <button type="submit" href="#" name="submit" class="Pay">Thanh toán</button>
+                <button type="submit" href="#" name="submit" class="Pay" onclick="return confirm('Xán nhận thanh toán ?')">Thanh toán</button>
             </div>
             </form>
         </div>
