@@ -233,7 +233,15 @@ if (isset($_POST['submit'])) {
                 </li>
                 <li>
                     <a href="../Users/Users.php?id=<?php echo $user['id']; ?>">
-                        <i class="fa fa-code"></i> <span>Quản lý user</span>
+                        <i class="fa fa-code"></i> <span>Quản lý admin</span>
+                        <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">new</small>-->
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../Customer/Customer.php?id=<?php echo $user['id']; ?>">
+                        <i class="fas fa-users"></i> <span>Quản lý users</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
             </span>

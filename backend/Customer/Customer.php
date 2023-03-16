@@ -17,13 +17,23 @@ echo '<pre>';
 print_r($user);
 echo '</pre>';
 
+$sql_select_all = "SELECT * FROM user_customer ORDER BY created_at DESC";
+$result_all = mysqli_query($connection, $sql_select_all);
+$users = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($users);
+echo '</pre>';
+
+
+
 ?>
+<!-- User.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quản lý sản phẩm</title>
+    <title>Quản lý người dùng</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -38,7 +48,6 @@ echo '</pre>';
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <script src="https://cdn.ckeditor.com/4.20.1/full/ckeditor.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -194,101 +203,56 @@ echo '</pre>';
         </section>
     </div>
 
-    <!-- Messaeg Wrapper. Contains messaege error and success -->
-    <div class="message-wrap content-wrap content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="alert alert-danger">Lỗi validate</div>
-            <p class="alert alert-success">Thành công</p>
-        </section>
-    </div>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
         <section class="content">
             Nội dung hiển thị ở đây
             <br>
-            <div class="form login" style="width: 30%;">
-                <h2 style="font-weight: 600">Thông tin người dùng</h2>
+            <br>
             <p style="color: red"><?php
                 if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
                     echo $_SESSION['error'];
                     unset($_SESSION['error']);
+                    echo '</div>';
                 }
                 ?>
             </p>
             <p style="color: green"><?php
                 if (isset($_SESSION['success'])) {
+                    echo '<p class="alert alert-success">';
                     echo $_SESSION['success'];
                     unset($_SESSION['success']);
+                    echo '</p>';
                 }
                 ?>
-            </p>
-                <br>
-                <a href="Update_Profile.php?id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Sửa thông tin người dùng</a>
-                <br>
-                <br>
-                <a href="Update_Password.php?id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Đổi mật khẩu</a>
-            <br>
-            <br>
-            <form action="" method="post" enctype="multipart/form-data">
-                <div class="form-group" >
-                    <label for="name">Name: <?php echo $user['name']; ?></label>
-                </div>
-                <div class="form-group">
-                    <label for="full_name">Full name</label>
-                    <input type="text" name="full_name" id="full_name" class="form-control" value="<?php echo $user['full_name']; ?>" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" class="form-control" value="<?php echo $user['username']; ?>" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" value="123123123123123" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" class="form-control" value="<?php echo $user['email']; ?>" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Avatar</label>
-                    <?php
-                    if ($user['avatar'] == '') {
-                        echo '<img src="../assets/images/admin-user-icon-4.jpg" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">';
-                    }
-                    ?>
-                    <?php if ($user['avatar'] != '') {?>
-                    <img src="admin_avatar/<?php echo $user['avatar']; ?>" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">
-                    <?php } ?>
-                </div>
-                <br>
-                <div class="form-group" >
-                    <label for="gender">Gender</label>
-                    <input type="radio" name="gender" id="gender" value="0"
-                        <?php if ($user['gender'] == 'Male') {
-                        echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                    ?>> Male
-                    <input type="radio" name="gender" id="gender" value="1"
-                        <?php if ($user['gender'] == 'Female') {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>> Female
-                </div>
-                <br>
-<!--                <div class="form-group">-->
-<!--                    <input type="submit" name="submit" value="Cập nhật" class="btn btn-success">-->
-<!--                </div>-->
-            </form>
-            </div>
+            <div class="News"></div>
+            <table border="2px" cellspacing="0px" cellpadding="8px" style="width: 100%" class="table-hover">
+                <tr>
+                    <th style="padding: 20px; text-align: center">STT</th>
+                    <th style="padding: 20px; text-align: center">Tên đầy đủ</th>
+                    <th style="padding: 20px; text-align: center">E-mail</th>
+                    <th style="padding: 20px; text-align: center">Giới tính</th>
+                    <th style="padding: 20px; text-align: center">Created at</th>
+                    <th style="padding: 20px; text-align: center"></th>
+                </tr>
+                <?php
+                $id_user = 1;
+                foreach ($users AS $key => $value): ?>
+                    <tr>
+                        <td style="padding: 20px; text-align: center"><?php echo $id_user++; ?></td>
+                        <td style="padding: 20px; text-align: center"><?php echo $value['full_name']; ?></td>
+                        <td style="padding: 20px; text-align: center"><?php echo $value['email']; ?></td>
+                        <td style="padding: 20px; text-align: center"><?php echo $value['gender']; ?></td>
+                        <td style="padding: 20px; text-align: center"><?php echo date('H:i d/m/Y', strtotime($value['created_at'])); ?></td>
+                        <td style="padding: 20px; text-align: center">
+                            <a href="View_Customer.php?id=<?php echo $value['id']; ?>&id_user=<?php echo $user['id']; ?>" title="Xem thông tin"><i class="fas fa-eye"></i> View Profile</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
         </section>
         <!-- /.content -->
 
@@ -317,3 +281,4 @@ echo '</pre>';
 <script src="../assets/js/adminlte.min.js"></script>
 </body>
 </html>
+

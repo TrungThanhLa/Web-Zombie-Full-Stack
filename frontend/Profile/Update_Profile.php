@@ -12,6 +12,10 @@ if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
     echo '</pre>';
 }
 
+if (!isset($id)) {
+    header('Location: ../Homepage.php');
+}
+
 $sql_select_all = "SELECT * FROM category WHERE status = 1";
 $result_all = mysqli_query($connection, $sql_select_all);
 $category = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
@@ -26,7 +30,6 @@ $homepage = mysqli_fetch_assoc($result_homepage);
 //print_r($homepage);
 //echo '</pre>';
 
-<<<<<<< HEAD
 $sql_select_users = "SELECT * FROM user_customer WHERE id != $id";
 $result_users = mysqli_query($connection, $sql_select_users);
 $users = mysqli_fetch_all($result_users, MYSQLI_ASSOC);
@@ -40,60 +43,44 @@ echo '</pre>';
 
 $error = '';
 
-foreach ($users AS $key => $value) {
-
     if (isset($_POST['submit'])) {
         $fullname = $_POST['full_name'];
         $username = $_POST['username'];
         $gender = $_POST['gender'];
         $email = $_POST['email'];
         $phone = $_POST['phone'];
+    foreach ($users AS $key => $value) {
 
-        if (empty($fullname) || empty($email) || empty($phone)) {
-            $error = 'Vui lòng nhập đầy đủ thông tin';
-        }
-        if ($email == $value['email']) {
-            $error = 'E-mail đã tồn tại';
-        }
-        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = 'Vui lòng điền đúng định dạng email';
-        }
-        if ($phone == $value['phone']) {
-            $error = 'Số điện thoại đã tồn tại';
-        }
-
-       if (empty($error)) {
-           if ($gender == 0) {
-               $gender = 'Male';
-           }
-           else {
-               $gender = 'Female';
-           }
-           $sql_update = "UPDATE user_customer SET full_name = '$fullname', phone = '$phone', email = '$email', gender = '$gender' WHERE id = $id ";
-           $is_update = mysqli_query($connection, $sql_update);
-           var_dump($is_update);
-           if (isset($is_update)) {
-               $_SESSION['success'] = 'Cập nhật thông tin thành công';
-               header('Location: Profile.php?user_id=' . $user['id']);
-               exit();
-           }
-           else {
-               $error = 'Cập nhật thông tin không thành công';
-           }
-       }
+    if (empty($fullname) || empty($email) || empty($phone)) {
+        $error = 'Vui lòng nhập đầy đủ thông tin';
+    } elseif ($email == $value['email']) {
+        $error = 'E-mail đã tồn tại';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Vui lòng điền đúng định dạng email';
+    } elseif ($phone == $value['phone']) {
+        $error = 'Số điện thoại đã tồn tại';
+    } elseif (!is_numeric($phone)) {
+        $error = 'Số điện thoại không được chứa ký tự đặc biệt';
     }
-=======
-//echo '<pre>';
-//print_r($_POST);
-//echo '</pre>';
-
-$error = '';
-
-if (isset($_POST['submit'])) {
-    $email = $_POST['email'];
-    $sign_up = $_POST['submit'];
->>>>>>> f648935519d4db978e9969d7cd12447b2770e558
-}
+    }
+        if (empty($error)) {
+            if ($gender == 0) {
+                $gender = 'Male';
+            } else {
+                $gender = 'Female';
+            }
+            $sql_update = "UPDATE user_customer SET full_name = '$fullname', phone = '$phone', email = '$email', gender = '$gender' WHERE id = $id ";
+            $is_update = mysqli_query($connection, $sql_update);
+            var_dump($is_update);
+            if (isset($is_update)) {
+                $_SESSION['success'] = 'Cập nhật thông tin thành công';
+                header('Location: Profile.php?user_id=' . $user['id']);
+                exit();
+            } else {
+                $error = 'Cập nhật thông tin không thành công';
+            }
+        }
+    }
 ?>
 <!-- Homepage.php -->
 <!DOCTYPE html>
@@ -203,8 +190,7 @@ if (isset($_POST['submit'])) {
                         }
                         ?>
                     </li>
-                    <li class="liMenu">
-                        <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
                             <a href="../Introduce.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Giới thiệu</a>
                         <?php }
                         else {
@@ -223,8 +209,6 @@ if (isset($_POST['submit'])) {
             <a href="#"><h3 style="font-weight: 400">TRANG SỬA THÔNG TIN PROFILE</h3></a>
         </div>
         <div class="form_login">
-<<<<<<< HEAD
-=======
             <p style="color: red"><?php
                 if (isset($_SESSION['error'])) {
                     echo $_SESSION['error'];
@@ -239,7 +223,6 @@ if (isset($_POST['submit'])) {
                 }
                 ?>
             </p>
->>>>>>> f648935519d4db978e9969d7cd12447b2770e558
             <br>
             <a href="Profile.php?user_id=<?php echo $user['id']; ?>"><i class="fa-solid fa-user"></i>Trang Profile</a>
             <br>
@@ -247,7 +230,6 @@ if (isset($_POST['submit'])) {
             <a href="Update_Password.php?user_id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Đổi mật khẩu</a>
             <br>
             <br>
-<<<<<<< HEAD
             <form action="" method="post">
                 <p style="color: red"><?php echo $error;
                     if (isset($_SESSION['error'])) {
@@ -263,9 +245,7 @@ if (isset($_POST['submit'])) {
                     }
                     ?>
                 </p>
-=======
             <form action="" method="post" enctype="multipart/form-data">
->>>>>>> f648935519d4db978e9969d7cd12447b2770e558
                 <div class="form-group" >
                     <label for="name">Name: <?php echo $user['full_name']; ?></label>
                 </div>
@@ -279,20 +259,6 @@ if (isset($_POST['submit'])) {
                             <label for="username">Username</label>
                             <input type="text" name="username" id="username" class="form-control" value="<?php echo $user['username']; ?>" readonly>
                         </div>
-<<<<<<< HEAD
-=======
-                    </div>
-                    <div class="Info2">
-                        <div class="form-group" >
-                            <label for="email">E-mail</label>
-                            <input type="email" name="email" id="email" class="form-control" value="<?php echo $user['email']; ?>" >
-                        </div>
-                        <div class="form-group" >
-                            <label for="phone">Phone</label>
-                            <input type="text" name="phone" id="phone" class="form-control" value="<?php echo $user['phone']; ?>" >
-                        </div>
-                        <br>
->>>>>>> f648935519d4db978e9969d7cd12447b2770e558
                         <div class="form-group" >
                             <label for="gender">Gender</label>
                             <input type="radio" name="gender" id="gender" value="0"
@@ -313,7 +279,6 @@ if (isset($_POST['submit'])) {
                                 ?>> Female
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div class="Info2">
                         <div class="form-group" >
                             <label for="email">E-mail</label>
@@ -326,8 +291,6 @@ if (isset($_POST['submit'])) {
                         <br>
                         <button type="submit" name="submit" value="Lưu thông tin" style="padding: 10px; border: 1px solid black;">Lưu thông tin</button>
                     </div>
-=======
->>>>>>> f648935519d4db978e9969d7cd12447b2770e558
                     <br>
                 </div>
             </form>

@@ -12,6 +12,10 @@ if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
     echo '</pre>';
 }
 
+if (!isset($id)) {
+    header('Location: ../Homepage.php');
+}
+
 $sql_select_all = "SELECT * FROM category WHERE status = 1";
 $result_all = mysqli_query($connection, $sql_select_all);
 $category = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
@@ -26,16 +30,48 @@ $homepage = mysqli_fetch_assoc($result_homepage);
 //print_r($homepage);
 //echo '</pre>';
 
-//echo '<pre>';
-//print_r($_POST);
-//echo '</pre>';
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
 
 $error = '';
 
 if (isset($_POST['submit'])) {
-    $email = $_POST['email'];
-    $sign_up = $_POST['submit'];
+    $password = $_POST['password'];
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    $password_hash = $user['password'];
+    $is_login = password_verify($password, $password_hash);
+    var_dump($is_login);
+
+    if ($is_login == false) {
+        $error = 'Sai mật khẩu';
+    }
+    elseif ($new_password == $password) {
+        $error = 'Mật khẩu mới phải khác mật khẩu cũ';
+    }
+    elseif ($new_password != $confirm_password) {
+        $error = 'Mật khẩu mới không trùng khớp';
+    }
+
+    if (empty($error)) {
+        $new_password_hash = password_hash($new_password, PASSWORD_BCRYPT);
+        $sql_update = "UPDATE user_customer SET password = '$new_password_hash'";
+        $is_update = mysqli_query($connection, $sql_update);
+        var_dump($is_update);
+        if ($is_update) {
+            $_SESSION['success'] = 'Đổi mật khẩu thành công';
+            header('Location: Profile.php?user_id=' . $user['id']);
+            exit();
+        }
+        else {
+            $error = 'Đổi mật khẩu không thành công';
+        }
+    }
+
 }
+
 ?>
 <!-- Homepage.php -->
 <!DOCTYPE html>
@@ -145,8 +181,7 @@ if (isset($_POST['submit'])) {
                         }
                         ?>
                     </li>
-                    <li class="liMenu">
-                        <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
                             <a href="../Introduce.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Giới thiệu</a>
                         <?php }
                         else {
@@ -165,7 +200,15 @@ if (isset($_POST['submit'])) {
             <a href="#"><h3 style="font-weight: 400">TRANG ĐỔI MẬT KHẨU</h3></a>
         </div>
         <div class="form_login">
+            <br>
+            <a href="Profile.php?user_id=<?php echo $user['id']; ?>"><i class="fa-solid fa-user"></i>Trang Profile</a>
+            <br>
+            <br>
+            <a href="Update_Profile.php?user_id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Sửa thông tin người dùng</a>
+            <br>
+            <br>
             <p style="color: red"><?php
+                echo $error;
                 if (isset($_SESSION['error'])) {
                     echo $_SESSION['error'];
                     unset($_SESSION['error']);
@@ -179,14 +222,7 @@ if (isset($_POST['submit'])) {
                 }
                 ?>
             </p>
-            <br>
-            <a href="Profile.php?user_id=<?php echo $user['id']; ?>"><i class="fa-solid fa-user"></i>Trang Profile</a>
-            <br>
-            <br>
-            <a href="Update_Profile.php?user_id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Sửa thông tin người dùng</a>
-            <br>
-            <br>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="" method="post">
                 <div class="form-group" >
                     <label for="name">Name: <?php echo $user['full_name']; ?></label>
                 </div>
@@ -204,6 +240,7 @@ if (isset($_POST['submit'])) {
                             <label for="password">Confirm New Password</label>
                             <input type="password" name="confirm_password" id="password" class="form-control">
                         </div>
+                        <button type="submit" name="submit" value="Đổi mật khẩu" style="margin-top: 20px; padding: 10px; border: 1px solid black;">Đổi mật khẩu</button>
                     </div>
                     <br>
                 </div>

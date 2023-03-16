@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$id = $_GET['id'];
+$id = $_GET['id_user'];
 
 $sql_select_one= "SELECT * FROM user_admin WHERE id = $id";
 $result_one = mysqli_query($connection, $sql_select_one);
@@ -17,6 +17,14 @@ echo '<pre>';
 print_r($user);
 echo '</pre>';
 
+$customer_id = $_GET['id'];
+
+$sql_select_customer = "SELECT * FROM user_customer WHERE id = $customer_id";
+$result_customer = mysqli_query($connection, $sql_select_customer);
+$customer = mysqli_fetch_assoc($result_customer);
+echo '<pre>';
+print_r($customer);
+echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html>
@@ -194,15 +202,6 @@ echo '</pre>';
         </section>
     </div>
 
-    <!-- Messaeg Wrapper. Contains messaege error and success -->
-    <div class="message-wrap content-wrap content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="alert alert-danger">Lỗi validate</div>
-            <p class="alert alert-success">Thành công</p>
-        </section>
-    </div>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
@@ -211,83 +210,70 @@ echo '</pre>';
             <br>
             <div class="form login" style="width: 30%;">
                 <h2 style="font-weight: 600">Thông tin người dùng</h2>
-            <p style="color: red"><?php
-                if (isset($_SESSION['error'])) {
-                    echo $_SESSION['error'];
-                    unset($_SESSION['error']);
-                }
-                ?>
-            </p>
-            <p style="color: green"><?php
-                if (isset($_SESSION['success'])) {
-                    echo $_SESSION['success'];
-                    unset($_SESSION['success']);
-                }
-                ?>
-            </p>
-                <br>
-                <a href="Update_Profile.php?id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Sửa thông tin người dùng</a>
-                <br>
-                <br>
-                <a href="Update_Password.php?id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Đổi mật khẩu</a>
-            <br>
-            <br>
-            <form action="" method="post" enctype="multipart/form-data">
-                <div class="form-group" >
-                    <label for="name">Name: <?php echo $user['name']; ?></label>
-                </div>
-                <div class="form-group">
-                    <label for="full_name">Full name</label>
-                    <input type="text" name="full_name" id="full_name" class="form-control" value="<?php echo $user['full_name']; ?>" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" class="form-control" value="<?php echo $user['username']; ?>" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" value="123123123123123" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" class="form-control" value="<?php echo $user['email']; ?>" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Avatar</label>
-                    <?php
-                    if ($user['avatar'] == '') {
-                        echo '<img src="../assets/images/admin-user-icon-4.jpg" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">';
+                <p style="color: red"><?php
+                    if (isset($_SESSION['error'])) {
+                        echo $_SESSION['error'];
+                        unset($_SESSION['error']);
                     }
                     ?>
-                    <?php if ($user['avatar'] != '') {?>
-                    <img src="admin_avatar/<?php echo $user['avatar']; ?>" width="100px" height="100px" style="margin-left: 20px; border-radius: 100px">
-                    <?php } ?>
-                </div>
+                </p>
+                <p style="color: green"><?php
+                    if (isset($_SESSION['success'])) {
+                        echo $_SESSION['success'];
+                        unset($_SESSION['success']);
+                    }
+                    ?>
+                </p>
                 <br>
-                <div class="form-group" >
-                    <label for="gender">Gender</label>
-                    <input type="radio" name="gender" id="gender" value="0"
-                        <?php if ($user['gender'] == 'Male') {
-                        echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                    ?>> Male
-                    <input type="radio" name="gender" id="gender" value="1"
-                        <?php if ($user['gender'] == 'Female') {
-                            echo 'checked';
-                        }
-                        else {
-                            echo '';
-                        }
-                        ?>> Female
-                </div>
+                <a href="Customer.php?id=<?php echo $user['id']; ?>"><i class="far fa-edit"></i>Quản lý users</a>
                 <br>
-<!--                <div class="form-group">-->
-<!--                    <input type="submit" name="submit" value="Cập nhật" class="btn btn-success">-->
-<!--                </div>-->
-            </form>
+                <br>
+                <form action="" method="post">
+                    <div class="form-group" >
+                        <label for="name">Name: <?php echo $customer['full_name']; ?></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="full_name">Full name</label>
+                        <input type="text" name="full_name" id="full_name" class="form-control" value="<?php echo $customer['full_name']; ?>" readonly>
+                    </div>
+                    <div class="form-group" >
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" value="<?php echo $customer['username']; ?>" readonly>
+                    </div>
+                    <div class="form-group" >
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" value="123123123123123" readonly>
+                    </div>
+                    <div class="form-group" >
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email" class="form-control" value="<?php echo $customer['email']; ?>" readonly>
+                    </div>
+                    <div class="form-group" >
+                        <label for="phone">Phone</label>
+                        <input type="number" name="phone" id="phone" class="form-control" value="<?php echo $customer['phone']; ?>" readonly>
+                    </div>
+                    <br>
+                    <div class="form-group" >
+                        <label for="gender">Gender</label>
+                        <input type="radio" name="gender" id="gender" value="0"
+                            <?php if ($user['gender'] == 'Male') {
+                                echo 'checked';
+                            }
+                            else {
+                                echo '';
+                            }
+                            ?>> Male
+                        <input type="radio" name="gender" id="gender" value="1"
+                            <?php if ($user['gender'] == 'Female') {
+                                echo 'checked';
+                            }
+                            else {
+                                echo '';
+                            }
+                            ?>> Female
+                    </div>
+                    <br>
+                </form>
             </div>
         </section>
         <!-- /.content -->

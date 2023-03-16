@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="IconAnchor">
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
-                        <a href="Profile.php?user_id=<?php echo $user['id']; ?>" title="Profile" style="font-size: 22px;"><i class="fa-solid fa-user"></i></a>
+                        <a href="Profile/Profile.php?user_id=<?php echo $user['id']; ?>" title="Profile" style="font-size: 22px;"><i class="fa-solid fa-user"></i></a>
                     <?php }
                     else {
                         echo '';
@@ -70,19 +70,21 @@ if (isset($_POST['submit'])) {
                     ?>
 
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
-                        echo '<a href="../Login&&out/Logout.php" class="Logout" style="font-size: 22px; padding: 0px 20px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px; padding: 0px 20px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
                     }
                     else {
-                        echo '<a href="../Login&&out/Login.php" class="Login" style="font-size: 22px; padding: 0px 20px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px; padding: 0px 20px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
                     }
                     ?>
+
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
-                        <a href="../Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                        <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
                     <?php }
                     else {
-                        echo '<a href="../Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
+                        echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
                     }
                     ?>
+
                 </div>
             </div>
             <p style="color: red"><?php
@@ -145,8 +147,7 @@ if (isset($_POST['submit'])) {
                         }
                         ?>
                     </li>
-                    <li class="liMenu">
-                        <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
                             <a href="../Introduce.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Giới thiệu</a>
                         <?php }
                         else {

@@ -31,42 +31,39 @@ echo '</pre>';
 
 $error = '';
 
-foreach ($users AS $key => $value) {
-
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $full_name = $_POST['full_name'];
     $username = $_POST['username'];
     $email = $_POST['email'];
     $avatar = $_FILES['avatar'];
+    foreach ($users AS $key => $value) {
 
-    if (empty($username) || empty($email)) {
-        $error = 'Vui lòng điền đầy đủ thông tin';
-    }
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Vui lòng điền đúng định dạng email';
-    }
-    elseif (is_numeric($name)) {
-        $error = 'Tên không được chứa số, vui lòng điền đầy đủ họ tên';
-    }
-    elseif (empty($full_name)) {
-        $error = 'Vui lòng nhập đầy đủ họ và tên';
-    }
-    if ($email == $value[5]) {
-        $error = 'Email đã tồn tại';
-    }
-    if ($avatar['error'] == 0) {
-        $extensions = pathinfo($avatar['full_path'], PATHINFO_EXTENSION);
-        $extensions = strtolower($extensions);
-        $allows = ['jpg', 'jpeg', 'png'];
-        if (!in_array($extensions, $allows)) {
-            $error = 'File tải lên phải là ảnh';
+        if (empty($username) || empty($email)) {
+            $error = 'Vui lòng điền đầy đủ thông tin';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Vui lòng điền đúng định dạng email';
+        } elseif (is_numeric($name)) {
+            $error = 'Tên không được chứa số, vui lòng điền đầy đủ họ tên';
+        } elseif (empty($full_name)) {
+            $error = 'Vui lòng nhập đầy đủ họ và tên';
         }
-    }
-    $size_b = $avatar['size'];
-    $size_mb = $size_b/1024/1024;
-    if ($size_mb > 2) {
-        $error = 'Ảnh tải lên không được vượt 2MB';
+        if ($email == $value[5]) {
+            $error = 'Email đã tồn tại';
+        }
+        if ($avatar['error'] == 0) {
+            $extensions = pathinfo($avatar['full_path'], PATHINFO_EXTENSION);
+            $extensions = strtolower($extensions);
+            $allows = ['jpg', 'jpeg', 'png'];
+            if (!in_array($extensions, $allows)) {
+                $error = 'File tải lên phải là ảnh';
+            }
+        }
+        $size_b = $avatar['size'];
+        $size_mb = $size_b / 1024 / 1024;
+        if ($size_mb > 2) {
+            $error = 'Ảnh tải lên không được vượt 2MB';
+        }
     }
 
     if (empty($error)) {
@@ -98,7 +95,6 @@ if (isset($_POST['submit'])) {
             $error = 'Cập nhật thất bại';
         }
     }
-}
 }
 
 ?>
@@ -244,7 +240,15 @@ if (isset($_POST['submit'])) {
                 </li>
                 <li>
                     <a href="../Users/Users.php?id=<?php echo $user['id']; ?>">
-                        <i class="fa fa-code"></i> <span>Quản lý user</span>
+                        <i class="fa fa-code"></i> <span>Quản lý admin</span>
+                        <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">new</small>-->
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../Customer/Customer.php?id=<?php echo $user['id']; ?>">
+                        <i class="fas fa-users"></i> <span>Quản lý users</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
             </span>

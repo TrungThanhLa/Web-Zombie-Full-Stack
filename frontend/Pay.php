@@ -114,13 +114,22 @@ if (isset($_POST['submit']) && $_POST['pay_method'] == 0) {
                     <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
-                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
-                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
-                    }
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Profile/Profile.php?user_id=<?php echo $user['id']; ?>" title="Profile" style="font-size: 22px;"><i class="fa-solid fa-user"></i></a>
+                    <?php }
                     else {
-                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                        echo '';
                     }
                     ?>
+
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px; padding: 0px 20px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                    }
+                    else {
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px; padding: 0px 20px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                    }
+                    ?>
+
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
                         <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
                     <?php }
@@ -128,6 +137,7 @@ if (isset($_POST['submit']) && $_POST['pay_method'] == 0) {
                         echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
                     }
                     ?>
+
                 </div>
             </div>
             <p style="color: red"><?php
@@ -190,7 +200,13 @@ if (isset($_POST['submit']) && $_POST['pay_method'] == 0) {
                         }
                         ?>
                     </li>
-                    <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Introduce.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Giới thiệu</a>
+                        <?php }
+                        else {
+                            echo '<a href="Introduce.php" class="anchorList">Giới thiệu</a>';
+                        }
+                        ?></li>
                 </ul>
             </div>
         </div>
