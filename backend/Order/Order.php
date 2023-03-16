@@ -1,3 +1,38 @@
+<?php
+session_start();
+require_once '../connection.php';
+
+if (!isset($_SESSION['username'])) {
+    $_SESSION['error'] = 'Hãy đăng nhập để truy cập';
+    header('Location: ../Log in & out/Log_in.php');
+    exit();
+}
+
+$id = $_GET['id'];
+
+
+$sql_select_one= "SELECT * FROM user_admin WHERE id = $id";
+$result_one = mysqli_query($connection, $sql_select_one);
+$user = mysqli_fetch_assoc($result_one);
+
+$sql_select_orders = "SELECT orders.*, user_customer.full_name as 'name' FROM orders JOIN user_customer ON orders.id_user = user_customer.id";
+$result_orders = mysqli_query($connection, $sql_select_orders);
+$orders = mysqli_fetch_all($result_orders, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($orders);
+echo '</pre>';
+
+$sql_select_orders_detail = "SELECT * FROM order_detail ORDER BY created_at DESC ";
+$result_orders_detail = mysqli_query($connection, $sql_select_orders_detail);
+$orders_detail = mysqli_fetch_all($result_orders_detail, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($orders_detail);
+//echo '</pre>';
+
+echo '<pre>';
+print_r($user);
+echo '</pre>';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,26 +77,38 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../assets/images/Admin Avatar.png" class="user-image" alt="User Image" height="160px" width="160px">
-                            <span class="hidden-xs">Lã Nguyễn Trung Thành</span>
+                            <?php if ($user['avatar'] == '') {
+                                echo '<img src="../assets/images/admin-user-icon-4.jpg" class="user-image" alt="User Image" height="160px" width="160px">';
+                            }
+                            else {
+                                ?>
+                                <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="user-image" alt="User Image" height="160px" width="160px">
+                            <?php } ?>
+                            <span class="hidden-xs"><?php echo $user['full_name']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php if ($user['avatar'] == '') {
+                                    echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                                }
+                                else {
+                                    ?>
+                                    <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                                <?php } ?>
 
                                 <p>
-                                    Lã Thành - Web Developer
+                                    <?php echo $user['name'];?>
                                     <small>Quản trị viên</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="../Users/Profile.php?id=<?php echo $user['id']; ?>" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="../Log in & out/Log_out.php" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -77,10 +124,16 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../assets/images/Admin Avatar.png" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php if ($user['avatar'] == '') {
+                        echo '<img src="../assets/images/admin-user-icon-4.jpg" class="img-circle" alt="User Image" height="160px" width="160px">';
+                    }
+                    else {
+                        ?>
+                        <img src="../Users/admin_avatar/<?php echo $user['avatar']; ?>" class="img-circle" alt="User Image" height="160px" width="160px">
+                    <?php } ?>
                 </div>
                 <div class="pull-left info">
-                    <p>Lã Nguyễn Trung Thành</p>
+                    <p><?php echo $user['full_name']; ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -88,7 +141,7 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">THANH QUẢN TRỊ</li>
                 <li>
-                    <a href="../Homepage/Home.php">
+                    <a href="../Homepage/Home.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-h-square"></i> <span>Quản lý trang chủ</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -96,7 +149,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="News.html">
+                    <a href="../News/News.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-th"></i> <span>Tin tức</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -104,7 +157,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="Products.html">
+                    <a href="../Products/Products.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-boxes"></i> <span> Sản phẩm</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -112,7 +165,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="Order.html">
+                    <a href="../Order/Order.php?id=<?php echo $user['id']; ?>">
                         <i class="fas fa-dolly-flatbed"></i> <span>Đơn hàng</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -120,7 +173,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="User.html">
+                    <a href="../Users/Users.php?id=<?php echo $user['id']; ?>">
                         <i class="fa fa-code"></i> <span>Quản lý user</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -151,8 +204,6 @@
     <div class="message-wrap content-wrap content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="alert alert-danger">Lỗi validate</div>
-            <p class="alert alert-success">Thành công</p>
         </section>
     </div>
 
@@ -162,10 +213,65 @@
         <section class="content">
             Nội dung hiển thị ở đây
             <br>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<div class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
             <br>
-            <div class="News"></div>
-            <h4>Tiêu đề :</h4>
-            <input type="text" name="Title">
+            <table border="2" cellspacing="0" cellpadding="8" style="width: 100%;">
+                <tr>
+                    <th style="text-align: center;">ID</th>
+                    <th style="text-align: center;">Người mua</th>
+                    <th style="text-align: center;">Created_at</th>
+                    <th style="text-align: center;">Trạng thái</th>
+                    <th style="text-align: center;"></th>
+                </tr>
+                <?php $number = 1;
+                foreach ($orders AS $key => $value): ?>
+                <tr style="text-align: center;">
+                    <td style="padding: 10px"><?php echo $number++; ?></td>
+                    <td style="padding: 10px"><?php echo $value['name'];  ?></td>
+                    <td style="padding: 10px"><?php echo date('d/m/Y H:i:s', strtotime($value['created_at'])); ?></td>
+                    <td style="padding: 10px">
+                        <?php if ($value['status'] == 'Đang khởi tạo') { ?>
+                            <span style="color: white; background: red; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
+                        <?php }
+                        elseif($value['status'] == 'Đang xử lý') {?>
+                            <span style="color: white; background: orange; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
+                        <?php }
+                        elseif ($value['status'] == 'Đã giao cho bên vận chuyển') {?>
+                            <span style="color: white; background: lightseagreen; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
+                        <?php }
+                        elseif ($value['status'] == 'Đang giao hàng') {?>
+                            <span style="color: white; background: mediumseagreen; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
+                        <?php }
+                        elseif ($value['status'] == 'Giao hàng thành công') {?>
+                            <span style="color: white; background: green; border-radius: 5px; padding: 5px;"><?php echo $value['status']; ?></span>
+                        <?php } ?>
+                    </td>
+                    <td style="padding: 10px">
+                        <a href="Order_detail.php?id=<?php echo $value['id'] ?>&user_id=<?php echo $user['id']; ?>"><i class="fas fa-eye" title="Xem chi tiết" style="margin-right: 10px;"></i></a>
+                        <a href="Delete_Order.php?id=<?php echo $value['id'] ?>&user_id=<?php echo $user['id']; ?>" onclick="return confirm('Xóa đơn hàng ?')" ><i class="fas fa-trash-alt" title="delete" style="color: red"></i></a>
+
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+
 
         </section>
         <!-- /.content -->

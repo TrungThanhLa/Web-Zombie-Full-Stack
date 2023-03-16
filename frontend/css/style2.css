@@ -18,7 +18,7 @@
 
 .r_products {
     display: none;
-    display: flex;;
+    display: flex;
     flex-wrap: wrap;
     margin-right: 0px;
     margin-left: 0px;
@@ -220,6 +220,16 @@ a.Price {
 
 a.Sale_Price {
     margin-left: 10px;
+}
+
+a.Order {
+    background: #CD0439;
+    color: white;
+    padding: 10px 110px;
+}
+
+a.Order:hover {
+    background: red;
 }
 
 .pictureProduct {

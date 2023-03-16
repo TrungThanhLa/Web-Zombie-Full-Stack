@@ -1,0 +1,227 @@
+/*style11.css*/
+.container-fluid {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.row {
+    /*display: ;*/
+    display: none;
+    display: flex;;
+    flex-wrap: unset;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.ContainerHeader {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.Header {
+    padding-top: 20px;
+}
+
+.Logo {
+    width: 100%;
+}
+
+img.LogoImg {
+    width: 100px;
+    margin-left: 55%;
+    margin-bottom: 10px;
+}
+
+.IconAnchor {
+    align-self: center;
+    display: flex;
+}
+
+.iconawesome {
+    font-size: 22px;
+}
+
+.MenuHeader {
+    background: #F3F3F3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+li.liMenu {
+    display: inline-table;
+    width: 300px;
+    /*    height: 40px;*/
+    line-height: 40px;
+    position: relative;
+}
+
+ul.ulMenu {
+    text-align: center;
+}
+
+a {
+    color: #CD0439;
+}
+
+a.anchor_text {
+    display: block;
+    color: #CD0439;
+}
+
+a.anchor_text:hover {
+    background: unset;
+    transform: scale(1.1);
+}
+
+ul.subMenu {
+    display: none;
+    position: absolute;
+    width: 100%;
+}
+
+a.anchorSubMenu {
+    color: white;
+    display: block;
+}
+
+a.anchorSubMenu:hover {
+    color: #CF0038;
+    background: #F3F3F3;
+    display: block;
+}
+
+li:hover ul.subMenu {
+    display: block;
+    background: #CF0038;
+    color: white;
+}
+
+a:hover {
+    color: #D40131;
+    text-decoration: unset;
+    transition: all 0.2s ease-in-out;
+}
+
+a.anchorList {
+    display: block;
+}
+
+a.anchorList::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: gray;
+    left: -100%;
+    bottom: 100%;
+    visibility: hidden;
+}
+
+a.anchorList:hover::before {
+    left: 0px;
+    transition: all 0.3s;
+    visibility: unset;
+}
+
+.Main_Content {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.h3_title {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.form_login {
+    margin-bottom: 100px;
+}
+
+.Info1 {
+    width: 30%;
+}
+
+.Info2 {
+    width: 30%;
+    margin-left: 20%;
+}
+
+
+
+
+
+
+.Footer {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 0px;
+}
+
+.AboutUs {
+    width: 35%;
+}
+
+h3.FooterInformation {
+    font-size: 22px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+p.Description {
+    font-size: 15px;
+    font-weight: 350;
+}
+
+img.gov {
+    width: 150px;
+}
+
+.Link {
+    width: 15%;
+    padding-left: 40px;
+}
+
+ul.ulFooter {
+    padding-left: 0px;
+}
+
+li.lilink {
+    display: flex;
+}
+
+.ShopInfo {
+    width: 20%;
+}
+
+span.ShopInfoLocation {
+    padding-left: 10px;
+}
+
+.ShopLocationInfo {
+    padding: 5px 0px;
+}
+
+.Fanpage {
+    width: 20%;
+}
+
+img.FanpageShop {
+    width: 355px;
+}
+
+img {
+    transition: all 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+img:hover {
+    transform: scale(1.1);
+}

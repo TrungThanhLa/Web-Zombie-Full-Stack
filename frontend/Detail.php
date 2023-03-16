@@ -1,4 +1,42 @@
 <?php
+session_start();
+require_once '../backend/connection.php';
+
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    $id = $_GET['user_id'];
+    $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
+    $result_user = mysqli_query($connection, $sql_select_user);
+    $user = mysqli_fetch_assoc($result_user);
+    echo '<pre>';
+    print_r($user);
+    echo '</pre>';
+}
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    $_SESSION['error'] = 'Sản phẩm không tồn tại';
+    header('Location: Products_Frontend.php');
+    exit();
+}
+$id = $_GET['id'];
+
+$sql_select_one = "SELECT * FROM products WHERE id = $id";
+$result_one = mysqli_query($connection, $sql_select_one);
+$product = mysqli_fetch_assoc($result_one);
+echo '<pre>';
+print_r($product);
+echo '</pre>';
+
+$sql_select_all = "SELECT * FROM category WHERE status = 1";
+$result_all = mysqli_query($connection, $sql_select_all);
+$categories = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
+
+$sql_select_imgs = "SELECT * FROM imgs_products WHERE id_products = $id";
+$result_img = mysqli_query($connection, $sql_select_imgs);
+$imgs = mysqli_fetch_all($result_img, MYSQLI_ASSOC);
+echo '<pre>';
+print_r($imgs);
+echo '</pre>';
+
 
 ?>
 <!-- Detail.php -->
@@ -7,7 +45,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ZOMBIE® Send Hoodie In Black</title>
+    <title><?php echo $product['name']; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -19,28 +57,89 @@
 <div class="container-fluid">
     <!-- HEADER -->
     <div class="ContainerHeader">
+        <!-- HEADER -->
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="img/Logo Zombie.jpg" class="LogoImg">
+                    <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
-                    <i class="fab fa-facebook-f iconawesome"></i>
-                    <i class="fab fa-instagram iconawesome"></i>
-                    <i class="fas fa-search iconawesome"></i>
-                    <i class="fas fa-user-circle iconawesome"></i>
-                    <i class="fas fa-shopping-cart iconawesome"></i>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                    }
+                    else {
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                    }
+                    ?>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php }
+                    else {
+                        echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
+                    }
+                    ?>
                 </div>
             </div>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<div class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
             <div class="MenuHeader">
                 <ul class="ulMenu">
-                    <li class="liMenu"><a href="#" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="#" class="anchorList">Sản phẩm</a>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Homepage.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Trang Chủ</a>
+                        <?php }
+                        else {
+                            echo '<a href="Homepage.php" class="anchorList">Trang Chủ</a>';
+                        }
+                        ?>
+                    </li>
+                    <li class="liMenu" style="z-index: 100;"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Sản phẩm</a>
+                        <?php }
+                        else {
+                            echo '<a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>';
+                        }
+                        ?>
                         <ul class="subMenu">
-                            <li class="liSubMenu"><a href="#" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
-                            <li class="liSubMenu"><a href="#" class="anchorSubMenu">Áo - Shirts</a></li>
-                            <li class="liSubMenu"><a href="#" class="anchorSubMenu">Quần - Pants</a></li>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>
+                                <?php }
+                                else {
+                                    echo '<a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>';
+                                }
+                                ?>
+                                <?php foreach ($categories AS $key => $value):?>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>&&user_id=<?php echo $user['id']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php } endforeach; ?>
+                            </li>
                         </ul>
+                    </li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Tin tức</a>
+                        <?php }
+                        else {
+                            echo '<a href="News_Frontend.php" class="anchorList">Tin tức</a>';
+                        }
+                        ?>
                     </li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
@@ -53,47 +152,86 @@
     <div class="MainContent">
         <div class="bar">
             <div class="BarBackground">
-                <span class="BarItems"><a href="#" class="AnchorOnBar">Trang chủ</a> / <a href="#" class="AnchorOnBar">Danh mục</a> / <a href="#" class="AnchorOnBar">ZOMBIE® Send Hoodie In Black</a></span>
+                <span class="BarItems"><a href="Homepage.php" class="AnchorOnBar">Trang chủ</a> / <a href="Products_Frontend.php" class="AnchorOnBar">Sản phẩm</a> / <a href="#" class="AnchorOnBar"><?php echo $product['name']; ?></a></span>
             </div>
         </div>
         <div class="ContainerContent">
             <div class="row">
                 <div class="imgProduct">
-                    <img src="img/Product1.jpg" class="ProductPicture">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <?php
+                            $number = 1;
+                            foreach ($imgs AS $key1):
+                            ?>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="<?php $number++; ?>"></li>
+                            <?php endforeach; ?>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="ProductPicture" src="../backend/Products/uploads/<?php echo $product['img']; ?>" alt="First slide">
+                            </div>
+                            <?php foreach ($imgs AS $key => $value): ?>
+                            <div class="carousel-item">
+                                <img class="ProductPicture" src="../backend/Products/img_product/<?php echo $value['imgs_des']; ?>" alt="Second slide">
+                            </div>
+                            <?php endforeach; ?>
+<!--                            <div class="carousel-item">-->
+<!--                                <img class="d-block w-100" src="..." alt="Third slide">-->
+<!--                            </div>-->
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="detailProduct">
-                    <h3>ZOMBIE® Send Hoodie In Black</h3>
+                    <h3><?php echo $product['name']; ?></h3>
                     <hr>
-                    <span class="Price">315,500đ</span>
+                    <span class="Price"> Giá: <?php
+                        if ($product['sale_price'] != 0) {
+                            echo '<span style="text-decoration: line-through; color: black">' . number_format($product['price']) . 'đ </span>';
+                            echo '<span style="color: red; margin-left: 10px">' . number_format($product['sale_price']) . 'đ </span>';
+                        }
+                        else {
+                            echo '<span style=" color: red">' . number_format($product['price']) . 'đ </span>';
+                        }
+                        ?>
+                    </span>
                     <hr>
-                    <div class="SizeChoose">
-                        <div class="button 1 buttonSize"><button>M(45 - 65KG)</button></div>
-                        <div class="button 1 buttonSize"><button>L(65 - 80KG)</button></div>
-                        <div class="button 1 buttonSize"><button>XL(>80KG)</button></div>
-                    </div>
-                    <hr>
+                    <form action="<?php
+                    if (isset($_SESSION['username']) || isset($_COOKIE['username'])) { ?>
+                    Order.php?user_id=<?php echo $user['id']; }
+                    else { ?>
+                    Order.php
+                    <?php } ?>
+                    " method="get">
                     <div class="numberofProduct">
-                        <input type="button" value="-" onclick="minusQuantity()">
-                        <input type="text" value="1" min="1">
-                        <input type="button" value="+" onclick="plusQuantity()">
+                        <span>Số lượng:</span>
+                        <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) { ?>
+                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                        <?php } ?>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1">
+                        <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
                     </div>
                     <div class="AddProduct">
-                        <a href="#" class="AddToCard">THÊM VÀO GIỎ</a>
+                        <button type="submit" class="AddToCart">THÊM VÀO GIỎ</button>
                     </div>
+                    </form>
                     <div class="des">
                         <div class="DesProduct">
-                            <h4> Mô tả </h4>
-                            <ul class="ulDes"> MÔ TẢ SẢN PHẨM
-                                <li class="liDes">Sản phẩm Unisex cho cả nam và nữ, 1 item không thể thiếu trong tủ quần áo của những anh chàng hay cô nàng năng động cá tính.</li>
-                                <li class="liDes">HÌNH THẬT GIỐNG MẪU</li>
-                                <li class="liDes">Hàng có sẵn 100%, không phải chờ đợi lâu.</li>
-                                <li class="liDes">CHẤT LIỆU: Vải cotton hút ẩm tốt ,mịn mát,co giãn, dày vừa ko bí, mang đến cảm giác dễ chịu cho người sử dụng.</li>
-                                <li class="liDes">Màu sắc có thể đậm hoặc nhạt 1-5% do hiệu ứng ánh sáng (có thể do bóng râm, đèn sáng hoặc tối, độ phân giải của máy ảnh).</li>
-                            </ul>
+                            <h4 style="font-weight: bold; margin-bottom: 20px"> MÔ TẢ </h4>
+                            <?php echo $product['description']; ?>
                         </div>
 
                         <div class="DesProduct">
-                            <ul class="ulDes"> CAM KẾT CỦA SHOP
+                            <ul class="ulDes"> <span style="font-weight: bold">CAM KẾT CỦA SHOP</span>
                                 <li class="liDes">HÌNH THẬT GIỐNG MẪU 100%, TẤT CẢ HÌNH ẢNH ĐỀU DO SHOP TỰ CHỤP.</li>
                                 <li class="liDes">Sản phẩm được kiểm tra kỹ càng trước khi giao hàng cho khách .</li>
                                 <li class="liDes">Hỗ trợ đổi size nếu khách mặt không vừa, không ưng ý sản phẩm muốn đổi sang sản phẩm khác.</li>
@@ -103,7 +241,7 @@
                         </div>
 
                         <div class="DesProduct">
-                            <p class="Attention">GIAO HÀNG</p>
+                            <p class="Attention" style="font-weight: bold">BẢNG SIZE</p>
                             <p class="pDes">SIZE S/SIZE 28: 1m45 - 1m60 (45 - 53kg)</p>
                             <p class="pDes">SIZE M/SIZE 30: 1m5 - 1m65 (53 - 58kg)</p>
                             <p class="pDes">SIZE L/SIZE 32: 1m55 - 1m7 ( 58 - 68kg)</p>
@@ -114,7 +252,7 @@
                         </div>
 
                         <div class="DesProduct">
-                            <p class="Attention">GIAO HÀNG</p>
+                            <p class="Attention" style="font-weight: bold">BẢO QUẢN</p>
                             <p class="pDes">- Giặt lần đầu tiên với nước lạnh và nước xả vải (không sử dụng bột giặt) để sản phẩm giữ màu được lâu.</p>
                             <p class="pDes">- Giặt mặt trái, nhẹ tay, giặt xong phơi ngay, không ngâm sản phẩm trong nước quá lâu, không sử dụng các loại chất tẩy.</p>
                             <p class="pDes">- Quần áo trắng -  màu nên chia ra giặt riêng, không giặt chung.</p>
@@ -136,13 +274,13 @@
                     </div>
                     <div class="emailInput">
                         <input type="email" name="email" placeholder="Nhập email của bạn">
-                        <a href="#" class="BoxSignUp">
+                        <a href="#" class="BoxSignUp" class="anchor_text">
                             <span class="spSignUp">ĐĂNG KÍ</span>
                         </a>
                     </div>
                     <div class="telephone">
                         <i class="fas fa-phone-square-alt"></i>
-                        <span class="SupportandBuy"> Hỗ trợ/Mua hàng:<a href="#">           079 939 1168</a></span>
+                        <span class="SupportandBuy"> Hỗ trợ/Mua hàng:<a href="#" class="anchor_text">           079 939 1168</a></span>
                     </div>
                 </div>
             </div>
@@ -161,11 +299,11 @@
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
                 <ul class="ulFooter">
-                    <li class="lilink"><a href="#">FACEBOOK</a></li>
-                    <li class="lilink"><a href="#">INSTAGRAM</a></li>
-                    <li class="lilink"><a href="#">SHOPEE</a></li>
-                    <li class="lilink"><a href="#">LAZADA</a></li>
-                    <li class="lilink"><a href="#">TIKI</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">FACEBOOK</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">SHOPEE</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">LAZADA</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">TIKI</a></li>
                 </ul>
             </div>
             <div class="ShopInfo">
@@ -185,7 +323,7 @@
             <div class="Fanpage">
                 <h3 class="FooterInformation">Fanpage</h3>
 
-                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
+                <a href="https://www.facebook.com/thanhs.lider.5/" class="anchor_text"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
             </div>
         </div>
     </div>

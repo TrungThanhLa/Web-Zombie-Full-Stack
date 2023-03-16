@@ -2,6 +2,16 @@
 session_start();
 require_once '../backend/connection.php';
 
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    $id = $_GET['user_id'];
+    $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
+    $result_user = mysqli_query($connection, $sql_select_user);
+    $user = mysqli_fetch_assoc($result_user);
+    echo '<pre>';
+    print_r($user);
+    echo '</pre>';
+}
+
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['error'] = 'Bài viết không tồn tại';
     header('Location: News_Frontend.php');
@@ -16,6 +26,10 @@ $news = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
 //echo '<pre>';
 //print_r($news);
 //echo '</pre>';
+
+$sql_select_cate = "SELECT * FROM category WHERE status = 1";
+$result_cate = mysqli_query($connection, $sql_select_cate);
+$categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
 
 $sql_select_one = "SELECT * FROM news WHERE id = $id";
 $result_one = mysqli_query($connection, $sql_select_one);
@@ -48,27 +62,85 @@ if ($_GET['id'] != $new_one['id']) {
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="img/Logo Zombie.jpg" class="LogoImg">
+                    <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
-                    <i class="fab fa-facebook-f iconawesome"></i>
-                    <i class="fab fa-instagram iconawesome"></i>
-                    <i class="fas fa-search iconawesome"></i>
-                    <i class="fas fa-user-circle iconawesome"></i>
-                    <a href="Cart.php" class="anchor_text"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                    }
+                    else {
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                    }
+                    ?>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php }
+                    else {
+                        echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
+                    }
+                    ?>
                 </div>
             </div>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<div class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
             <div class="MenuHeader">
                 <ul class="ulMenu">
-                    <li class="liMenu"><a href="Homepage.php" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Homepage.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Trang Chủ</a>
+                        <?php }
+                        else {
+                            echo '<a href="Homepage.php" class="anchorList">Trang Chủ</a>';
+                        }
+                        ?>
+                    </li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Sản phẩm</a>
+                        <?php }
+                        else {
+                            echo '<a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>';
+                        }
+                        ?>
                         <ul class="subMenu">
-                            <li class="liSubMenu"><a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a></li>
-                            <li class="liSubMenu"><a href="#" class="anchorSubMenu">Áo - Shirts</a></li>
-                            <li class="liSubMenu"><a href="#" class="anchorSubMenu">Quần - Pants</a></li>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>
+                                <?php }
+                                else {
+                                    echo '<a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>';
+                                }
+                                ?>
+                                <?php foreach ($categories AS $key => $value):?>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>&&user_id=<?php echo $user['id']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php } endforeach; ?>
                         </ul>
                     </li>
-                    <li class="liMenu"><a href="News_Frontend.php" class="anchorList">Tin tức</a></li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Tin tức</a>
+                        <?php }
+                        else {
+                            echo '<a href="News_Frontend.php" class="anchorList">Tin tức</a>';
+                        }
+                        ?>
+                    </li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -86,10 +158,21 @@ if ($_GET['id'] != $new_one['id']) {
                 <?php foreach ($news AS $key => $value):?>
                 <div class="Other">
                     <div class="img_other_news">
-                        <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 268px; height: 138px"></a>
+                        <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Detail.php?id=<?php echo $value['id']; ?>&user_id=<?php echo $user['id']; ?>" class="anchor_text"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 268px; height: 138px"></a>
+                        <?php }
+                        else { ?>
+                            <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><img src="../backend/News/uploads/<?php echo $value['thumbnail']; ?>" style="width: 268px; height: 138px"></a>
+                        <?php } ?>
                     </div>
+
                     <div class="title_other_news">
-                        <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><?php echo $value['title']; ?></a>
+                        <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Detail.php?id=<?php echo $value['id']; ?>&user_id=<?php echo $user['id']; ?>" class="anchor_text"><?php echo $value['title']; ?></a>
+                        <?php }
+                        else { ?>
+                            <a href="News_Detail.php?id=<?php echo $value['id']; ?>" class="anchor_text"><?php echo $value['title']; ?></a>
+                        <?php } ?>
                     </div>
                 </div>
 <!--                --><?php

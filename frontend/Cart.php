@@ -1,4 +1,32 @@
 <?php
+session_start();
+require_once '../backend/connection.php';
+
+if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+    $id = $_GET['user_id'];
+    $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
+    $result_user = mysqli_query($connection, $sql_select_user);
+    $user = mysqli_fetch_assoc($result_user);
+    echo '<pre>';
+    print_r($user);
+    echo '</pre>';
+}
+
+$sql_select_cate = "SELECT * FROM category WHERE status = 1";
+$result_cate = mysqli_query($connection, $sql_select_cate);
+$categories = mysqli_fetch_all($result_cate, MYSQLI_ASSOC);
+
+if (isset($_SESSION['cart'])) {
+    $cart = $_SESSION['cart'];
+}
+else {
+    $cart = [];
+}
+echo '<pre>';
+print_r($cart);
+echo '</pre>';
+
+
 
 ?>
 
@@ -20,23 +48,89 @@
 <div class="container-fluid">
     <!-- HEADER -->
     <div class="ContainerHeader">
+        <!-- HEADER -->
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="img/Logo Zombie.jpg" class="LogoImg">
+                    <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
-                    <i class="fab fa-facebook-f iconawesome"></i>
-                    <i class="fab fa-instagram iconawesome"></i>
-                    <i class="fas fa-search iconawesome"></i>
-                    <i class="fas fa-user-circle iconawesome"></i>
-                    <i class="fas fa-shopping-cart iconawesome"></i>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                        echo '<a href="Login&&out/Logout.php" class="Logout" style="font-size: 22px;" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></a>';
+                    }
+                    else {
+                        echo '<a href="Login&&out/Login.php" class="Login" style="font-size: 22px;" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>';
+                    }
+                    ?>
+                    <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Cart.php?user_id=<?php echo $user['id']; ?>" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>
+                    <?php }
+                    else {
+                        echo '<a href="Cart.php" title="Giỏ hàng"><i class="fas fa-shopping-cart iconawesome"></i></a>';
+                    }
+                    ?>
                 </div>
             </div>
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<div class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
             <div class="MenuHeader">
                 <ul class="ulMenu">
-                    <li class="liMenu"><a href="#" class="anchorList">Trang Chủ</a></li>
-                    <li class="liMenu"><a href="#" class="anchorList">Sản phẩm</a></li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Homepage.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Trang Chủ</a>
+                        <?php }
+                        else {
+                            echo '<a href="Homepage.php" class="anchorList">Trang Chủ</a>';
+                        }
+                        ?>
+                    </li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Sản phẩm</a>
+                        <?php }
+                        else {
+                            echo '<a href="Products_Frontend.php" class="anchorList">Sản phẩm</a>';
+                        }
+                        ?>
+                        <ul class="subMenu">
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>
+                                <?php }
+                                else {
+                                    echo '<a href="Products_Frontend.php" class="anchorSubMenu">Tất cả sản phẩm - All Products</a>';
+                                }
+                                ?>
+                                <?php foreach ($categories AS $key => $value):?>
+                            <li class="liSubMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>&&user_id=<?php echo $user['id']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php }
+                                else { ?>
+                                    <a href="Products_Category.php?id=<?php echo $value['id_cat']; ?>" class="anchorSubMenu"><?php echo $value['name']; ?></a>
+                                <?php } endforeach; ?>
+                        </ul>
+                    </li>
+                    <li class="liMenu"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="News_Frontend.php?user_id=<?php echo $user['id']; ?>" class="anchorList">Tin tức</a>
+                        <?php }
+                        else {
+                            echo '<a href="News_Frontend.php" class="anchorList">Tin tức</a>';
+                        }
+                        ?>
+                    </li>
                     <li class="liMenu"><a href="#" class="anchorList">Tìm kiếm</a></li>
                 </ul>
             </div>
@@ -48,12 +142,31 @@
     <div class="MainContent">
         <div class="bar">
             <div class="BarBackground">
-				<span class="BarItems"><a href="Homepage.php">Trang chủ</a> / <a href="Cart.php">Giỏ hàng</a>
+				<span class="BarItems"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Homepage.php?user_id=<?php echo $user['id']; ?>">Trang chủ</a>
+                    <?php }
+                    else {
+                        echo '<a href="Homepage.php">Trang chủ</a>';
+                    }
+                    ?> / <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                        <a href="Cart.php?user_id=<?php echo $user['id']; ?>">Giỏ hàng</a>
+                    <?php }
+                    else {
+                        echo '<a href="Cart.php">Giỏ hàng</a>';
+                    }
+                    ?>
             </div>
         </div>
         <div class="YourCart">
             <h2>Giỏ hàng của bạn</h2>
-            <p class="pDesh2">Có 0 sản phẩm trong giỏ hàng</p>
+            <p class="pDesh2">Có <span style="color: red"> <?php
+                    if (isset($_SESSION['new_number_in_cart'])) {
+                        echo $_SESSION['new_number_in_cart'];
+                    }
+                    else {
+                        echo '0';
+                    }
+                    ?> </span> sản phẩm trong giỏ hàng</p>
             <div class="crossbar"></div>
         </div>
         <div class="CartContainer">
@@ -66,15 +179,88 @@
                     <th>Đơn giá</th>
                     <th></th>
                 </tr>
+                <?php
+                $number = 1;
+                $total_price = 0;
+                foreach ($cart AS $key => $value):
+                    $_SESSION['number_in_cart'] = $number;
+                    $_SESSION['new_number_in_cart'] = $_SESSION['number_in_cart'];
+                    $price_number = 0;
+                    if ($value['sale_price'] != 0) {
+                        $price_number = $price_number + ($value['sale_price'] * $value['quantity']);
+                    }
+                    else {
+                        $price_number = $price_number + ($value['price'] * $value['quantity']);
+                    }
+                    $total_price = $total_price + $price_number;
+                ?>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><a href="#">Xóa</a></td>
+                    <td><?php
+                        echo $number++;
+                        ?>
+                    </td>
+                    <td><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Detail.php?id=<?php echo $value['id']; ?>&user_id=<?php echo $user['id']; ?>"><?php echo $value['name']; ?></a>
+                        <?php }
+                        else { ?>
+                            <a href="Detail.php?id=<?php echo $value['id']; ?>"><?php echo $value['name']; ?></a>
+                        <?php } ?>
+                    </td>
+                    <td style="padding: 20px 0px;"><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Detail.php?id=<?php echo $value['id']; ?>&user_id=<?php echo $user['id']; ?>"><img src="../backend/Products/uploads/<?php echo $value['img']; ?>" width="150px" height="100px"></a>
+                        <?php }
+                        else { ?>
+                            <a href="Detail.php?id=<?php echo $value['id']; ?>"><img src="../backend/Products/uploads/<?php echo $value['img']; ?>" width="150px" height="100px"></a>
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <?php if (!isset($_SESSION['username']) || !isset($_COOKIE['username'])) { ?>
+                        <form action="Order.php" method="get">
+                            <?php }
+                            else { ?>
+                        <form action="Order.php?user_id=<?php echo $user['id']; ?>" method="get">
+                            <?php } ?>
+                        <input type="hidden" name="user_id" value="<?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+                            echo $user['id']; } else { echo ''; }?>">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="id" value="<?php echo $value['id']; ?>">
+                        <input type="number" name="quantity" class="quantity" value="<?php echo $value['quantity']; ?>">
+                        <button type="submit" name="Update" class="Update">Cập nhật</button>
+                        </form>
+                    </td>
+                    <td><?php if ($value['sale_price'] != 0 ) {
+                        echo '<span style="color:red;">' . number_format($value['sale_price']) . 'đ</span>' ;
+                        }
+                        else {
+                            echo number_format($value['price']) . 'đ';
+                        }?>
+
+                    </td>
+                    <td><?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                            <a href="Order.php?id=<?php echo $value['id'];?>&action=delete&user_id=<?php echo $user['id']; ?>" class="btn btn-danger"  onclick="return confirm('Xóa khỏi giỏ hàng ?')">Xóa</a></td>
+                        <?php }
+                        else { ?>
+                            <a href="Order.php?id=<?php echo $value['id'];?>&action=delete" class="btn btn-danger"  onclick="return confirm('Xóa khỏi giỏ hàng ?')">Xóa</a></td>
+                        <?php } ?>
                 </tr>
+                <?php endforeach; ?>
             </table>
+            <div class="Total">
+                <h4>Tổng số tiền: <span style="color: red"><?php echo number_format($total_price) . 'đ'; ?></span> </h4>
+            </div>
+            <div class="Payment">
+                <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
+                    <a href="Pay.php?user_id=<?php echo $user['id']; ?>" class="Pay">Thanh toán</a>
+                <?php }
+                else {
+                    if (!isset($_SESSION['username']) || !isset($_COOKIE['username'])) {
+                    ?>
+                    <a href="#" class="Pay" onclick="alert('Hãy đăng nhập để thanh toán !')">Thanh toán</a>
+                    <?php
+                        }
+                    }
+                    ?>
+            </div>
         </div>
         <div class="SupportBackground">
             <div class="Support">
@@ -85,13 +271,13 @@
                     </div>
                     <div class="emailInput">
                         <input type="email" name="email" placeholder="Nhập email của bạn">
-                        <a href="#" class="BoxSignUp">
+                        <a href="#" class="BoxSignUp" class="anchor_text">
                             <span class="spSignUp">ĐĂNG KÍ</span>
                         </a>
                     </div>
                     <div class="telephone">
                         <i class="fas fa-phone-square-alt"></i>
-                        <span class="SupportandBuy"> Hỗ trợ/Mua hàng:<a href="#">           079 939 1168</a></span>
+                        <span class="SupportandBuy"> Hỗ trợ/Mua hàng:<a href="#" class="anchor_text">           079 939 1168</a></span>
                     </div>
                 </div>
             </div>
@@ -111,11 +297,11 @@
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
                 <ul class="ulFooter">
-                    <li class="lilink"><a href="#">FACEBOOK</a></li>
-                    <li class="lilink"><a href="#">INSTAGRAM</a></li>
-                    <li class="lilink"><a href="#">SHOPEE</a></li>
-                    <li class="lilink"><a href="#">LAZADA</a></li>
-                    <li class="lilink"><a href="#">TIKI</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">FACEBOOK</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">SHOPEE</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">LAZADA</a></li>
+                    <li class="lilink"><a href="#" class="anchor_text">TIKI</a></li>
                 </ul>
             </div>
             <div class="ShopInfo">
@@ -135,7 +321,7 @@
             <div class="Fanpage">
                 <h3 class="FooterInformation">Fanpage</h3>
 
-                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
+                <a href="https://www.facebook.com/thanhs.lider.5/" class="anchor_text"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
             </div>
         </div>
     </div>

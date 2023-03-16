@@ -66,6 +66,9 @@ if (isset($_POST['submit'])) {
             header('Location: Log_in.php');
             exit();
         }
+        else {
+            $error = 'Đăng ký tài khoản thất bại, hãy kiểm tra lại thông tin bạn vừa nhập nhé !';
+        }
     }
 }
 
