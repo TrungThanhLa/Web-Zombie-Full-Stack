@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 10, 2023 lúc 08:55 PM
+-- Thời gian đã tạo: Th3 21, 2023 lúc 05:56 PM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.1.12
 
@@ -344,7 +344,7 @@ INSERT INTO `user_admin` (`id`, `name`, `full_name`, `username`, `password`, `em
 (27, 'Trung Thành', 'Lã Nguyễn Trung Thành', 'lathanh11', '$2y$10$wibMA2.L4apinUMGJHAoUOqZl5s2tUcqXJRyaWJhzgzD.OjrK2dGW', 'trungthanh1@gmail.com', 'AVT 2TL.png-1676831472.png', 'Female', '2023-02-18 00:03:35'),
 (28, 'Lã Thành', 'Lã Nguyễn Trung Thành 3', 'lathanh1110', '$2y$10$b/NXQqcvkkFRBVWiRVo2Q.GaALNEz0L2cHlFQb/cM8xKmOc13tDGm', 'trungthanh10@gmail.com', 'DPG.png-1676830509.png', 'Male', '2023-02-19 17:31:29'),
 (29, 'Trung Thanh La', 'Trung Thanh La', 'lathanh69', '$2y$10$CMypqoV.ku3bMxq1QN9luu.k90plkJSVeThzf2nuN88YVeYaAzKmG', 'trungthanhla2003@gmail.com', 'Flexin Game Project 800x800.jpg-1676977132.jpg', 'Male', '2023-02-21 10:42:20'),
-(30, 'Lã', 'Lã Thị Vân Ánh', 'lathanh123', '$2y$10$6ln/wM68ovEIZG.irwCWTO51kyQI3mhg3ykvEhTmRke4Vl/u2Gcg2', 'fvteam6996@gmail.com', '', 'Male', '2023-03-07 17:34:07');
+(30, 'Lã', 'Lã Thị Vân Ánh', 'lathanh123', '$2y$10$6ln/wM68ovEIZG.irwCWTO51kyQI3mhg3ykvEhTmRke4Vl/u2Gcg2', 'trungthanhla203@gmail.com', '', 'Male', '2023-03-07 17:34:07');
 
 -- --------------------------------------------------------
 
@@ -368,9 +368,9 @@ CREATE TABLE `user_customer` (
 --
 
 INSERT INTO `user_customer` (`id`, `full_name`, `username`, `password`, `email`, `phone`, `gender`, `created_at`) VALUES
-(2, 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$fHRDX/m.MJXcH/ML59pb2.Ocfw5tZEbybkYyjAojf.G4olEIrqWhC', 'thoeme.kistler@bluewin.ch', 943920252, 'Male', '2023-03-07 17:49:59'),
-(3, 'Lã Thị Vân Anh', 'lathanh11', '$2y$10$s/ntAZW5ccdv9kqljMVEmuGsQN/YsMyID8gGhnMCU37TD8vkIhlN.', 'trungthanh110@gmail.com', 2147483647, 'Male', '2023-03-07 17:52:37'),
-(5, 'Lã Thành', 'lathanh69', '$2y$10$W.mn/hIYzlL9GbcQwABlWesQNsrQ1FP2tBmKNfm0ywzSeHSzEm19y', 'trungthanh@gmail.com', 123123123, 'Female', '2023-03-07 18:19:36');
+(2, 'Lã Nguyễn Trung Thành', 'lathanh23', '$2y$10$JnlW0P/l0OuxMa8/I7rjDOdngMC0.2siLrCIQGz5rUaojM5AlAcEy', 'thoeme.kistler@bluewin.ch', 943920252, 'Male', '2023-03-07 17:49:59'),
+(3, 'Lã Thị Vân Anh', 'lathanh11', '$2y$10$JnlW0P/l0OuxMa8/I7rjDOdngMC0.2siLrCIQGz5rUaojM5AlAcEy', 'trungthanh110@gmail.com', 2147483647, 'Male', '2023-03-07 17:52:37'),
+(5, 'Lã Thành', 'lathanh69', '$2y$10$JnlW0P/l0OuxMa8/I7rjDOdngMC0.2siLrCIQGz5rUaojM5AlAcEy', 'trungthanh1110@gmail.com', 2147483647, 'Male', '2023-03-07 18:19:36');
 
 --
 -- Chỉ mục cho các bảng đã đổ
