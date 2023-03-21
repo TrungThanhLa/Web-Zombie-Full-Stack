@@ -103,7 +103,7 @@ $error = '';
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="../backend/assets/images/Logo_Youg.jpg" class="LogoImg" style="margin-left: 50%;">
+                    <img src="../../backend/assets/images/Logo_Youg.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
@@ -308,7 +308,7 @@ $error = '';
                     và phân phối các loại quần, áo, phụ kiện,... đậm chất tính thời thượng và luôn chạy theo xu hướng của thời trang trong
                     xã hội hiện đại.
                 </p>
-                <img src="img/GOV.jpg" class="gov">
+                <img src="../img/GOV.jpg" class="gov">
             </div>
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
@@ -336,7 +336,7 @@ $error = '';
             </div>
             <div class="Fanpage">
                 <h3 class="FooterInformation">Fanpage</h3>
-                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="../backend/assets/images/Logo_Youg.jpg" class="FanpageShop" style="width: 150px;margin-left: 100px;"></a>
+                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="../../backend/assets/images/Logo_Youg.jpg" class="FanpageShop" style="width: 150px;margin-left: 100px;"></a>
             </div>
         </div>
     </div>

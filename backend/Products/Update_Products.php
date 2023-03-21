@@ -173,7 +173,7 @@ if (isset($_POST['submit'])) {
 
             if ($is_update_img) {
                 $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
-                header('Location: Products.php');
+                header('Location: Products.php?id=' . $user['id']);
                 exit();
             } else {
                 $error = 'Cập nhật sản phẩm thất bại';

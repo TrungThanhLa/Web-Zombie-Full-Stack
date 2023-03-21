@@ -11,4 +11,4 @@ if (!$connection) {
     echo 'Lỗi kết nối' . mysqli_connect_error();
 }
 //
-echo 'Kết nối Database thành công';
+//echo 'Kết nối Database thành công';
