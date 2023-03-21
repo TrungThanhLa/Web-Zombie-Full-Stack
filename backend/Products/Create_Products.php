@@ -177,9 +177,9 @@ if (isset($_POST['submit'])) {
         <!-- Logo -->
         <a href="index2.html" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><b>Y2C</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"><b>Youg 2T Clothing</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -324,20 +324,29 @@ if (isset($_POST['submit'])) {
         </section>
     </div>
 
-    <!-- Messaeg Wrapper. Contains messaege error and success -->
-    <div class="message-wrap content-wrap content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="alert alert-danger">Lỗi validate</div>
-            <p class="alert alert-success">Thành công</p>
-        </section>
-    </div>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
         <section class="content">
             Nội dung hiển thị ở đây
+            <p style="color: red"><?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    echo '</div>';
+                }
+                ?>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<p class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</p>';
+                }
+                ?>
+            </p>
             <br>
             <br>
             <a href="Products.php?id=<?php echo $user['id']; ?>"><i class="fas fa-tasks"></i> Quản lý sản phẩm</a>

@@ -7,9 +7,9 @@ if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
     $sql_select_user = "SELECT * FROM user_customer WHERE id = $id";
     $result_user = mysqli_query($connection, $sql_select_user);
     $user = mysqli_fetch_assoc($result_user);
-    echo '<pre>';
-    print_r($user);
-    echo '</pre>';
+//    echo '<pre>';
+//    print_r($user);
+//    echo '</pre>';
 }
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -22,9 +22,9 @@ $id = $_GET['id'];
 $sql_select_one = "SELECT * FROM products WHERE id = $id";
 $result_one = mysqli_query($connection, $sql_select_one);
 $product = mysqli_fetch_assoc($result_one);
-echo '<pre>';
-print_r($product);
-echo '</pre>';
+//echo '<pre>';
+//print_r($product);
+//echo '</pre>';
 
 $sql_select_all = "SELECT * FROM category WHERE status = 1";
 $result_all = mysqli_query($connection, $sql_select_all);
@@ -33,9 +33,9 @@ $categories = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
 $sql_select_imgs = "SELECT * FROM imgs_products WHERE id_products = $id";
 $result_img = mysqli_query($connection, $sql_select_imgs);
 $imgs = mysqli_fetch_all($result_img, MYSQLI_ASSOC);
-echo '<pre>';
-print_r($imgs);
-echo '</pre>';
+//echo '<pre>';
+//print_r($imgs);
+//echo '</pre>';
 
 
 ?>
@@ -61,7 +61,7 @@ echo '</pre>';
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
+                    <img src="../backend/assets/images/Logo_Youg.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
@@ -308,37 +308,39 @@ echo '</pre>';
         <div class="row">
             <div class="AboutUs">
                 <h3 class="FooterInformation">Về chúng tôi</h3>
-                <p class="Description">Thành lập tại Việt Nam, ZOMBIE® là một dự án ấp ủ đầy nhiệt huyết ra đời vào năm 2012. Những sản phẩm được truyền cảm hứng từ những bạn trẻ có sức ảnh hưởng lớn trong giới thời trang. ZOMBIE® đã và đang mang đến rất nhiều sản phẩm đẹp và giá cả phải chăng.</p>
+                <p><a href="#" style="color: #CD0439;">Youg 2T Clothing Store</a> là website bán hàng Online chuyên cung cấp
+                    và phân phối các loại quần, áo, phụ kiện,... đậm chất tính thời thượng và luôn chạy theo xu hướng của thời trang trong
+                    xã hội hiện đại.
+                </p>
                 <img src="img/GOV.jpg" class="gov">
             </div>
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
                 <ul class="ulFooter">
-                    <li class="lilink"><a href="#" class="anchor_text">FACEBOOK</a></li>
-                    <li class="lilink"><a href="#" class="anchor_text">INSTAGRAM</a></li>
-                    <li class="lilink"><a href="#" class="anchor_text">SHOPEE</a></li>
-                    <li class="lilink"><a href="#" class="anchor_text">LAZADA</a></li>
-                    <li class="lilink"><a href="#" class="anchor_text">TIKI</a></li>
+                    <li class="lilink"><a href="https://www.facebook.com/thanhs.lider.5/">FACEBOOK</a></li>
+                    <li class="lilink"><a href="https://www.instagram.com/justlathahh/?fbclid=IwAR02WQLMgBrSweKmDcPI2iSwtQaWGlV00FscyrGOYfARGk9SGJvIlxqYg3A">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="#">SHOPEE</a></li>
+                    <li class="lilink"><a href="#">LAZADA</a></li>
+                    <li class="lilink"><a href="#">TIKI</a></li>
                 </ul>
             </div>
             <div class="ShopInfo">
                 <h3 class="FooterInformation">Thông tin cửa hàng</h3>
                 <div class="ShopLocationInfo">
-                    <i class="fas fa-map-marker-alt"></i><span class="ShopInfoLocation">805 Hoàng Sa, P9, Q3, TP.HCM</span>
+                    <i class="fas fa-map-marker-alt"></i><span class="ShopInfoLocation">Hà Đông, Hà Nội</span>
                     <br>
                 </div>
                 <div class="ShopLocationInfo">
-                    <i class="fas fa-mobile-alt"></i><span class="ShopInfoLocation">079 939 1168</span>
+                    <i class="fas fa-mobile-alt"></i><span class="ShopInfoLocation">094 392 0250</span>
                     <br>
                 </div>
                 <div class="ShopLocationInfo">
-                    <i class="fas fa-envelope"></i><span class="ShopInfoLocation">zombiestudio6@gmail.com</span>
+                    <i class="fas fa-envelope"></i><span class="ShopInfoLocation">trungthanhla1110@gmail.com</span>
                 </div>
             </div>
             <div class="Fanpage">
                 <h3 class="FooterInformation">Fanpage</h3>
-
-                <a href="https://www.facebook.com/thanhs.lider.5/" class="anchor_text"><img src="img/Fanpage.jpg" class="FanpageShop"></a>
+                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="../backend/assets/images/Logo_Youg.jpg" class="FanpageShop" style="width: 150px;"></a>
             </div>
         </div>
     </div>

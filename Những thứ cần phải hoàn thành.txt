@@ -8,7 +8,7 @@
 √ Lấy chi tiết sản phẩm
 √ Code lại trang chủ trên Frontend
 √ Code tính năng đăng nhập đăng ký của khách hàng
-- Code tính năng quản lý users của khách hàng
+√  Code tính năng quản lý users của khách hàng
 - Code phần gửi email của khách hàng trên frontend và nhận thông tin từ backend
 - Xem và sửa lại 1 số chỗ để code chạy được ổn định và mượt mà nhất
 - Code và sửa lại phần Frontend để code chạy mượt nhất

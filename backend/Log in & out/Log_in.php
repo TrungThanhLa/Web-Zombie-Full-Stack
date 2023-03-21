@@ -18,9 +18,9 @@ if (isset($_SESSION['username'])) {
 $sql_select_all = "SELECT * FROM user_admin";
 $result_all = mysqli_query($connection, $sql_select_all);
 $users = mysqli_fetch_all($result_all, MYSQLI_ASSOC);
-echo '<pre>';
-print_r($users);
-echo '</pre>';
+//echo '<pre>';
+//print_r($users);
+//echo '</pre>';
 foreach ($users AS $key => $value) {
 
 //$sql_select_one = "SELECT * FROM user_admin WHERE username = username";

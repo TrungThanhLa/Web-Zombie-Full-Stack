@@ -81,9 +81,9 @@ $categories = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
         <!-- Logo -->
         <a href="index2.html" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><b>Y2C</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"><b>Youg 2T Clothing</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -228,15 +228,6 @@ $categories = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
         </section>
     </div>
 
-    <!-- Messaeg Wrapper. Contains messaege error and success -->
-    <div class="message-wrap content-wrap content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="alert alert-danger">Lỗi validate</div>
-            <p class="alert alert-success">Thành công</p>
-        </section>
-    </div>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
@@ -247,20 +238,24 @@ $categories = mysqli_fetch_all($result_select, MYSQLI_ASSOC);
             <a href="../Products/Products.php?id=<?php echo $user['id']; ?>"><i class="fas fa-tasks"></i> Quản lý sản phẩm</a>
             <br>
             <br>
-            <h3 style="color: green"><?php
-                if (isset($_SESSION['success'])) {
-                    echo $_SESSION['success'];
-                    unset($_SESSION['success']);
-                }
-                ?>
-            </h3>
-            <h3 style="color:red;"><?php
+            <p style="color: red"><?php
                 if (isset($_SESSION['error'])) {
+                    echo '<div class="alert alert-danger">';
                     echo $_SESSION['error'];
                     unset($_SESSION['error']);
+                    echo '</div>';
                 }
                 ?>
-            </h3>
+            </p>
+            <p style="color: green"><?php
+                if (isset($_SESSION['success'])) {
+                    echo '<p class="alert alert-success">';
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    echo '</p>';
+                }
+                ?>
+            </p>
             <p style="color: red"><?php echo $error; ?></p>
             <div class="add_category">
 <!--                <div class="row">-->

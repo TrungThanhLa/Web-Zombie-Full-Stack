@@ -94,7 +94,7 @@ if (isset($_POST['submit'])) {
         <div class="Header">
             <div class="row">
                 <div class="Logo">
-                    <img src="../img/Logo Zombie.jpg" class="LogoImg" style="margin-left: 50%;">
+                    <img src="../backend/assets/images/Logo_Youg.jpg" class="LogoImg" style="margin-left: 50%;">
                 </div>
                 <div class="IconAnchor">
                     <?php if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {?>
@@ -255,14 +255,17 @@ if (isset($_POST['submit'])) {
         <div class="row">
             <div class="AboutUs">
                 <h3 class="FooterInformation">Về chúng tôi</h3>
-                <p class="Description">Thành lập tại Việt Nam, ZOMBIE® là một dự án ấp ủ đầy nhiệt huyết ra đời vào năm 2012. Những sản phẩm được truyền cảm hứng từ những bạn trẻ có sức ảnh hưởng lớn trong giới thời trang. ZOMBIE® đã và đang mang đến rất nhiều sản phẩm đẹp và giá cả phải chăng.</p>
-                <img src="../img/GOV.jpg" class="gov">
+                <p><a href="#" style="color: #CD0439;">Youg 2T Clothing Store</a> là website bán hàng Online chuyên cung cấp
+                    và phân phối các loại quần, áo, phụ kiện,... đậm chất tính thời thượng và luôn chạy theo xu hướng của thời trang trong
+                    xã hội hiện đại.
+                </p>
+                <img src="img/GOV.jpg" class="gov">
             </div>
             <div class="Link">
                 <h3 class="FooterInformation">Liên kết</h3>
                 <ul class="ulFooter">
-                    <li class="lilink"><a href="#">FACEBOOK</a></li>
-                    <li class="lilink"><a href="#">INSTAGRAM</a></li>
+                    <li class="lilink"><a href="https://www.facebook.com/thanhs.lider.5/">FACEBOOK</a></li>
+                    <li class="lilink"><a href="https://www.instagram.com/justlathahh/?fbclid=IwAR02WQLMgBrSweKmDcPI2iSwtQaWGlV00FscyrGOYfARGk9SGJvIlxqYg3A">INSTAGRAM</a></li>
                     <li class="lilink"><a href="#">SHOPEE</a></li>
                     <li class="lilink"><a href="#">LAZADA</a></li>
                     <li class="lilink"><a href="#">TIKI</a></li>
@@ -271,21 +274,20 @@ if (isset($_POST['submit'])) {
             <div class="ShopInfo">
                 <h3 class="FooterInformation">Thông tin cửa hàng</h3>
                 <div class="ShopLocationInfo">
-                    <i class="fas fa-map-marker-alt"></i><span class="ShopInfoLocation">805 Hoàng Sa, P9, Q3, TP.HCM</span>
+                    <i class="fas fa-map-marker-alt"></i><span class="ShopInfoLocation">Hà Đông, Hà Nội</span>
                     <br>
                 </div>
                 <div class="ShopLocationInfo">
-                    <i class="fas fa-mobile-alt"></i><span class="ShopInfoLocation">079 939 1168</span>
+                    <i class="fas fa-mobile-alt"></i><span class="ShopInfoLocation">094 392 0250</span>
                     <br>
                 </div>
                 <div class="ShopLocationInfo">
-                    <i class="fas fa-envelope"></i><span class="ShopInfoLocation">zombiestudio6@gmail.com</span>
+                    <i class="fas fa-envelope"></i><span class="ShopInfoLocation">trungthanhla1110@gmail.com</span>
                 </div>
             </div>
             <div class="Fanpage">
                 <h3 class="FooterInformation">Fanpage</h3>
-
-                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="../img/Fanpage.jpg" class="FanpageShop"></a>
+                <a href="https://www.facebook.com/thanhs.lider.5/"><img src="../backend/assets/images/Logo_Youg.jpg" class="FanpageShop" style="width: 150px;margin-left: 100px;"></a>
             </div>
         </div>
     </div>
