@@ -61,6 +61,7 @@ if (isset($_POST['submit']) && $_POST['pay_method'] == 0) {
         $sql_insert = "INSERT INTO orders (id_user, name, email, note, address, city, district, ward, phone, pay_method, status)
         VALUES('$user[id]', '$name', '$email', '$note', '$address', '$_POST[city]', '$_POST[district]', '$_POST[ward]' , '$phone', '$pay_method', 'Đang khởi tạo') ";
         $is_insert = mysqli_query($connection, $sql_insert);
+        var_dump($is_insert);
         if ($is_insert) {
             // Lấy id của bảng orders và gán vào biến id_order của bảng order_detail
             $id_order = mysqli_insert_id($connection);
@@ -84,8 +85,6 @@ if (isset($_POST['submit']) && $_POST['pay_method'] == 0) {
         }
     }
 }
-
-
 
 ?>
 
